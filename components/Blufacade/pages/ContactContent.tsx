@@ -42,7 +42,7 @@ export function ContactContent() {
             <div>
               <h2 className="text-2xl font-bold text-[#014a74] mb-6">Contact Information</h2>
               <p className="text-gray-600 mb-8">
-                Reach out to us for any inquiries about our façade solutions. 
+                Reach out to us for any inquiries about our facade solutions. 
                 We&apos;re here to help transform your vision into reality.
               </p>
             </div>

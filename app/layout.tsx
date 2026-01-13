@@ -18,9 +18,9 @@ const openSans = Open_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Blufacade | Inspiring Skylines - Premium Façade Solutions",
+  title: "Blufacade | Inspiring Skylines - Premium Facade Solutions",
   description:
-    "Blufacade specializes in innovative, high-quality façade solutions including ACP, structural glazing, aluminium doors & windows, HPL, and spider glazing.",
+    "Blufacade specializes in innovative, high-quality facade solutions including ACP, structural glazing, aluminium doors & windows, HPL, and spider glazing.",
   generator: "Next.js",
   icons: {
     icon: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.blufacade.com"),
   openGraph: {
     title: "Blufacade | Inspiring Skylines",
-    description: "Premium façade solutions that redefine the visual identity of modern buildings.",
+    description: "Premium facade solutions that redefine the visual identity of modern buildings.",
     url: "https://www.blufacade.com",
     siteName: "Blufacade",
     type: "website",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Blufacade | Inspiring Skylines",
-    description: "Premium façade solutions that redefine the visual identity of modern buildings.",
+    description: "Premium facade solutions that redefine the visual identity of modern buildings.",
   },
 }
 

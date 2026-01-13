@@ -1,175 +1,176 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
+import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { siteConfig } from "@/config/site"
+import Image from "next/image"
+import Link from "next/link"
 
 const navItems = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { 
-    name: "Services", 
-    href: "/services",
-    children: siteConfig.services.map(s => ({ name: s.title, href: `/services/${s.id}` }))
-  },
-  { name: "Portfolio", href: "/portfolio" },
-  { name: "Contact", href: "/contact" },
+  { label: "HOME", href: "/" },
+  { label: "ABOUT", href: "/about" },
+  { label: "SERVICES", href: "/services" },
+  { label: "PORTFOLIO", href: "/portfolio" },
+  { label: "CONTACT", href: "/contact" },
 ]
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY >= 50)
     }
+
+    handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+  }, [menuOpen])
+
   return (
     <>
-      {/* Top Bar */}
-      <div className="bg-[#014a74] text-white py-2 px-4 hidden md:block">
-        <div className="container mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center gap-6">
-            <a href={`tel:${siteConfig.contact.phone}`} className="flex items-center gap-2 hover:text-[#f58420] transition-colors">
-              <Phone className="w-4 h-4" />
-              <span>{siteConfig.contact.phone}</span>
-            </a>
-            <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-2 hover:text-[#f58420] transition-colors">
-              <Mail className="w-4 h-4" />
-              <span>{siteConfig.contact.email}</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-white/80">Branches: {siteConfig.branches.join(" | ")}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Header */}
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg"
-            : "bg-white"
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? "bg-white/95 backdrop-blur-md shadow-lg" 
+            : "bg-gradient-to-b from-black/50 to-transparent"
         }`}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex items-center">
-                <span className="text-2xl font-bold">
-                  <span className="text-[#014a74]">blu</span>
-                  <span className="text-[#f58420]">facade</span>
-                </span>
+        <div className="mx-auto px-6 md:px-12 flex items-center justify-between h-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center gap-3"
+          >
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 relative shrink-0">
+                <Image
+                  src="/images/logo/Blufacade Logo PNG (1).png"
+                  alt="Blufacade"
+                  fill
+                  className="object-contain"
+                />
               </div>
+              <h1 className="font-bold text-2xl tracking-tight transition-colors duration-300">
+                <span className={scrolled ? "text-[#014a74]" : "text-[#014a74]"}>blu</span>
+                <span className={scrolled ? "text-[#f58420]" : "text-[#f58420]"}>facade</span>
+              </h1>
             </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center gap-4"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setMenuOpen(!menuOpen)}
+              className={`p-2 rounded-lg transition-colors px-3 py-2.5 md:hidden ${
+                scrolled 
+                  ? "bg-[#014a74] text-white" 
+                  : "bg-white/20 backdrop-blur-sm text-white border border-white/30"
+              }`}
+              aria-label="Menu"
+            >
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </motion.button>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-6">
               {navItems.map((item) => (
-                <div
-                  key={item.name}
-                  className="relative"
-                  onMouseEnter={() => item.children && setActiveDropdown(item.name)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                    scrolled ? "text-[#014a74]" : "text-white"
+                  }`}
                 >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-1 px-4 py-2 text-[#014a74] font-medium hover:text-[#f58420] transition-colors"
-                  >
-                    {item.name}
-                    {item.children && <ChevronDown className="w-4 h-4" />}
-                  </Link>
-                  
-                  {/* Dropdown */}
-                  <AnimatePresence>
-                    {item.children && activeDropdown === item.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 mt-1"
-                      >
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.name}
-                            href={child.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#014a74]/5 hover:text-[#014a74] transition-colors"
-                          >
-                            {child.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                  {item.label}
+                </Link>
               ))}
             </nav>
-
-            {/* CTA Button */}
-            <div className="hidden lg:flex items-center gap-4">
-              <Button
-                asChild
-                className="bg-[#f58420] hover:bg-[#e07310] text-white px-6"
-              >
-                <Link href="/contact">Get a Quote</Link>
-              </Button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 text-[#014a74]"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+          </motion.div>
         </div>
+      </motion.header>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white border-t"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-[#014a74]/95 backdrop-blur-xl z-40 flex items-center justify-center"
+            onClick={() => setMenuOpen(false)}
+          >
+            <motion.nav
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={{
+                open: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+                closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+              }}
+              className="text-center"
             >
-              <nav className="container mx-auto px-4 py-4">
+              <motion.ul className="space-y-6 text-4xl md:text-6xl font-black uppercase text-white">
                 {navItems.map((item) => (
-                  <div key={item.name}>
+                  <motion.li
+                    key={item.label}
+                    variants={{
+                      open: { opacity: 1, y: 0, rotate: 0 },
+                      closed: { opacity: 0, y: 20, rotate: -5 },
+                    }}
+                  >
                     <Link
                       href={item.href}
-                      className="block py-3 text-[#014a74] font-medium border-b border-gray-100"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="inline-block hover:text-[#f58420] transition-colors duration-300 hover:scale-110 transform"
+                      onClick={() => setMenuOpen(false)}
                     >
-                      {item.name}
+                      {item.label}
                     </Link>
-                  </div>
+                  </motion.li>
                 ))}
-                <Button
-                  asChild
-                  className="w-full mt-4 bg-[#f58420] hover:bg-[#e07310] text-white"
-                >
-                  <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                    Get a Quote
-                  </Link>
-                </Button>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+              </motion.ul>
+
+              <motion.div
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: 20 },
+                }}
+                className="mt-12 flex justify-center gap-6"
+              >
+                {["INSTAGRAM", "LINKEDIN", "FACEBOOK"].map((social) => (
+                  <motion.a
+                    key={social}
+                    whileHover={{ scale: 1.1, color: "#f58420" }}
+                    href="#"
+                    className="text-sm font-bold text-white/60 hover:text-[#f58420] transition-colors"
+                  >
+                    {social}
+                  </motion.a>
+                ))}
+              </motion.div>
+            </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

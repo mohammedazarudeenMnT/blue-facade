@@ -1,14 +1,14 @@
 import { Metadata } from "next"
 import { Header } from "@/components/Blufacade/Header"
 import { Footer } from "@/components/Blufacade/Footer"
-import { FloatingContact } from "@/components/Blufacade/FloatingContact"
+// import { FloatingContact } from "@/components/Blufacade/FloatingContact"
 import { PortfolioHero } from "@/components/Blufacade/pages/PortfolioHero"
 import { PortfolioGrid } from "@/components/Blufacade/pages/PortfolioGrid"
-import { CTASection } from "@/components/Blufacade/CTASection"
+// import { CTASection } from "@/components/Blufacade/CTASection"
 
 export const metadata: Metadata = {
   title: "Portfolio | Blufacade - Our Projects",
-  description: "Explore our portfolio of iconic façade projects. From commercial complexes to healthcare facilities, see how we transform buildings with innovative façade solutions.",
+  description: "Explore our portfolio of iconic facade projects. From commercial complexes to healthcare facilities, see how we transform buildings with innovative facade solutions.",
 }
 
 export default function PortfolioPage() {
@@ -17,9 +17,9 @@ export default function PortfolioPage() {
       <Header />
       <PortfolioHero />
       <PortfolioGrid />
-      <CTASection />
+      {/* <CTASection /> */}
       <Footer />
-      <FloatingContact />
+      {/* <FloatingContact /> */}
     </main>
   )
 }
