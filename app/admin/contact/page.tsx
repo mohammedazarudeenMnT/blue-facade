@@ -145,7 +145,7 @@ export default function ContactPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8CC63F] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#014a74] mx-auto mb-4"></div>
           <p className="text-gray-600">Loading contact information...</p>
         </div>
       </div>
@@ -157,7 +157,7 @@ export default function ContactPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-[#1E3A5F]">Contact Manager</h1>
+          <h1 className="text-4xl font-bold text-[#014a74]">Contact Manager</h1>
           <p className="text-gray-600 mt-2">
             Manage contact details, phone numbers, WhatsApp, emails, address,
             social media links, and Google Map location
@@ -166,7 +166,7 @@ export default function ContactPage() {
         <Button
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white"
+          className="bg-[#014a74] hover:bg-[#012d47] text-white"
         >
           {isSaving ? (
             <>
@@ -184,9 +184,9 @@ export default function ContactPage() {
 
       {/* Basic Contact Information */}
       <Card className="shadow-lg border-0">
-        <CardHeader className="bg-gradient-to-r from-[#1E3A5F]/10 to-[#8CC63F]/10 p-6">
-          <CardTitle className="flex items-center text-[#1E3A5F] gap-2">
-            <Phone className="h-5 w-5 text-[#8CC63F]" />
+        <CardHeader className="bg-gradient-to-r from-[#014a74]/10 to-[#f58420]/10 p-6">
+          <CardTitle className="flex items-center text-[#014a74] gap-2">
+            <Phone className="h-5 w-5 text-[#f58420]" />
             Basic Contact Information
           </CardTitle>
         </CardHeader>
@@ -202,7 +202,7 @@ export default function ContactPage() {
                 onChange={(e) =>
                   handleInputChange("primaryPhone", e.target.value)
                 }
-                placeholder="+61 3 9876 5432"
+                placeholder="+91 9994162996"
                 className="mt-2"
               />
             </div>
@@ -220,7 +220,7 @@ export default function ContactPage() {
                 onChange={(e) =>
                   handleInputChange("secondaryPhone", e.target.value)
                 }
-                placeholder="+61 3 9876 5433"
+                placeholder="+91 9876543210"
                 className="mt-2"
               />
             </div>
@@ -238,7 +238,7 @@ export default function ContactPage() {
                 onChange={(e) =>
                   handleInputChange("whatsappNumber", e.target.value)
                 }
-                placeholder="+61 400 123 456"
+                placeholder="+91 9994162996"
                 className="mt-2"
               />
             </div>
@@ -252,7 +252,7 @@ export default function ContactPage() {
                 type="email"
                 value={contactInfo.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                placeholder="info@elegantcare.com.au"
+                placeholder="blufacadein@gmail.com"
                 className="mt-2"
               />
             </div>
@@ -260,7 +260,7 @@ export default function ContactPage() {
 
           {/* Business Information */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-[#1E3A5F]">
+            <h3 className="text-lg font-semibold text-[#014a74]">
               Business Information
             </h3>
             <div>
@@ -284,7 +284,7 @@ export default function ContactPage() {
 
           {/* Address Information */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-[#1E3A5F]">
+            <h3 className="text-lg font-semibold text-[#014a74]">
               Address Information
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
@@ -346,7 +346,7 @@ export default function ContactPage() {
                   id="country"
                   value={contactInfo.country}
                   onChange={(e) => handleInputChange("country", e.target.value)}
-                  placeholder="Australia"
+                  placeholder="India"
                   className="mt-2"
                 />
               </div>
@@ -356,9 +356,9 @@ export default function ContactPage() {
 
         {/* Social Media Links */}
         <Card className="shadow-lg border-0 rounded-none">
-          <CardHeader className="bg-gradient-to-r from-[#8CC63F]/10 to-[#1E3A5F]/10 p-6">
-            <CardTitle className="flex items-center gap-2 text-[#1E3A5F]">
-              <Globe className="h-5 w-5 text-[#8CC63F]" />
+          <CardHeader className="bg-gradient-to-r from-[#f58420]/10 to-[#014a74]/10 p-6">
+            <CardTitle className="flex items-center gap-2 text-[#014a74]">
+              <Globe className="h-5 w-5 text-[#f58420]" />
               Social Media Links
             </CardTitle>
           </CardHeader>
@@ -378,7 +378,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("facebook", e.target.value)
                   }
-                  placeholder="https://facebook.com/elegantcare"
+                  placeholder="https://facebook.com/blufacade"
                   className="mt-2"
                 />
               </div>
@@ -394,7 +394,7 @@ export default function ContactPage() {
                   id="twitter"
                   value={contactInfo.twitter}
                   onChange={(e) => handleInputChange("twitter", e.target.value)}
-                  placeholder="https://twitter.com/elegantcare"
+                  placeholder="https://twitter.com/blufacade"
                   className="mt-2"
                 />
               </div>
@@ -412,7 +412,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("linkedin", e.target.value)
                   }
-                  placeholder="https://linkedin.com/company/elegantcare"
+                  placeholder="https://linkedin.com/company/blufacade"
                   className="mt-2"
                 />
               </div>
@@ -430,7 +430,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("instagram", e.target.value)
                   }
-                  placeholder="https://instagram.com/elegantcare"
+                  placeholder="https://instagram.com/blufacade_"
                   className="mt-2"
                 />
               </div>
@@ -446,7 +446,7 @@ export default function ContactPage() {
                   id="youtube"
                   value={contactInfo.youtube}
                   onChange={(e) => handleInputChange("youtube", e.target.value)}
-                  placeholder="https://youtube.com/c/elegantcare"
+                  placeholder="https://youtube.com/@blufacade"
                   className="mt-2"
                 />
               </div>
@@ -464,7 +464,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("whatsapp", e.target.value)
                   }
-                  placeholder="https://wa.me/61400123456"
+                  placeholder="https://wa.me/919994162996"
                   className="mt-2"
                 />
               </div>
@@ -482,7 +482,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("telegram", e.target.value)
                   }
-                  placeholder="https://t.me/elegantcare"
+                  placeholder="https://t.me/blufacade"
                   className="mt-2"
                 />
               </div>
@@ -492,9 +492,9 @@ export default function ContactPage() {
 
         {/* Google Maps Integration */}
         <Card className="shadow-lg border-0 rounded-none">
-          <CardHeader className="bg-gradient-to-r from-[#1E3A5F]/10 to-[#8CC63F]/10 p-6">
-            <CardTitle className="flex items-center gap-2 text-[#1E3A5F]">
-              <MapPin className="h-5 w-5 text-[#8CC63F]" />
+          <CardHeader className="bg-gradient-to-r from-[#014a74]/10 to-[#f58420]/10 p-6">
+            <CardTitle className="flex items-center gap-2 text-[#014a74]">
+              <MapPin className="h-5 w-5 text-[#f58420]" />
               Google Maps Integration
             </CardTitle>
           </CardHeader>
@@ -510,7 +510,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("latitude", e.target.value)
                   }
-                  placeholder="-37.8136"
+                  placeholder="12.9716"
                   className="mt-2"
                 />
               </div>
@@ -524,7 +524,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     handleInputChange("longitude", e.target.value)
                   }
-                  placeholder="144.9631"
+                  placeholder="80.2466"
                   className="mt-2"
                 />
               </div>
@@ -555,9 +555,9 @@ export default function ContactPage() {
 
         {/* Contact Page Content */}
         <Card className="shadow-lg border-0 rounded-none">
-          <CardHeader className="bg-gradient-to-r from-[#8CC63F]/10 to-[#1E3A5F]/10 p-6">
-            <CardTitle className="flex items-center gap-2 text-[#1E3A5F]">
-              <Mail className="h-5 w-5 text-[#8CC63F]" />
+          <CardHeader className="bg-gradient-to-r from-[#f58420]/10 to-[#014a74]/10 p-6">
+            <CardTitle className="flex items-center gap-2 text-[#014a74]">
+              <Mail className="h-5 w-5 text-[#f58420]" />
               Contact Page Content
             </CardTitle>
           </CardHeader>
@@ -570,7 +570,7 @@ export default function ContactPage() {
                 id="pageTitle"
                 value={contactInfo.pageTitle}
                 onChange={(e) => handleInputChange("pageTitle", e.target.value)}
-                placeholder="Get in Touch with Elegant Care Service"
+                placeholder="Get in Touch with Blufacade"
                 className="mt-2"
               />
             </div>
@@ -587,7 +587,7 @@ export default function ContactPage() {
                 onChange={(e) =>
                   handleInputChange("pageDescription", e.target.value)
                 }
-                placeholder="Ready to start your journey with us? Contact our support team today and let us help you achieve your goals with quality NDIS support services."
+                placeholder="Ready to transform your building's exterior? Contact our expert team today and let us bring your architectural vision to life with premium facade solutions."
                 rows={3}
                 className="mt-2 w-full"
               />
@@ -619,7 +619,7 @@ export default function ContactPage() {
                 onChange={(e) =>
                   handleInputChange("officeDescription", e.target.value)
                 }
-                placeholder="Conveniently located in Melbourne, our office is your gateway to quality NDIS support services tailored to your needs."
+                placeholder="Conveniently located in Chennai, our office is your gateway to premium facade construction services tailored to your architectural needs."
                 rows={3}
                 className="mt-2 w-full"
               />
@@ -637,7 +637,7 @@ export default function ContactPage() {
                 onChange={(e) =>
                   handleInputChange("serviceAreas", e.target.value)
                 }
-                placeholder="Adelaide, Adelaide Hills, Mount Barker, Riverland, Renmark, Mildura, Murray Region, Surrounding Areas"
+                placeholder="Chennai, Madurai, Dindigul, Coimbatore, Trichy, Salem, Tamil Nadu, South India"
                 rows={3}
                 className="mt-2 w-full"
               />

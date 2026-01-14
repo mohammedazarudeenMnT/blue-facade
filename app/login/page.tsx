@@ -1,10 +1,14 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Header } from "@/components/Blufacade/Header"
 import { Footer } from "@/components/Blufacade/Footer"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import Link from "next/link"
+import axios from "axios"
+import { useToast } from "@/hooks/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -13,16 +17,52 @@ export default function LoginPage() {
     email: "",
     password: "",
   })
+  const router = useRouter()
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // TODO: Implement login logic
-    setTimeout(() => setIsLoading(false), 1000)
+
+    try {
+      const response = await axios.post("/api/admin/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (response.data.success) {
+        // Store token in localStorage
+        localStorage.setItem("admin_token", response.data.token)
+        
+        toast({
+          title: "Success",
+          description: "Login successful! Redirecting...",
+        })
+
+        // Redirect to admin dashboard
+        setTimeout(() => {
+          router.push("/admin")
+        }, 500)
+      }
+    } catch (error: any) {
+      console.error("Login error:", error)
+      
+      const errorMessage = error.response?.data?.error || "Login failed. Please try again."
+      
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <>
+      <Toaster />
+      <main className="min-h-screen flex flex-col">
       <Header />
 
       <section className="flex-1 flex items-center justify-center py-12 sm:py-16 bg-[#fefaf6]">
@@ -114,5 +154,6 @@ export default function LoginPage() {
 
       <Footer />
     </main>
+    </>
   )
 }
