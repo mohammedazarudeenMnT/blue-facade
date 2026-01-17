@@ -3,94 +3,50 @@
 import { motion } from "framer-motion"
 import { 
   Building2, 
-  DoorOpen, 
-  Layers, 
-  LayoutGrid, 
-  Square, 
-  Umbrella, 
-  PanelLeft, 
-  Sparkles,
   ArrowRight,
   CheckCircle2
 } from "lucide-react"
 import Link from "next/link"
-import { siteConfig } from "@/config/site"
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Building2,
-  DoorOpen,
-  Layers,
-  LayoutGrid,
-  Square,
-  Umbrella,
-  PanelLeft,
-  Sparkles,
-}
-
-const serviceDetails: Record<string, string[]> = {
-  "acp": [
-    "Fire-resistant options available",
-    "Wide range of colors and finishes",
-    "Weather-resistant coating",
-    "Easy maintenance",
-  ],
-  "aluminium-doors-windows": [
-    "Thermal break technology",
-    "Sound insulation",
-    "Powder-coated finishes",
-    "Custom sizes available",
-  ],
-  "structural-glazing": [
-    "Frameless glass appearance",
-    "Superior weather sealing",
-    "UV protection options",
-    "Energy-efficient designs",
-  ],
-  "hpl": [
-    "Scratch-resistant surface",
-    "UV stable colors",
-    "Impact resistant",
-    "Easy to clean",
-  ],
-  "dgu-semi-unitised": [
-    "Enhanced thermal insulation",
-    "Reduced condensation",
-    "Acoustic performance",
-    "Factory-assembled units",
-  ],
-  "canopy-work": [
-    "Custom designs",
-    "Durable materials",
-    "Weather protection",
-    "Aesthetic appeal",
-  ],
-  "glass-partition": [
-    "Maximizes natural light",
-    "Sound dampening options",
-    "Privacy glass available",
-    "Modern aesthetics",
-  ],
-  "spider-glazing": [
-    "Minimalist design",
-    "Maximum transparency",
-    "Structural integrity",
-    "Contemporary look",
-  ],
-}
+import Image from "next/image" // Use Next.js Image for better performance
+import { useServices } from "@/hooks/use-services"
 
 export function ServicesGrid() {
+  const { services, isLoading } = useServices(1, 100) // Fetch all/many services
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid gap-8">
+             {[1, 2, 3].map((i) => (
+               <div key={i} className="h-[400px] w-full bg-gray-100 rounded-2xl animate-pulse" />
+             ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (!services || services.length === 0) {
+     return (
+        <section className="py-20 bg-white text-center">
+           <div className="container mx-auto px-4">
+              <p className="text-gray-500">No services found.</p>
+           </div>
+        </section>
+     )
+  }
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="grid gap-8">
-          {siteConfig.services.map((service, index) => {
-            const IconComponent = iconMap[service.icon] || Building2
-            const details = serviceDetails[service.id] || []
+          {services.map((service, index) => {
             const isEven = index % 2 === 0
 
             return (
               <motion.div
-                key={service.id}
+                key={service._id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -102,28 +58,30 @@ export function ServicesGrid() {
                 {/* Content */}
                 <div className={isEven ? "order-1" : "order-1 md:order-2"}>
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#014a74] to-[#0369a1] flex items-center justify-center">
-                      <IconComponent className="w-8 h-8 text-white" />
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#014a74] to-[#0369a1] flex items-center justify-center shrink-0">
+                      <Building2 className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#014a74]">{service.title}</h3>
+                    <h3 className="text-2xl font-bold text-[#014a74]">{service.serviceName}</h3>
                   </div>
                   
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {service.description}
+                  <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
+                    {service.shortDescription || service.description}
                   </p>
 
                   {/* Features */}
-                  <div className="grid grid-cols-2 gap-3 mb-6">
-                    {details.map((detail, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-[#f58420] flex-shrink-0" />
-                        <span className="text-sm text-gray-600">{detail}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {service.features && service.features.length > 0 && (
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      {service.features.slice(0, 4).map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-[#f58420] flex-shrink-0" />
+                          <span className="text-sm text-gray-600 line-clamp-1">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   <Link
-                    href={`/services/${service.id}`}
+                    href={`/services/${service.slug}`}
                     className="inline-flex items-center gap-2 text-[#014a74] font-medium hover:text-[#f58420] transition-colors group"
                   >
                     Learn More
@@ -133,8 +91,19 @@ export function ServicesGrid() {
 
                 {/* Visual */}
                 <div className={`${isEven ? "order-2" : "order-2 md:order-1"}`}>
-                  <div className="aspect-video rounded-xl bg-gradient-to-br from-[#014a74]/10 to-[#f58420]/10 flex items-center justify-center">
-                    <IconComponent className="w-24 h-24 text-[#014a74]/30" />
+                  <div className="aspect-video rounded-xl overflow-hidden relative shadow-md">
+                     {service.image ? (
+                        <Image 
+                          src={service.image} 
+                          alt={service.serviceName} 
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-500"
+                        />
+                     ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                           <Building2 className="w-16 h-16 text-gray-300" />
+                        </div>
+                     )}
                   </div>
                 </div>
               </motion.div>

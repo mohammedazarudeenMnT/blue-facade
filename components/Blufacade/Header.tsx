@@ -1,15 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
+import { useServices } from "@/hooks/use-services"
 
 const navItems = [
   { label: "HOME", href: "/" },
   { label: "ABOUT", href: "/about" },
-  { label: "SERVICES", href: "/services" },
+  { label: "SERVICES", href: "/services", hasDropdown: true },
   { label: "PORTFOLIO", href: "/portfolio" },
   { label: "CONTACT", href: "/contact" },
 ]
@@ -17,6 +18,8 @@ const navItems = [
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+  const { services } = useServices(1, 100)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,17 +95,63 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                    scrolled ? "text-[#014a74]" : "text-white"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                if (item.hasDropdown) {
+                  return (
+                    <div 
+                      key={item.label} 
+                      className="relative group"
+                      onMouseEnter={() => setServicesDropdownOpen(true)}
+                      onMouseLeave={() => setServicesDropdownOpen(false)}
+                    >
+                      <Link
+                        href={item.href}
+                        className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                          scrolled ? "text-[#014a74]" : "text-white"
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                      </Link>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {servicesDropdownOpen && services.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl py-2 border border-gray-100 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
+                          >
+                            {services.map((service) => (
+                              <Link
+                                key={service._id}
+                                href={`/services/${service.slug}`}
+                                className="block px-4 py-1.5 text-[13px] text-gray-600 hover:text-[#014a74] hover:bg-gray-50 transition-colors font-medium border-b border-gray-50 last:border-0"
+                              >
+                                {service.serviceName}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )
+                }
+
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                      scrolled ? "text-[#014a74]" : "text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
             </nav>
           </motion.div>
         </div>
@@ -116,8 +165,10 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-[#014a74]/95 backdrop-blur-xl z-40 flex items-center justify-center"
-            onClick={() => setMenuOpen(false)}
+            className="fixed inset-0 bg-[#014a74]/95 backdrop-blur-xl z-40 flex items-center justify-center overflow-y-auto py-10"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setMenuOpen(false)
+            }}
           >
             <motion.nav
               initial="closed"
@@ -127,9 +178,9 @@ export function Header() {
                 open: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
                 closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
               }}
-              className="text-center"
+              className="text-center w-full px-6"
             >
-              <motion.ul className="space-y-6 text-4xl md:text-6xl font-black uppercase text-white">
+              <motion.ul className="space-y-6 text-2xl md:text-5xl font-black uppercase text-white flex flex-col items-center">
                 {navItems.map((item) => (
                   <motion.li
                     key={item.label}
@@ -137,14 +188,40 @@ export function Header() {
                       open: { opacity: 1, y: 0, rotate: 0 },
                       closed: { opacity: 0, y: 20, rotate: -5 },
                     }}
+                    className="w-full"
                   >
-                    <Link
-                      href={item.href}
-                      className="inline-block hover:text-[#f58420] transition-colors duration-300 hover:scale-110 transform"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
+                    {item.hasDropdown && services.length > 0 ? (
+                      <div className="flex flex-col items-center gap-4">
+                         <Link
+                          href={item.href}
+                          className="hover:text-[#f58420] transition-colors duration-300"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                        {/* Mobile Submenu */}
+                        <div className="flex flex-col gap-2 text-base font-medium capitalize text-white/70">
+                          {services.map((service) => (
+                             <Link
+                                key={service._id}
+                                href={`/services/${service.slug}`}
+                                className="hover:text-white transition-colors py-1"
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {service.serviceName}
+                              </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className="inline-block hover:text-[#f58420] transition-colors duration-300 hover:scale-110 transform"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
                   </motion.li>
                 ))}
               </motion.ul>
