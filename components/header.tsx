@@ -7,7 +7,7 @@ import { Logo } from "./logo"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useServices } from "@/hooks/use-services"
-import { useSupportModels } from "@/hooks/use-support-models"
+import { useSupportModels } from "@/hooks/use-portfolio"
 import { useContact } from "@/hooks/use-contact"
 
 const staticNavItems = [

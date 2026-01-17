@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Phone, Mail, MapPin, Clock, Loader2, ChevronDown, Check } from "lucide-react"
 import { useContact } from "@/hooks/use-contact"
 import { useServices } from "@/hooks/use-services"
-import { useSupportModels } from "@/hooks/use-support-models"
+import { useSupportModels } from "@/hooks/use-portfolio"
 import { useToast } from "@/hooks/use-toast"
 
 export function ContactContent() {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/config/models/connectDB";
-import SupportModel from "@/config/utils/admin/supportModel/supportModelSchema";
+import Portfolio from "@/config/utils/admin/portfolio/portfolioSchema";
 import { uploadToCloudinary } from "@/config/utils/cloudinary";
 import jwt from "jsonwebtoken";
 
@@ -47,14 +47,14 @@ async function verifyAdmin(request: NextRequest) {
 }
 
 // Helper function to generate slug
-function generateSlug(title: string): string {
-  return title
+function generateSlug(projectName: string): string {
+  return projectName
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
 
-// PUT - Update support model
+// PUT - Update portfolio project
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -66,16 +66,24 @@ export async function PUT(
     await connectDB();
     const { id } = await params;
 
-    const supportModel = await SupportModel.findOne({ _id: id, isDeleted: false });
-    if (!supportModel) {
+    const portfolio = await Portfolio.findOne({ _id: id, isDeleted: false });
+    if (!portfolio) {
       return NextResponse.json(
-        { success: false, message: "Support model not found" },
+        { success: false, message: "Portfolio project not found" },
         { status: 404 }
       );
     }
 
     const formData = await request.formData();
-    const title = formData.get("title") as string;
+    const projectName = formData.get("projectName") as string;
+    const client = formData.get("client") as string;
+    const location = formData.get("location") as string;
+    const category = formData.get("category") as string;
+    const serviceType = formData.get("serviceType") as string;
+    const projectArea = formData.get("projectArea") as string;
+    const completionDate = formData.get("completionDate") as string;
+    const duration = formData.get("duration") as string;
+    const budget = formData.get("budget") as string;
     const shortDescription = formData.get("shortDescription") as string;
     const description = formData.get("description") as string;
     const status = formData.get("status") as string;
@@ -98,50 +106,50 @@ export async function PUT(
     }
 
     // Validate required fields
-    if (!title || !description) {
+    if (!projectName || !description) {
       return NextResponse.json(
-        { success: false, message: "Title and description are required" },
+        { success: false, message: "Project name and description are required" },
         { status: 400 }
       );
     }
 
     // Check if order already exists (excluding current item)
-    const existingOrder = await SupportModel.findOne({
+    const existingOrder = await Portfolio.findOne({
       order,
       _id: { $ne: id },
       isDeleted: false
     });
     if (existingOrder) {
       return NextResponse.json(
-        { success: false, message: `A support model with order ${order} already exists` },
+        { success: false, message: `A portfolio project with order ${order} already exists` },
         { status: 400 }
       );
     }
 
-    // Generate new slug if title changed
-    const newSlug = generateSlug(title);
-    if (newSlug !== supportModel.slug) {
-      const existingModel = await SupportModel.findOne({
+    // Generate new slug if project name changed
+    const newSlug = generateSlug(projectName);
+    if (newSlug !== portfolio.slug) {
+      const existingProject = await Portfolio.findOne({
         slug: newSlug,
         _id: { $ne: id },
         isDeleted: false,
       });
-      if (existingModel) {
+      if (existingProject) {
         return NextResponse.json(
-          { success: false, message: "A support model with this name already exists" },
+          { success: false, message: "A portfolio project with this name already exists" },
           { status: 400 }
         );
       }
     }
 
     // Handle image upload
-    let imageUrl = existingImage || supportModel.image;
+    let imageUrl = existingImage || portfolio.image;
     if (imageFile && imageFile.size > 0) {
       const imageBytes = await imageFile.arrayBuffer();
       const imageBuffer = Buffer.from(imageBytes);
       const imageResult = await uploadToCloudinary(
         imageBuffer,
-        `support-models/${newSlug}/main`
+        `portfolio/${newSlug}/main`
       );
       imageUrl = imageResult.secure_url;
     }
@@ -156,47 +164,55 @@ export async function PUT(
           const buffer = Buffer.from(bytes);
           const result = await uploadToCloudinary(
             buffer,
-            `support-models/${newSlug}/gallery-${Date.now()}-${i + 1}`
+            `portfolio/${newSlug}/gallery-${Date.now()}-${i + 1}`
           );
           galleryUrls.push(result.secure_url);
         }
       }
     }
 
-    // Update support model
-    supportModel.title = title;
-    supportModel.shortDescription = shortDescription;
-    supportModel.description = description;
-    supportModel.image = imageUrl;
-    supportModel.gallery = galleryUrls;
-    supportModel.features = features;
-    supportModel.slug = newSlug;
-    supportModel.status = status;
-    supportModel.order = order;
-    supportModel.seoTitle = seoTitle;
-    supportModel.seoDescription = seoDescription;
-    supportModel.seoKeywords = seoKeywords;
+    // Update portfolio project
+    portfolio.projectName = projectName;
+    portfolio.client = client;
+    portfolio.location = location;
+    portfolio.category = category;
+    portfolio.serviceType = serviceType;
+    portfolio.projectArea = projectArea;
+    portfolio.completionDate = completionDate;
+    portfolio.duration = duration;
+    portfolio.budget = budget;
+    portfolio.shortDescription = shortDescription;
+    portfolio.description = description;
+    portfolio.image = imageUrl;
+    portfolio.gallery = galleryUrls;
+    portfolio.features = features;
+    portfolio.slug = newSlug;
+    portfolio.status = status;
+    portfolio.order = order;
+    portfolio.seoTitle = seoTitle;
+    portfolio.seoDescription = seoDescription;
+    portfolio.seoKeywords = seoKeywords;
 
-    await supportModel.save();
+    await portfolio.save();
 
     return NextResponse.json({
       success: true,
-      data: supportModel,
-      message: "Support model updated successfully",
+      data: portfolio,
+      message: "Portfolio project updated successfully",
     });
   } catch (error: any) {
-    console.error("Error updating support model:", error);
+    console.error("Error updating portfolio project:", error);
     return NextResponse.json(
       {
         success: false,
-        message: error.message || "Failed to update support model",
+        message: error.message || "Failed to update portfolio project",
       },
       { status: 500 }
     );
   }
 }
 
-// DELETE - Hard delete support model
+// DELETE - Hard delete portfolio project
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -208,25 +224,25 @@ export async function DELETE(
     await connectDB();
     const { id } = await params;
 
-    const supportModel = await SupportModel.findOne({ _id: id, isDeleted: false });
-    if (!supportModel) {
+    const portfolio = await Portfolio.findOne({ _id: id, isDeleted: false });
+    if (!portfolio) {
       return NextResponse.json(
-        { success: false, message: "Support model not found" },
+        { success: false, message: "Portfolio project not found" },
         { status: 404 }
       );
     }
 
     // Hard delete
-    await SupportModel.findByIdAndDelete(id);
+    await Portfolio.findByIdAndDelete(id);
 
     return NextResponse.json({
       success: true,
-      message: "Support model deleted successfully",
+      message: "Portfolio project deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting support model:", error);
+    console.error("Error deleting portfolio project:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete support model" },
+      { success: false, message: "Failed to delete portfolio project" },
       { status: 500 }
     );
   }

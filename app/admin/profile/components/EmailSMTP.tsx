@@ -38,13 +38,13 @@ export default function EmailSMTP() {
     smtpUser: "",
     smtpPassword: "",
     fromEmail: "",
-    fromName: "Elegant Care Service",
+    fromName: "Blufacade",
   });
 
   const [testEmailData, setTestEmailData] = useState<TestEmailData>({
     email: "",
     message:
-      "Greetings from Elegant Care Service! This is a test email to verify our SMTP configuration is working correctly for sending notifications and updates.",
+      "Greetings from Blufacade! This is a test email to verify our SMTP configuration is working correctly for sending notifications and updates.",
   });
 
   const [isTestingConnection, setIsTestingConnection] = useState(false);
@@ -251,7 +251,7 @@ export default function EmailSMTP() {
         setTestEmailData({
           email: "",
           message:
-            "Greetings from Elegant Care Service! This is a test email to verify our SMTP configuration is working correctly for sending notifications and updates.",
+            "Greetings from Blufacade! This is a test email to verify our SMTP configuration is working correctly for sending notifications and updates.",
         });
       } else {
         toast({
@@ -276,7 +276,7 @@ export default function EmailSMTP() {
       {/* SMTP Configuration */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h4 className="text-lg font-semibold text-[#1E3A5F]">
+          <h4 className="text-lg font-semibold text-[#014a74]">
             SMTP Email Configuration
           </h4>
           {connectionStatus.status !== "never" && (
@@ -389,7 +389,7 @@ export default function EmailSMTP() {
                   fromEmail: e.target.value,
                 })
               }
-              placeholder="noreply@elegantcare.com.au"
+              placeholder="noreply@blufacade.com"
               className="mt-2"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -406,7 +406,7 @@ export default function EmailSMTP() {
               onChange={(e) =>
                 setEmailSettings({ ...emailSettings, fromName: e.target.value })
               }
-              placeholder="Elegant Care Service"
+              placeholder="Blufacade"
               className="mt-2"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -422,7 +422,7 @@ export default function EmailSMTP() {
               onClick={testEmailConnection}
               disabled={isTestingConnection || loading}
               variant="outline"
-              className="border-[#8CC63F] text-[#8CC63F] hover:bg-[#8CC63F] hover:text-white"
+              className="border-[#014a74] text-[#014a74] hover:bg-[#014a74] hover:text-white"
             >
               {isTestingConnection ? (
                 <>
@@ -448,7 +448,7 @@ export default function EmailSMTP() {
           <Button
             onClick={handleEmailSave}
             disabled={loading}
-            className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white"
+            className="bg-[#014a74] hover:bg-[#012d47] text-white"
           >
             {loading ? (
               <>
@@ -467,7 +467,7 @@ export default function EmailSMTP() {
 
       {/* Test Email Section */}
       <div className="space-y-6">
-        <h4 className="text-lg font-semibold text-[#1E3A5F]">
+        <h4 className="text-lg font-semibold text-[#014a74]">
           Send Test Email
         </h4>
 
@@ -513,7 +513,7 @@ export default function EmailSMTP() {
             <Button
               onClick={sendTestEmail}
               disabled={isSendingTestEmail || !testEmailData.email}
-              className="bg-[#1E3A5F] hover:bg-[#152B47] text-white w-full"
+              className="bg-[#f58420] hover:bg-[#d97419] text-white w-full"
             >
               <Send className="h-4 w-4 mr-2" />
               {isSendingTestEmail ? "Sending..." : "Send Test Email"}

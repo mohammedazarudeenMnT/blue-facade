@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/config/models/connectDB";
-import SupportModel from "@/config/utils/admin/supportModel/supportModelSchema";
+import Portfolio from "@/config/utils/admin/portfolio/portfolioSchema";
 import { uploadToCloudinary } from "@/config/utils/cloudinary";
 import jwt from "jsonwebtoken";
 
@@ -47,14 +47,14 @@ async function verifyAdmin(request: NextRequest) {
 }
 
 // Helper function to generate slug
-function generateSlug(title: string): string {
-  return title
+function generateSlug(projectName: string): string {
+  return projectName
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, ""); // Remove leading/trailing dashes
 }
 
-// GET - Fetch all support models with pagination
+// GET - Fetch all portfolio projects with pagination
 export async function GET(request: NextRequest) {
   const admin = await verifyAdmin(request);
   if (!admin.ok) return admin.error!;
@@ -72,18 +72,18 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    const [supportModels, total] = await Promise.all([
-      SupportModel.find(query)
+    const [portfolios, total] = await Promise.all([
+      Portfolio.find(query)
         .sort({ order: 1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
-      SupportModel.countDocuments(query),
+      Portfolio.countDocuments(query),
     ]);
 
     return NextResponse.json({
       success: true,
-      data: supportModels,
+      data: portfolios,
       pagination: {
         currentPage: page,
         totalPages: Math.ceil(total / limit),
@@ -94,15 +94,15 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching support models:", error);
+    console.error("Error fetching portfolio projects:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to fetch support models" },
+      { success: false, message: "Failed to fetch portfolio projects" },
       { status: 500 }
     );
   }
 }
 
-// POST - Create new support model
+// POST - Create new portfolio project
 export async function POST(request: NextRequest) {
   const admin = await verifyAdmin(request);
   if (!admin.ok) return admin.error!;
@@ -111,7 +111,15 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const formData = await request.formData();
-    const title = formData.get("title") as string;
+    const projectName = formData.get("projectName") as string;
+    const client = formData.get("client") as string;
+    const location = formData.get("location") as string;
+    const category = formData.get("category") as string;
+    const serviceType = formData.get("serviceType") as string;
+    const projectArea = formData.get("projectArea") as string;
+    const completionDate = formData.get("completionDate") as string;
+    const duration = formData.get("duration") as string;
+    const budget = formData.get("budget") as string;
     const shortDescription = formData.get("shortDescription") as string;
     const description = formData.get("description") as string;
     const status = formData.get("status") as string;
@@ -124,37 +132,37 @@ export async function POST(request: NextRequest) {
     const galleryFiles = formData.getAll("galleryImages") as File[];
 
     // Validate required fields
-    if (!title || !description) {
+    if (!projectName || !description) {
       return NextResponse.json(
-        { success: false, message: "Title and description are required" },
+        { success: false, message: "Project name and description are required" },
         { status: 400 }
       );
     }
 
     if (!imageFile) {
       return NextResponse.json(
-        { success: false, message: "Image is required" },
+        { success: false, message: "Project image is required" },
         { status: 400 }
       );
     }
 
     // Check if order already exists
-    const existingOrder = await SupportModel.findOne({ order, isDeleted: false });
+    const existingOrder = await Portfolio.findOne({ order, isDeleted: false });
     if (existingOrder) {
       return NextResponse.json(
-        { success: false, message: `A support model with order ${order} already exists` },
+        { success: false, message: `A portfolio project with order ${order} already exists` },
         { status: 400 }
       );
     }
 
     // Generate slug
-    const slug = generateSlug(title);
+    const slug = generateSlug(projectName);
 
     // Check if slug already exists
-    const existingModel = await SupportModel.findOne({ slug, isDeleted: false });
-    if (existingModel) {
+    const existingProject = await Portfolio.findOne({ slug, isDeleted: false });
+    if (existingProject) {
       return NextResponse.json(
-        { success: false, message: "A support model with this name already exists" },
+        { success: false, message: "A portfolio project with this name already exists" },
         { status: 400 }
       );
     }
@@ -164,7 +172,7 @@ export async function POST(request: NextRequest) {
     const imageBuffer = Buffer.from(imageBytes);
     const imageResult = await uploadToCloudinary(
       imageBuffer,
-      `support-models/${slug}/main`
+      `portfolio/${slug}/main`
     );
 
     // Upload gallery images
@@ -177,16 +185,24 @@ export async function POST(request: NextRequest) {
           const buffer = Buffer.from(bytes);
           const result = await uploadToCloudinary(
             buffer,
-            `support-models/${slug}/gallery-${i + 1}`
+            `portfolio/${slug}/gallery-${i + 1}`
           );
           galleryUrls.push(result.secure_url);
         }
       }
     }
 
-    // Create support model
-    const supportModel = new SupportModel({
-      title,
+    // Create portfolio project
+    const portfolio = new Portfolio({
+      projectName,
+      client,
+      location,
+      category,
+      serviceType,
+      projectArea,
+      completionDate,
+      duration,
+      budget,
       shortDescription,
       description,
       image: imageResult.secure_url,
@@ -200,19 +216,19 @@ export async function POST(request: NextRequest) {
       seoKeywords,
     });
 
-    await supportModel.save();
+    await portfolio.save();
 
     return NextResponse.json({
       success: true,
-      data: supportModel,
-      message: "Support model created successfully",
+      data: portfolio,
+      message: "Portfolio project created successfully",
     });
   } catch (error: any) {
-    console.error("Error creating support model:", error);
+    console.error("Error creating portfolio project:", error);
     return NextResponse.json(
       {
         success: false,
-        message: error.message || "Failed to create support model",
+        message: error.message || "Failed to create portfolio project",
       },
       { status: 500 }
     );

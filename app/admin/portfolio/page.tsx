@@ -42,7 +42,7 @@ import {
   ImageIcon,
   Loader2,
   Eye,
-  Calendar,
+  MapPin,
   Briefcase,
 } from "lucide-react";
 import {
@@ -57,9 +57,17 @@ import {
 import RichTextEditor from "@/components/ui/rich-text-editor";
 import axios from "axios";
 
-interface SupportModel {
+interface Portfolio {
   _id?: string;
-  title: string;
+  projectName: string;
+  client?: string;
+  location?: string;
+  category?: string;
+  serviceType?: string;
+  projectArea?: string;
+  completionDate?: string;
+  duration?: string;
+  budget?: string;
   shortDescription?: string;
   description: string;
   image: string;
@@ -83,11 +91,11 @@ interface PaginationData {
   hasPrevPage: boolean;
 }
 
-export default function SupportModelsPage() {
+export default function PortfolioPage() {
   const { toast } = useToast();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [supportModels, setSupportModels] = useState<SupportModel[]>([]);
+  const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState<PaginationData>({
@@ -102,7 +110,15 @@ export default function SupportModelsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    title: "",
+    projectName: "",
+    client: "",
+    location: "",
+    category: "",
+    serviceType: "",
+    projectArea: "",
+    completionDate: "",
+    duration: "",
+    budget: "",
     shortDescription: "",
     description: "",
     features: "",
@@ -123,8 +139,8 @@ export default function SupportModelsPage() {
     galleryImages: [],
   });
 
-  // Fetch support models
-  const fetchSupportModels = async (page = 1) => {
+  // Fetch portfolio projects
+  const fetchPortfolios = async (page = 1) => {
     try {
       setLoading(true);
       const token = localStorage.getItem("admin_token");
@@ -137,14 +153,14 @@ export default function SupportModelsPage() {
         return;
       }
 
-      const response = await axios.get(`/api/admin/support-models?page=${page}&limit=6`, {
+      const response = await axios.get(`/api/admin/portfolio?page=${page}&limit=6`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.data.success) {
-        setSupportModels(response.data.data);
+        setPortfolios(response.data.data);
         if (response.data.pagination) {
           setPagination(response.data.pagination);
         }
@@ -153,7 +169,7 @@ export default function SupportModelsPage() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to fetch support models",
+        description: "Failed to fetch portfolio projects",
         variant: "destructive",
       });
     } finally {
@@ -162,23 +178,31 @@ export default function SupportModelsPage() {
   };
 
   useEffect(() => {
-    fetchSupportModels(currentPage);
+    fetchPortfolios(currentPage);
   }, [currentPage]);
 
-  const handleEdit = (model: SupportModel) => {
-    setEditingId(model._id || null);
+  const handleEdit = (portfolio: Portfolio) => {
+    setEditingId(portfolio._id || null);
     setFormData({
-      title: model.title,
-      shortDescription: model.shortDescription || "",
-      description: model.description,
-      features: model.features.join(", "),
-      image: model.image,
-      gallery: model.gallery || [],
-      status: model.status,
-      order: model.order,
-      seoTitle: model.seoTitle || "",
-      seoDescription: model.seoDescription || "",
-      seoKeywords: model.seoKeywords || "",
+      projectName: portfolio.projectName,
+      client: portfolio.client || "",
+      location: portfolio.location || "",
+      category: portfolio.category || "",
+      serviceType: portfolio.serviceType || "",
+      projectArea: portfolio.projectArea || "",
+      completionDate: portfolio.completionDate || "",
+      duration: portfolio.duration || "",
+      budget: portfolio.budget || "",
+      shortDescription: portfolio.shortDescription || "",
+      description: portfolio.description,
+      features: portfolio.features.join(", "),
+      image: portfolio.image,
+      gallery: portfolio.gallery || [],
+      status: portfolio.status,
+      order: portfolio.order,
+      seoTitle: portfolio.seoTitle || "",
+      seoDescription: portfolio.seoDescription || "",
+      seoKeywords: portfolio.seoKeywords || "",
     });
     setSelectedFiles({
       image: null,
@@ -189,10 +213,10 @@ export default function SupportModelsPage() {
 
   const handleSave = async () => {
     // Validate required fields
-    if (!formData.title || !formData.description) {
+    if (!formData.projectName || !formData.description) {
       toast({
         title: "Validation Error",
-        description: "Title and description are required.",
+        description: "Project name and description are required.",
         variant: "destructive",
       });
       return;
@@ -201,7 +225,7 @@ export default function SupportModelsPage() {
     if (!editingId && !selectedFiles.image) {
       toast({
         title: "Validation Error",
-        description: "Image is required.",
+        description: "Project image is required.",
         variant: "destructive",
       });
       return;
@@ -221,7 +245,15 @@ export default function SupportModelsPage() {
       }
 
       const submitFormData = new FormData();
-      submitFormData.append("title", formData.title.trim());
+      submitFormData.append("projectName", formData.projectName.trim());
+      submitFormData.append("client", formData.client.trim());
+      submitFormData.append("location", formData.location.trim());
+      submitFormData.append("category", formData.category.trim());
+      submitFormData.append("serviceType", formData.serviceType.trim());
+      submitFormData.append("projectArea", formData.projectArea.trim());
+      submitFormData.append("completionDate", formData.completionDate.trim());
+      submitFormData.append("duration", formData.duration.trim());
+      submitFormData.append("budget", formData.budget.trim());
       submitFormData.append("shortDescription", formData.shortDescription.trim());
       submitFormData.append("description", formData.description.trim());
       submitFormData.append("status", formData.status);
@@ -258,8 +290,8 @@ export default function SupportModelsPage() {
       });
 
       const url = editingId
-        ? `/api/admin/support-models/${editingId}`
-        : "/api/admin/support-models";
+        ? `/api/admin/portfolio/${editingId}`
+        : "/api/admin/portfolio";
       const method = editingId ? "put" : "post";
 
       const response = await axios[method](url, submitFormData, {
@@ -271,19 +303,19 @@ export default function SupportModelsPage() {
 
       if (response.data.success) {
         toast({
-          title: editingId ? "Support Model Updated" : "Support Model Added",
-          description: `Support Model has been successfully ${
+          title: editingId ? "Project Updated" : "Project Added",
+          description: `Portfolio project has been successfully ${
             editingId ? "updated" : "added"
           }.`,
         });
-        fetchSupportModels(currentPage);
+        fetchPortfolios(currentPage);
         handleCancel();
       }
     } catch (error: any) {
       toast({
         title: "Error",
         description:
-          error.response?.data?.message || "Failed to save support model",
+          error.response?.data?.message || "Failed to save portfolio project",
         variant: "destructive",
       });
     } finally {
@@ -303,7 +335,7 @@ export default function SupportModelsPage() {
         return;
       }
 
-      const response = await axios.delete(`/api/admin/support-models/${id}`, {
+      const response = await axios.delete(`/api/admin/portfolio/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -311,23 +343,23 @@ export default function SupportModelsPage() {
 
       if (response.data.success) {
         toast({
-          title: "Support Model Deleted",
-          description: "Support Model has been successfully deleted.",
+          title: "Project Deleted",
+          description: "Portfolio project has been successfully deleted.",
         });
         setDeletingId(null);
         
         // Check if we need to go back to previous page
-        const remainingItems = Array.isArray(supportModels) ? supportModels.filter((s) => s._id !== id) : [];
-        if (remainingItems.length === 0 && currentPage > 1) {
+        const remainingProjects = Array.isArray(portfolios) ? portfolios.filter((p) => p._id !== id) : [];
+        if (remainingProjects.length === 0 && currentPage > 1) {
           setCurrentPage(currentPage - 1);
         } else {
-          fetchSupportModels(currentPage);
+          fetchPortfolios(currentPage);
         }
       }
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to delete support model",
+        description: "Failed to delete portfolio project",
         variant: "destructive",
       });
     }
@@ -337,7 +369,15 @@ export default function SupportModelsPage() {
     setIsAddModalOpen(false);
     setEditingId(null);
     setFormData({
-      title: "",
+      projectName: "",
+      client: "",
+      location: "",
+      category: "",
+      serviceType: "",
+      projectArea: "",
+      completionDate: "",
+      duration: "",
+      budget: "",
       shortDescription: "",
       description: "",
       features: "",
@@ -459,7 +499,7 @@ export default function SupportModelsPage() {
               isActive={currentPage === i}
               className={`cursor-pointer ${
                 currentPage === i
-                  ? "bg-[#8CC63F] text-white border-0 hover:bg-[#7AB52F]"
+                  ? "bg-[#014a74] text-white border-0 hover:bg-[#012d47]"
                   : ""
               }`}
             >
@@ -477,7 +517,7 @@ export default function SupportModelsPage() {
             isActive={currentPage === 1}
             className={`cursor-pointer ${
               currentPage === 1
-                ? "bg-[#8CC63F] text-white border-0 hover:bg-[#7AB52F]"
+                ? "bg-[#014a74] text-white border-0 hover:bg-[#012d47]"
                 : ""
             }`}
           >
@@ -505,7 +545,7 @@ export default function SupportModelsPage() {
               isActive={currentPage === i}
               className={`cursor-pointer ${
                 currentPage === i
-                  ? "bg-[#8CC63F] text-white border-0 hover:bg-[#7AB52F]"
+                  ? "bg-[#014a74] text-white border-0 hover:bg-[#012d47]"
                   : ""
               }`}
             >
@@ -530,7 +570,7 @@ export default function SupportModelsPage() {
             isActive={currentPage === totalPages}
             className={`cursor-pointer ${
               currentPage === totalPages
-                ? "bg-[#8CC63F] text-white border-0 hover:bg-[#7AB52F]"
+                ? "bg-[#014a74] text-white border-0 hover:bg-[#012d47]"
                 : ""
             }`}
           >
@@ -561,8 +601,8 @@ export default function SupportModelsPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8CC63F] mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading support models...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#014a74] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading portfolio projects...</p>
         </div>
       </div>
     );
@@ -573,18 +613,26 @@ export default function SupportModelsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-[#1E3A5F]">
-            Support Models Manager
+          <h1 className="text-4xl font-bold text-[#014a74]">
+            Portfolio Manager
           </h1>
           <p className="text-gray-600 mt-2">
-            Manage your NDIS support models
+            Manage your facade construction projects
           </p>
         </div>
         <Button
           onClick={() => {
             setEditingId(null);
             setFormData({
-              title: "",
+              projectName: "",
+              client: "",
+              location: "",
+              category: "",
+              serviceType: "",
+              projectArea: "",
+              completionDate: "",
+              duration: "",
+              budget: "",
               shortDescription: "",
               description: "",
               features: "",
@@ -602,30 +650,38 @@ export default function SupportModelsPage() {
             });
             setIsAddModalOpen(true);
           }}
-          className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white"
+          className="bg-[#014a74] hover:bg-[#012d47] text-white"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add New Support Model
+          Add New Project
         </Button>
       </div>
 
-      {/* Support Models List - Horizontal Cards */}
-      {supportModels.length === 0 ? (
+      {/* Portfolio List */}
+      {portfolios.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
           <div className="bg-gray-50 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
             <Briefcase className="h-8 w-8 text-gray-400" />
           </div>
           <h3 className="text-lg font-semibold text-[#1E3A5F] mb-1">
-            No support models found
+            No portfolio projects found
           </h3>
           <p className="text-gray-500 mb-6">
-            Get started by creating your first support model.
+            Get started by creating your first portfolio project.
           </p>
           <Button
             onClick={() => {
               setEditingId(null);
               setFormData({
-                title: "",
+                projectName: "",
+                client: "",
+                location: "",
+                category: "",
+                serviceType: "",
+                projectArea: "",
+                completionDate: "",
+                duration: "",
+                budget: "",
                 shortDescription: "",
                 description: "",
                 features: "",
@@ -643,34 +699,34 @@ export default function SupportModelsPage() {
               });
               setIsAddModalOpen(true);
             }}
-            className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white"
+            className="bg-[#014a74] hover:bg-[#012d47] text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Add New Support Model
+            Add New Project
           </Button>
         </div>
       ) : (
         <div className="grid gap-6">
-          {supportModels.map((model) => (
-            <Card key={model._id} className="shadow-xl border-0">
+          {portfolios.map((portfolio) => (
+            <Card key={portfolio._id} className="shadow-xl border-0">
               <CardContent className="p-6">
                 <div className="flex gap-6 h-full">
-                  {/* Left Side - Image */}
+                  {/* Left Side - Project Image */}
                   <div className="flex-shrink-0 flex flex-col">
                     <div className="w-80 h-56 rounded-lg overflow-hidden border-0 shadow-md">
                       <Image
-                        src={model.image}
-                        alt={model.title}
+                        src={portfolio.image}
+                        alt={portfolio.projectName}
                         width={320}
                         height={224}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     {/* Gallery Preview */}
-                    {model.gallery && model.gallery.length > 0 && (
+                    {portfolio.gallery && portfolio.gallery.length > 0 && (
                       <div className="mt-3">
                         <div className="flex gap-2 overflow-x-auto">
-                          {model.gallery.slice(0, 4).map((image, index) => (
+                          {portfolio.gallery.slice(0, 4).map((image, index) => (
                             <div key={index} className="flex-shrink-0">
                               <Image
                                 src={image}
@@ -681,9 +737,9 @@ export default function SupportModelsPage() {
                               />
                             </div>
                           ))}
-                          {model.gallery.length > 4 && (
+                          {portfolio.gallery.length > 4 && (
                             <div className="flex-shrink-0 w-15 h-10 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-600">
-                              +{model.gallery.length - 4}
+                              +{portfolio.gallery.length - 4}
                             </div>
                           )}
                         </div>
@@ -691,44 +747,72 @@ export default function SupportModelsPage() {
                     )}
                   </div>
 
-                  {/* Right Side - Content */}
+                  {/* Right Side - Project Content */}
                   <div className="flex-1 flex justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-2xl font-semibold text-[#1E3A5F]">
-                          {model.title}
+                        <h3 className="text-2xl font-semibold text-[#014a74]">
+                          {portfolio.projectName}
                         </h3>
                         <Badge
                           className={
-                            model.status === "active"
+                            portfolio.status === "active"
                               ? "bg-green-500"
                               : "bg-gray-500"
                           }
                         >
-                          {model.status}
+                          {portfolio.status}
                         </Badge>
+                        {portfolio.category && (
+                          <Badge variant="outline" className="text-[#f58420] border-[#f58420]">
+                            {portfolio.category}
+                          </Badge>
+                        )}
                       </div>
 
-                      {model.shortDescription && (
-                        <p className="text-gray-600 mb-4">
-                          {model.shortDescription}
+                      {portfolio.client && (
+                        <p className="text-sm text-gray-600 mb-1">
+                          <span className="font-semibold">Client:</span> {portfolio.client}
                         </p>
                       )}
 
-                      <div className="flex items-center gap-6 text-sm text-gray-500 mb-4">
+                      {portfolio.location && (
+                        <p className="text-sm text-gray-600 mb-2 flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {portfolio.location}
+                        </p>
+                      )}
+
+                      {portfolio.shortDescription && (
+                        <p className="text-gray-600 mb-3">
+                          {portfolio.shortDescription}
+                        </p>
+                      )}
+
+                      <div className="flex items-center gap-6 text-sm text-gray-500 mb-3">
                         <div className="flex items-center gap-2">
                           <Eye className="h-4 w-4" />
-                          <span>{model.views || 0} views</span>
+                          <span>{portfolio.views || 0} views</span>
                         </div>
+                        {portfolio.projectArea && (
+                          <div>
+                            <span className="font-semibold">Area:</span> {portfolio.projectArea}
+                          </div>
+                        )}
+                        {portfolio.completionDate && (
+                          <div>
+                            <span className="font-semibold">Completed:</span> {portfolio.completionDate}
+                          </div>
+                        )}
                       </div>
 
-                      {model.features && model.features.length > 0 && (
-                        <div className="mb-4">
+                      {portfolio.features && portfolio.features.length > 0 && (
+                        <div className="mb-3">
                           <p className="text-sm font-semibold text-gray-700 mb-2">
                             Features:
                           </p>
                           <div className="flex flex-wrap gap-2">
-                            {model.features.slice(0, 3).map((feature, index) => (
+                            {portfolio.features.slice(0, 3).map((feature, index) => (
                               <Badge
                                 key={index}
                                 variant="outline"
@@ -737,9 +821,9 @@ export default function SupportModelsPage() {
                                 {feature}
                               </Badge>
                             ))}
-                            {model.features.length > 3 && (
+                            {portfolio.features.length > 3 && (
                               <Badge variant="outline" className="text-xs">
-                                +{model.features.length - 3} more
+                                +{portfolio.features.length - 3} more
                               </Badge>
                             )}
                           </div>
@@ -750,7 +834,7 @@ export default function SupportModelsPage() {
                     {/* Action Buttons */}
                     <div className="flex flex-col gap-2 ml-4">
                       <Button
-                        onClick={() => handleEdit(model)}
+                        onClick={() => handleEdit(portfolio)}
                         variant="outline"
                         size="sm"
                         className="whitespace-nowrap"
@@ -760,7 +844,7 @@ export default function SupportModelsPage() {
                       </Button>
                       <Button
                         onClick={() =>
-                          setDeletingId(model._id || null)
+                          setDeletingId(portfolio._id || null)
                         }
                         variant="outline"
                         size="sm"
@@ -800,28 +884,95 @@ export default function SupportModelsPage() {
       >
         <DialogContent className="!max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-[#1E3A5F]">
-              {editingId ? "Edit Support Model" : "Add New Support Model"}
+            <DialogTitle className="text-2xl text-[#014a74]">
+              {editingId ? "Edit Portfolio Project" : "Add New Portfolio Project"}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-6">
             {/* Basic Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-[#1E3A5F]">
+              <h3 className="text-lg font-semibold text-[#014a74]">
                 Basic Information
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Title *</Label>
+                  <Label>Project Name *</Label>
                   <Input
-                    value={formData.title}
+                    value={formData.projectName}
                     onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
+                      setFormData({ ...formData, projectName: e.target.value })
                     }
-                    placeholder="e.g., Household Tasks"
+                    placeholder="e.g., Corporate Office Facade - ABC Tower"
                     className="mt-2"
                   />
+                </div>
+                <div>
+                  <Label>Client Name</Label>
+                  <Input
+                    value={formData.client}
+                    onChange={(e) =>
+                      setFormData({ ...formData, client: e.target.value })
+                    }
+                    placeholder="e.g., ABC Corporation"
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label>Location</Label>
+                  <Input
+                    value={formData.location}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
+                    placeholder="e.g., Chennai, Tamil Nadu"
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label>Category</Label>
+                  <Select
+                    value={formData.category}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, category: value })
+                    }
+                  >
+                    <SelectTrigger className="mt-2">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Commercial">Commercial</SelectItem>
+                      <SelectItem value="Residential">Residential</SelectItem>
+                      <SelectItem value="Industrial">Industrial</SelectItem>
+                      <SelectItem value="Healthcare">Healthcare</SelectItem>
+                      <SelectItem value="Educational">Educational</SelectItem>
+                      <SelectItem value="Hospitality">Hospitality</SelectItem>
+                      <SelectItem value="Retail">Retail</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Service Type</Label>
+                  <Select
+                    value={formData.serviceType}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, serviceType: value })
+                    }
+                  >
+                    <SelectTrigger className="mt-2">
+                      <SelectValue placeholder="Select service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ACP Cladding">ACP Cladding</SelectItem>
+                      <SelectItem value="Structural Glazing">Structural Glazing</SelectItem>
+                      <SelectItem value="Aluminium Doors & Windows">Aluminium Doors & Windows</SelectItem>
+                      <SelectItem value="HPL Cladding">HPL Cladding</SelectItem>
+                      <SelectItem value="Spider Glazing">Spider Glazing</SelectItem>
+                      <SelectItem value="Glass Partition">Glass Partition</SelectItem>
+                      <SelectItem value="DGU Semi Unitised">DGU Semi Unitised</SelectItem>
+                      <SelectItem value="Canopy Work">Canopy Work</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
                   <Label>Order</Label>
@@ -863,7 +1014,7 @@ export default function SupportModelsPage() {
                     onChange={(value) =>
                       setFormData({ ...formData, description: value })
                     }
-                    placeholder="Detailed description of the support model"
+                    placeholder="Detailed description of the project"
                   />
                 </div>
               </div>
@@ -875,24 +1026,77 @@ export default function SupportModelsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, features: e.target.value })
                   }
-                  placeholder="e.g., Flexible Hours, Experienced Staff"
+                  placeholder="e.g., Fire-rated panels, PVDF coating, Custom color matching"
                   rows={3}
                   className="mt-2"
                 />
               </div>
             </div>
 
+            {/* Project Details */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-[#014a74]">
+                Project Details
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Project Area</Label>
+                  <Input
+                    value={formData.projectArea}
+                    onChange={(e) =>
+                      setFormData({ ...formData, projectArea: e.target.value })
+                    }
+                    placeholder="e.g., 5000 sq.ft"
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label>Completion Date</Label>
+                  <Input
+                    value={formData.completionDate}
+                    onChange={(e) =>
+                      setFormData({ ...formData, completionDate: e.target.value })
+                    }
+                    placeholder="e.g., December 2024"
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label>Duration</Label>
+                  <Input
+                    value={formData.duration}
+                    onChange={(e) =>
+                      setFormData({ ...formData, duration: e.target.value })
+                    }
+                    placeholder="e.g., 3 months"
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label>Budget Range (Optional)</Label>
+                  <Input
+                    value={formData.budget}
+                    onChange={(e) =>
+                      setFormData({ ...formData, budget: e.target.value })
+                    }
+                    placeholder="e.g., ₹50-75 Lakhs or Contact for Details"
+                    className="mt-2"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Image */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-[#1E3A5F]">Image</h3>
+              <h3 className="text-lg font-semibold text-[#014a74]">Image</h3>
               <div>
-                <Label>Cover Image *</Label>
+                <Label>Project Image *</Label>
                 <div className="mt-2 border-2 border-dashed rounded-lg p-4">
                   {formData.image ? (
                     <div className="relative h-48">
                       <Image
                         src={formData.image}
-                        alt="Support Model"
+                        alt="Project"
                         fill
                         className="object-cover rounded"
                       />
@@ -917,7 +1121,7 @@ export default function SupportModelsPage() {
 
             {/* Gallery Images */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-[#1E3A5F]">
+              <h3 className="text-lg font-semibold text-[#014a74]">
                 Gallery Images (Optional)
               </h3>
               <div>
@@ -967,7 +1171,7 @@ export default function SupportModelsPage() {
 
             {/* Settings */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-[#1E3A5F]">Settings</h3>
+              <h3 className="text-lg font-semibold text-[#014a74]">Settings</h3>
               <div>
                 <Label>Status</Label>
                 <Select
@@ -989,7 +1193,7 @@ export default function SupportModelsPage() {
 
             {/* SEO */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-[#1E3A5F]">
+              <h3 className="text-lg font-semibold text-[#014a74]">
                 SEO (Optional)
               </h3>
               <div>
@@ -999,7 +1203,7 @@ export default function SupportModelsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, seoTitle: e.target.value })
                   }
-                  placeholder="e.g., Household Tasks Support | Elegant Care Service"
+                  placeholder="e.g., ABC Tower Facade Project | Blufacade Portfolio"
                   maxLength={200}
                   className="mt-2"
                 />
@@ -1027,24 +1231,34 @@ export default function SupportModelsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, seoKeywords: e.target.value })
                   }
-                  placeholder="e.g., NDIS household tasks, domestic assistance"
+                  placeholder="e.g., ACP cladding Chennai, corporate facade, office building"
                   className="mt-2"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-4 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={handleCancel}>
+            {/* Actions */}
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button onClick={handleCancel} variant="outline">
+                <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
               <Button
-                type="button"
                 onClick={handleSave}
                 disabled={isSaving}
-                className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white"
+                className="bg-[#014a74] hover:bg-[#012d47] text-white"
               >
-                {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {editingId ? "Update Model" : "Save Model"}
+                {isSaving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Project
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -1054,21 +1268,21 @@ export default function SupportModelsPage() {
       {/* Delete Confirmation */}
       <AlertDialog
         open={!!deletingId}
-        onOpenChange={(open) => !open && setDeletingId(null)}
+        onOpenChange={() => setDeletingId(null)}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
-              support model.
+              portfolio project.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deletingId && handleDelete(deletingId)}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-red-600 hover:bg-red-700"
             >
               Delete
             </AlertDialogAction>

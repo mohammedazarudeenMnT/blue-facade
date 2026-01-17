@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import { useServices } from "@/hooks/use-services"
-import { useSupportModels } from "@/hooks/use-support-models"
+import { useSupportModels } from "@/hooks/use-portfolio"
 import {
   Dialog,
   DialogContent,

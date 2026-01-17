@@ -4,7 +4,7 @@ import Lead from "@/config/utils/admin/lead/leadSchema";
 import Feedback from "@/config/utils/admin/feedback/feedbackSchema";
 import Testimonial from "@/config/utils/admin/testimonial/testimonialSchema";
 import Service from "@/config/utils/admin/services/serviceSchema";
-import SupportModel from "@/config/utils/admin/supportModel/supportModelSchema";
+// import SupportModel from "@/config/utils/admin/supportModel/supportModelSchema";
 
 export async function GET() {
   try {
@@ -48,9 +48,9 @@ export async function GET() {
       totalServiceViews,
 
       // Support Model metrics
-      totalSupportModels,
+     /*  totalSupportModels,
       activeSupportModels,
-      totalSupportModelViews,
+      totalSupportModelViews, */
     ] = await Promise.all([
       // Lead queries
       Lead.countDocuments(),
@@ -92,12 +92,12 @@ export async function GET() {
       ]),
 
       // Support Model queries
-      SupportModel.countDocuments({ isDeleted: { $ne: true } }),
+     /*  SupportModel.countDocuments({ isDeleted: { $ne: true } }),
       SupportModel.countDocuments({ status: "active", isDeleted: { $ne: true } }),
       SupportModel.aggregate([
         { $match: { isDeleted: { $ne: true } } },
         { $group: { _id: null, totalViews: { $sum: "$views" } } }
-      ]),
+      ]), */
     ]);
 
     // Calculate growth percentage
@@ -149,9 +149,9 @@ export async function GET() {
         totalServiceViews: totalServiceViews[0]?.totalViews || 0,
 
         // Support Model metrics
-        totalSupportModels,
+       /*  totalSupportModels,
         activeSupportModels,
-        totalSupportModelViews: totalSupportModelViews[0]?.totalViews || 0,
+        totalSupportModelViews: totalSupportModelViews[0]?.totalViews || 0, */
       },
       recentLeads: formattedRecentLeads,
       analytics: {
