@@ -6,12 +6,13 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { useServices } from "@/hooks/use-services"
+import { usePortfolio } from "@/hooks/use-portfolio"
 
 const navItems = [
   { label: "HOME", href: "/" },
   { label: "ABOUT", href: "/about" },
   { label: "SERVICES", href: "/services", hasDropdown: true },
-  { label: "PORTFOLIO", href: "/portfolio" },
+  { label: "PORTFOLIO", href: "/portfolio", hasDropdown: true },
   { label: "CONTACT", href: "/contact" },
 ]
 
@@ -19,7 +20,10 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+  const [portfolioDropdownOpen, setPortfolioDropdownOpen] = useState(false)
+  
   const { services } = useServices(1, 100)
+  const { portfolios } = usePortfolio(1, 100)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,7 +100,7 @@ export function Header() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
               {navItems.map((item) => {
-                if (item.hasDropdown) {
+                if (item.label === "SERVICES") {
                   return (
                     <div 
                       key={item.label} 
@@ -122,15 +126,59 @@ export function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl py-2 border border-gray-100 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
+                            className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-xl py-2 border border-gray-100 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
                           >
                             {services.map((service) => (
                               <Link
                                 key={service._id}
                                 href={`/services/${service.slug}`}
-                                className="block px-4 py-1.5 text-[13px] text-gray-600 hover:text-[#014a74] hover:bg-gray-50 transition-colors font-medium border-b border-gray-50 last:border-0"
+                                className="block px-4 py-2.5 text-[13px] text-gray-600 hover:text-[#014a74] hover:bg-gray-50 transition-colors font-medium border-b border-gray-50 last:border-0 leading-snug"
                               >
-                                {service.serviceName}
+                                <span className="line-clamp-2">{service.serviceName}</span>
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )
+                }
+
+                if (item.label === "PORTFOLIO") {
+                   return (
+                    <div 
+                      key={item.label} 
+                      className="relative group"
+                      onMouseEnter={() => setPortfolioDropdownOpen(true)}
+                      onMouseLeave={() => setPortfolioDropdownOpen(false)}
+                    >
+                      <Link
+                        href={item.href}
+                        className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                          scrolled ? "text-[#014a74]" : "text-white"
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                      </Link>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {portfolioDropdownOpen && portfolios.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full -right-12 w-80 bg-white rounded-xl shadow-xl py-2 border border-gray-100 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
+                          >
+                            {portfolios.map((project) => (
+                              <Link
+                                key={project._id}
+                                href={`/portfolio/${project.slug}`}
+                                className="block px-4 py-2.5 text-[13px] text-gray-600 hover:text-[#014a74] hover:bg-gray-50 transition-colors font-medium border-b border-gray-50 last:border-0 leading-snug"
+                              >
+                                <span className="line-clamp-2">{project.projectName}</span>
                               </Link>
                             ))}
                           </motion.div>
@@ -190,7 +238,7 @@ export function Header() {
                     }}
                     className="w-full"
                   >
-                    {item.hasDropdown && services.length > 0 ? (
+                    {item.label === "SERVICES" && services.length > 0 ? (
                       <div className="flex flex-col items-center gap-4">
                          <Link
                           href={item.href}
@@ -209,6 +257,29 @@ export function Header() {
                                 onClick={() => setMenuOpen(false)}
                               >
                                 {service.serviceName}
+                              </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : item.label === "PORTFOLIO" && portfolios.length > 0 ? (
+                       <div className="flex flex-col items-center gap-4">
+                         <Link
+                          href={item.href}
+                          className="hover:text-[#f58420] transition-colors duration-300"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                        {/* Mobile Submenu */}
+                        <div className="flex flex-col gap-2 text-base font-medium capitalize text-white/70">
+                          {portfolios.map((project) => (
+                             <Link
+                                key={project._id}
+                                href={`/portfolio/${project.slug}`}
+                                className="hover:text-white transition-colors py-1"
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {project.projectName}
                               </Link>
                           ))}
                         </div>

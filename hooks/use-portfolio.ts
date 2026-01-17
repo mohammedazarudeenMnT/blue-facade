@@ -2,40 +2,47 @@
 
 import useSWR from "swr";
 
-interface SupportModel {
+export interface Portfolio {
   _id: string;
-  title: string;
+  projectName: string;
+  client?: string;
+  location?: string;
+  category?: string;
+  serviceType?: string;
+  projectArea?: string;
+  completionDate?: string;
+  duration?: string;
+  budget?: string;
   shortDescription?: string;
   description: string;
   image: string;
   gallery?: string[];
-  features: string[];
+  features?: string[];
   slug: string;
   status: string;
   order: number;
   views?: number;
-  bookings?: number;
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string;
 }
 
-interface SupportModelsResponse {
+interface PortfolioResponse {
   success: boolean;
-  data: SupportModel[];
+  data: Portfolio[];
   pagination: {
     currentPage: number;
     totalPages: number;
-    totalSupportModels: number;
+    totalPortfolios: number;
     limit: number;
     hasNextPage: boolean;
     hasPrevPage: boolean;
   };
 }
 
-export function useSupportModels(page: number = 1, limit: number = 20) {
-  const { data, error, isLoading } = useSWR<SupportModelsResponse>(
-    `/api/support-models?page=${page}&limit=${limit}`,
+export function usePortfolio(page: number = 1, limit: number = 20) {
+  const { data, error, isLoading } = useSWR<PortfolioResponse>(
+    `/api/portfolio?page=${page}&limit=${limit}`,
     (url) => fetch(url).then((r) => r.json()),
     {
       revalidateOnFocus: false,
@@ -45,7 +52,7 @@ export function useSupportModels(page: number = 1, limit: number = 20) {
   );
 
   return {
-    supportModels: data?.data || [],
+    portfolios: data?.data || [],
     pagination: data?.pagination,
     isLoading,
     isError: error,

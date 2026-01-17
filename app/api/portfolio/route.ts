@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/config/models/connectDB";
-import SupportModel from "@/config/utils/admin/supportModel/supportModelSchema";
+import Portfolio from "@/config/utils/admin/portfolio/portfolioSchema";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// GET - Fetch active support models for public use
+// GET - Fetch active portfolio projects for public use
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
 
-    // Build query for active support models only
+    // Build query for active portfolio projects only
     const query: any = {
       status: "active",
       $or: [{ isDeleted: false }, { isDeleted: { $exists: false } }],
@@ -22,38 +22,38 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    // Get support models and total count
-    const [supportModels, totalSupportModels] = await Promise.all([
-      SupportModel.find(query)
+    // Get portfolios and total count
+    const [portfolios, totalPortfolios] = await Promise.all([
+      Portfolio.find(query)
         .select("-isDeleted -__v")
         .sort({ order: 1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
-      SupportModel.countDocuments(query),
+      Portfolio.countDocuments(query),
     ]);
 
-    const totalPages = Math.ceil(totalSupportModels / limit);
+    const totalPages = Math.ceil(totalPortfolios / limit);
 
     return NextResponse.json({
       success: true,
-      data: supportModels,
+      data: portfolios,
       pagination: {
         currentPage: page,
         totalPages,
-        totalSupportModels,
+        totalPortfolios,
         limit,
         hasNextPage: page < totalPages,
         hasPrevPage: page > 1,
       },
-      message: "Support models fetched successfully",
+      message: "Portfolios fetched successfully",
     });
   } catch (error) {
-    console.error("Error fetching support models:", error);
+    console.error("Error fetching portfolios:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Failed to fetch support models",
+        message: "Failed to fetch portfolios",
         error: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
