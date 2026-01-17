@@ -1,3 +1,9 @@
+"use client"
+
+import { motion } from "framer-motion"
+import Link from "next/link"
+import { ChevronRight } from "lucide-react"
+
 interface PageBannerProps {
   title: string
   breadcrumb?: { label: string; href: string }[]
@@ -7,42 +13,66 @@ interface PageBannerProps {
 export function PageBanner({ title, breadcrumb, backgroundImage }: PageBannerProps) {
   return (
     <section 
-      className="relative bg-[#1E3A5F] py-10 sm:py-14 md:py-16 lg:py-20"
+      className={`relative min-h-[400px] flex flex-col justify-center overflow-hidden ${
+        backgroundImage ? "bg-black" : "bg-gradient-to-br from-[#014a74] to-[#012d47]"
+      }`}
       style={backgroundImage ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backgroundImage})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       } : undefined}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-3 sm:mb-4 leading-tight px-2">
-          {title}
-        </h1>
+      {/* Background Pattern - Only show when NO background image is present */}
+      {!backgroundImage && (
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+              backgroundSize: "40px 40px",
+            }}
+          />
+        </div>
+      )}
+
+      <div className="container mx-auto px-4 relative z-10 py-20">
+        {/* Breadcrumb */}
         {breadcrumb && (
-          <nav 
-            className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-white/80 px-2"
-            aria-label="Breadcrumb"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-2 text-white/80 text-sm mb-6 font-medium"
           >
             {breadcrumb.map((item, index) => (
-              <span key={item.href} className="flex items-center gap-1.5 sm:gap-2">
-                {index > 0 && <span className="text-[#8CC63F]" aria-hidden="true">/</span>}
+              <div key={item.href} className="flex items-center gap-2">
+                {index > 0 && <ChevronRight className="w-4 h-4" />}
                 {index === breadcrumb.length - 1 ? (
-                  <span className="text-[#8CC63F] font-medium truncate max-w-[150px] sm:max-w-[200px] md:max-w-none" aria-current="page">
-                    {item.label}
-                  </span>
+                  <span className="text-[#f58420]">{item.label}</span>
                 ) : (
-                  <a 
-                    href={item.href} 
-                    className="hover:text-white transition-colors truncate max-w-[100px] sm:max-w-[150px] md:max-w-none"
-                  >
+                  <Link href={item.href} className="hover:text-white transition-colors">
                     {item.label}
-                  </a>
+                  </Link>
                 )}
-              </span>
+              </div>
             ))}
-          </nav>
+          </motion.div>
         )}
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-4xl"
+        >
+          <h1 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-md"
+            dangerouslySetInnerHTML={{ 
+              __html: title.replace(/(Blufacade|Services|Portfolio|Contact)/g, '<span class="text-[#f58420]">$1</span>') 
+            }} 
+          />
+        </motion.div>
       </div>
     </section>
   )

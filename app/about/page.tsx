@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { Header } from "@/components/Blufacade/Header"
 import { Footer } from "@/components/Blufacade/Footer"
 // import { FloatingContact } from "@/components/Blufacade/FloatingContact"
-import { AboutHero } from "@/components/Blufacade/pages/AboutHero"
+import { DynamicPageBanner } from "@/components/DynamicPageBanner"
 import { AboutContent } from "@/components/Blufacade/pages/AboutContent"
 // import { CTASection } from "@/components/Blufacade/CTASection"
 
@@ -15,7 +15,14 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <AboutHero />
+      <DynamicPageBanner
+        pageKey="about"
+        title="About Blufacade"
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "About Us", href: "/about" },
+        ]}
+      />
       <AboutContent />
       {/* <CTASection /> */}
       <Footer />

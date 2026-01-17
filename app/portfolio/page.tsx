@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { Header } from "@/components/Blufacade/Header"
 import { Footer } from "@/components/Blufacade/Footer"
 // import { FloatingContact } from "@/components/Blufacade/FloatingContact"
-import { PortfolioHero } from "@/components/Blufacade/pages/PortfolioHero"
+import { DynamicPageBanner } from "@/components/DynamicPageBanner"
 import { PortfolioGrid } from "@/components/Blufacade/pages/PortfolioGrid"
 // import { CTASection } from "@/components/Blufacade/CTASection"
 
@@ -15,7 +15,14 @@ export default function PortfolioPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <PortfolioHero />
+      <DynamicPageBanner
+        pageKey="portfolio"
+        title="Our Portfolio"
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Portfolio", href: "/portfolio" },
+        ]}
+      />
       <PortfolioGrid />
       {/* <CTASection /> */}
       <Footer />

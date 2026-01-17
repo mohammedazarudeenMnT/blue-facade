@@ -5,10 +5,12 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useBanner } from "@/hooks/use-banner"
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isReady, setIsReady] = useState(false)
+  const { banner } = useBanner("home")
 
   useEffect(() => {
     const timer = setTimeout(() => setIsReady(true), 300)
@@ -29,6 +31,9 @@ export function HeroSection() {
   const heroOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0])
   const heroScale = useTransform(smoothProgress, [0, 0.5], [1, 0.95])
 
+  // Determine the image source: try banner.images[0] (legacy compatibility/carousel support), then banner.image, then fallback
+  const heroImage = banner?.images?.[0] || banner?.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80"
+
   return (
     <motion.section
       ref={containerRef}
@@ -38,7 +43,7 @@ export function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80"
+          src={heroImage}
           alt="Modern building facade"
           className="w-full h-full object-cover"
         />

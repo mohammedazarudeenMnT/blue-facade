@@ -2,14 +2,20 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Phone, Mail, MapPin, Clock, Send, Loader2, Facebook, Instagram, Linkedin } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, Send, Loader2, Facebook, Instagram, Linkedin, Twitter, Youtube, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { siteConfig } from "@/config/site"
+import { useContact } from "@/hooks/use-contact"
+import { useServices } from "@/hooks/use-services"
 
 export function ContactContent() {
-  const [isLoading, setIsLoading] = useState(false)
+  const { contactInfo, isLoading: isContactLoading } = useContact()
+  const { services } = useServices()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: "" })
+  
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     subject: "",
@@ -18,19 +24,40 @@ export function ContactContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    // TODO: Implement form submission
-    setTimeout(() => {
-      setIsLoading(false)
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
-      alert("Thank you for your message! We will get back to you soon.")
-    }, 1500)
+    setIsSubmitting(true)
+    setSubmitStatus({ type: null, message: "" })
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSubmitStatus({ type: 'success', message: "Thank you! Your message has been sent successfully." })
+        setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" })
+      } else {
+        setSubmitStatus({ type: 'error', message: data.error || "Something went wrong. Please try again." })
+      }
+    } catch (error) {
+      setSubmitStatus({ type: 'error', message: "Failed to send message. Please try again later." })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
+
+  // Helper to get array of branches if stored as comma-separated string
+  const serviceAreas = contactInfo?.serviceAreas 
+    ? contactInfo.serviceAreas.split(',').map(area => area.trim()) 
+    : ["Chennai", "Madurai", "Dindigul", "Tamil Nadu", "South India"]
 
   return (
     <section className="py-20 bg-[#fefaf6]">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-3 gap-12">
+        <div className="grid lg:grid-cols-3 gap-12 mb-20">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -40,72 +67,88 @@ export function ContactContent() {
             className="lg:col-span-1 space-y-8"
           >
             <div>
-              <h2 className="text-2xl font-bold text-[#014a74] mb-6">Contact Information</h2>
+              <h2 className="text-2xl font-bold text-[#014a74] mb-6">
+                Contact Information
+              </h2>
               <p className="text-gray-600 mb-8">
-                Reach out to us for any inquiries about our facade solutions. 
-                We&apos;re here to help transform your vision into reality.
+                Reach out to us for any inquiries about our facade solutions. We&apos;re here to help transform your vision into reality.
               </p>
             </div>
 
             {/* Contact Details */}
             <div className="space-y-6">
-              <a
-                href={`tel:${siteConfig.contact.phone}`}
-                className="flex items-start gap-4 p-4 rounded-xl bg-white hover:shadow-md transition-shadow group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center group-hover:bg-[#f58420] transition-colors">
-                  <Phone className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-[#014a74]">Phone</h3>
-                  <p className="text-gray-600">{siteConfig.contact.phone}</p>
-                </div>
-              </a>
+              {contactInfo?.primaryPhone && (
+                <a
+                  href={`tel:${contactInfo.primaryPhone.replace(/\s+/g, '')}`}
+                  className="flex items-start gap-4 p-4 rounded-xl bg-white hover:shadow-md transition-shadow group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center group-hover:bg-[#f58420] transition-colors">
+                    <Phone className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[#014a74]">Phone</h3>
+                    <p className="text-gray-600">{contactInfo.primaryPhone}</p>
+                    {contactInfo.secondaryPhone && (
+                      <p className="text-gray-600 text-sm">{contactInfo.secondaryPhone}</p>
+                    )}
+                  </div>
+                </a>
+              )}
 
-              <a
-                href={`mailto:${siteConfig.contact.email}`}
-                className="flex items-start gap-4 p-4 rounded-xl bg-white hover:shadow-md transition-shadow group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center group-hover:bg-[#f58420] transition-colors">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-[#014a74]">Email</h3>
-                  <p className="text-gray-600">{siteConfig.contact.email}</p>
-                </div>
-              </a>
+              {contactInfo?.email && (
+                <a
+                  href={`mailto:${contactInfo.email}`}
+                  className="flex items-start gap-4 p-4 rounded-xl bg-white hover:shadow-md transition-shadow group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center group-hover:bg-[#f58420] transition-colors">
+                    <Mail className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[#014a74]">Email</h3>
+                    <p className="text-gray-600 break-all">{contactInfo.email}</p>
+                  </div>
+                </a>
+              )}
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-white">
-                <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-white" />
+              {contactInfo?.address && (
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-white">
+                  <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[#014a74]">Office Address</h3>
+                    <p className="text-gray-600">
+                      {contactInfo.address}<br />
+                      {contactInfo.city}, {contactInfo.state} - {contactInfo.postcode}<br />
+                      {contactInfo.country}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-[#014a74]">Office Address</h3>
-                  <p className="text-gray-600">{siteConfig.contact.address}</p>
-                </div>
-              </div>
+              )}
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-white">
-                <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-white" />
+              {contactInfo?.businessHours && (
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-white">
+                  <div className="w-12 h-12 rounded-xl bg-[#014a74] flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[#014a74]">Business Hours</h3>
+                    <p className="text-gray-600">{contactInfo.businessHours}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-[#014a74]">Business Hours</h3>
-                  <p className="text-gray-600">Mon - Sat: 9:00 AM - 6:00 PM</p>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Branches */}
+            {/* Service Areas */}
             <div className="p-6 rounded-xl bg-[#014a74] text-white">
-              <h3 className="font-semibold mb-3">Our Branches</h3>
+              <h3 className="font-semibold mb-3">Service Areas</h3>
               <div className="flex flex-wrap gap-2">
-                {siteConfig.branches.map((branch) => (
+                {serviceAreas.map((area, index) => (
                   <span
-                    key={branch}
+                    key={index}
                     className="px-3 py-1 rounded-full bg-white/10 text-sm"
                   >
-                    {branch}
+                    {area}
                   </span>
                 ))}
               </div>
@@ -114,31 +157,37 @@ export function ContactContent() {
             {/* Social Links */}
             <div>
               <h3 className="font-semibold text-[#014a74] mb-4">Follow Us</h3>
-              <div className="flex gap-3">
-                <a
-                  href={siteConfig.social.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors"
-                >
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a
-                  href={siteConfig.social.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors"
-                >
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a
-                  href={siteConfig.social.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </a>
+              <div className="flex gap-3 flex-wrap">
+                {contactInfo?.facebook && (
+                  <a href={contactInfo.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors">
+                    <Facebook className="w-5 h-5" />
+                  </a>
+                )}
+                {contactInfo?.instagram && (
+                  <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors">
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                )}
+                {contactInfo?.linkedin && (
+                  <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors">
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                )}
+                 {contactInfo?.twitter && (
+                  <a href={contactInfo.twitter} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors">
+                    <Twitter className="w-5 h-5" />
+                  </a>
+                )}
+                 {contactInfo?.youtube && (
+                  <a href={contactInfo.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors">
+                    <Youtube className="w-5 h-5" />
+                  </a>
+                )}
+                 {contactInfo?.whatsapp && (
+                  <a href={contactInfo.whatsapp} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#014a74] flex items-center justify-center text-white hover:bg-[#f58420] transition-colors">
+                    <MessageCircle className="w-5 h-5" />
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>
@@ -152,27 +201,52 @@ export function ContactContent() {
             className="lg:col-span-2"
           >
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-[#014a74] mb-2">Send us a Message</h2>
+              <h2 className="text-2xl font-bold text-[#014a74] mb-2">
+                {contactInfo?.pageTitle || "Send us a Message"}
+              </h2>
               <p className="text-gray-600 mb-8">
-                Fill out the form below and we&apos;ll get back to you as soon as possible.
+                {contactInfo?.pageDescription || "Fill out the form below and we'll get back to you as soon as possible."}
               </p>
+
+              {submitStatus.message && (
+                <div className={`p-4 mb-6 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+                  {submitStatus.message}
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-[#014a74] mb-2">
-                      Full Name *
+                    <label htmlFor="firstName" className="block text-sm font-medium text-[#014a74] mb-2">
+                      First Name *
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="firstName"
                       required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f58420] focus:border-transparent outline-none transition-all"
-                      placeholder="John Doe"
+                      placeholder="John"
                     />
                   </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-[#014a74] mb-2">
+                       Last Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      required
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f58420] focus:border-transparent outline-none transition-all"
+                      placeholder="Doe"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-[#014a74] mb-2">
                       Email Address *
@@ -187,9 +261,6 @@ export function ContactContent() {
                       placeholder="john@example.com"
                     />
                   </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-[#014a74] mb-2">
                       Phone Number
@@ -203,8 +274,10 @@ export function ContactContent() {
                       placeholder="+91 99941 62996"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-[#014a74] mb-2">
+                </div>
+
+                <div>
+                   <label htmlFor="subject" className="block text-sm font-medium text-[#014a74] mb-2">
                       Subject *
                     </label>
                     <select
@@ -215,13 +288,23 @@ export function ContactContent() {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f58420] focus:border-transparent outline-none transition-all"
                     >
                       <option value="">Select a subject</option>
-                      <option value="quote">Request a Quote</option>
-                      <option value="consultation">Free Consultation</option>
-                      <option value="project">Project Inquiry</option>
-                      <option value="partnership">Partnership</option>
-                      <option value="other">Other</option>
+                      {services.length > 0 && (
+                        <optgroup label="Our Services">
+                          {services.map((service) => (
+                            <option key={service._id} value={service.serviceName}>
+                              {service.serviceName}
+                            </option>
+                          ))}
+                        </optgroup>
+                      )}
+                      <optgroup label="General">
+                        <option value="Quote Request">Request a Quote</option>
+                        <option value="Consultation">Free Consultation</option>
+                        <option value="Project Inquiry">Project Inquiry</option>
+                        <option value="Partnership">Partnership</option>
+                        <option value="Other">Other</option>
+                      </optgroup>
                     </select>
-                  </div>
                 </div>
 
                 <div>
@@ -241,10 +324,10 @@ export function ContactContent() {
 
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                   className="w-full bg-[#014a74] hover:bg-[#012d47] text-white py-4 text-lg"
                 >
-                  {isLoading ? (
+                  {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Sending...
@@ -260,6 +343,40 @@ export function ContactContent() {
             </div>
           </motion.div>
         </div>
+
+        {/* Google Map Section */}
+        {contactInfo?.mapEmbedCode && (
+          <div className="space-y-8">
+             {(contactInfo?.officeTitle || contactInfo?.officeDescription) && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-center max-w-3xl mx-auto"
+                >
+                   {contactInfo?.officeTitle && (
+                     <h2 className="text-3xl font-bold text-[#014a74] mb-4">{contactInfo.officeTitle}</h2>
+                   )}
+                   {contactInfo?.officeDescription && (
+                     <p className="text-gray-600">{contactInfo.officeDescription}</p>
+                   )}
+                </motion.div>
+             )}
+
+             <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-gray-100"
+            >
+               <div 
+                 className="w-full h-[400px] lg:h-[500px] [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:border-0"
+                 dangerouslySetInnerHTML={{ __html: contactInfo.mapEmbedCode }}
+               />
+            </motion.div>
+          </div>
+        )}
       </div>
     </section>
   )
