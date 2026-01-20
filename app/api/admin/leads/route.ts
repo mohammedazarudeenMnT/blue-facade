@@ -75,8 +75,36 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const body = await request.json();
     
-    const newLead = new Lead(body);
+    // Validate required fields
+    const requiredFields = ['firstName', 'lastName', 'email', 'subject', 'message'];
+    const missingFields = requiredFields.filter(field => !body[field]);
+    
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: `Missing required fields: ${missingFields.join(', ')}` 
+        },
+        { status: 400 }
+      );
+    }
+
+    const newLead = new Lead({
+      ...body,
+      status: body.status || "new",
+      priority: body.priority || "medium",
+      source: body.source || "website",
+      submittedAt: new Date(),
+    });
     const savedLead = await newLead.save();
+
+    // Send email notifications
+    try {
+      await sendLeadEmails(savedLead);
+    } catch (emailError) {
+      console.error("Email sending failed:", emailError);
+      // Don't fail the lead creation if email fails
+    }
 
     return NextResponse.json({
       success: true,
@@ -90,6 +118,75 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+async function sendLeadEmails(lead: any) {
+  // Import internally to avoid circular dependencies if any
+  const EmailSMTP = (await import("@/config/utils/admin/smtp/emailSMTPSchema")).default;
+  const { createSMTPTransporter } = await import("@/config/models/connectSMTP");
+
+  const smtpConfig = await EmailSMTP.findOne({ id: "default", isActive: true });
+  if (!smtpConfig) {
+    console.warn("SMTP configuration not found - skipping email notifications");
+    return;
+  }
+
+  const transporter = createSMTPTransporter(smtpConfig);
+  const adminEmail = process.env.SMTP_FROM_EMAIL || smtpConfig.fromEmail;
+
+  // Admin Notification
+  const adminHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; background-color: #f8fafc;">
+      <div style="background: linear-gradient(135deg, #014a74 0%, #012d47 100%); padding: 30px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 28px;">New Lead Submission</h1>
+        <p style="color: #e2e8f0; margin: 10px 0 0 0; font-size: 16px;">Blufacade Admin Panel</p>
+      </div>
+      <div style="padding: 30px; background-color: white; margin: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+         <h2 style="color: #014a74; border-bottom: 2px solid #f58420; padding-bottom: 10px;">Enquiry Details</h2>
+         <p><strong>Name:</strong> ${lead.firstName} ${lead.lastName}</p>
+         <p><strong>Email:</strong> ${lead.email}</p>
+         <p><strong>Phone:</strong> ${lead.phone || 'N/A'}</p>
+         <p><strong>Subject:</strong> ${lead.subject}</p>
+         <p><strong>Source:</strong> ${lead.source || 'Website'}</p>
+         <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin-top: 20px;">
+           <p style="margin: 0; line-height: 1.6;">${lead.message}</p>
+         </div>
+      </div>
+    </div>
+  `;
+
+  // Customer Confirmation
+  const customerHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc;">
+      <div style="background: linear-gradient(135deg, #014a74 0%, #012d47 100%); padding: 30px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 28px;">Thank You for Contacting Us!</h1>
+        <p style="color: #e2e8f0; margin: 10px 0 0 0; font-size: 16px;">Blufacade - Inspiring Skylines</p>
+      </div>
+      <div style="padding: 30px; background-color: white; margin: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>Hi ${lead.firstName},</p>
+        <p>Thank you for reaching out to Blufacade. We have received your enquiry regarding "<strong>${lead.subject}</strong>" and our team will get back to you shortly.</p>
+        <div style="background-color: #fefaf6; padding: 15px; border-radius: 8px; border-left: 4px solid #f58420; margin: 20px 0;">
+          <p style="margin: 0; font-style: italic;">"${lead.message}"</p>
+        </div>
+        <p>Best regards,<br>The Blufacade Team</p>
+      </div>
+    </div>
+  `;
+
+  await Promise.all([
+    transporter.sendMail({
+      from: `"${smtpConfig.fromName}" <${smtpConfig.fromEmail}>`,
+      to: adminEmail,
+      subject: `New Lead: ${lead.subject} from ${lead.firstName}`,
+      html: adminHtml,
+    }),
+    transporter.sendMail({
+      from: `"${smtpConfig.fromName}" <${smtpConfig.fromEmail}>`,
+      to: lead.email,
+      subject: "Thank you for contacting Blufacade",
+      html: customerHtml,
+    })
+  ]);
 }
 
 // PUT - Update lead

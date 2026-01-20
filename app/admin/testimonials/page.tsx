@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import { useServices } from "@/hooks/use-services"
-import { useSupportModels } from "@/hooks/use-portfolio"
 import {
   Dialog,
   DialogContent,
@@ -82,7 +81,6 @@ interface Testimonial {
 export default function TestimonialsPage() {
   const { toast } = useToast()
   const { services } = useServices()
-  const { supportModels } = useSupportModels()
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [loading, setLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -328,7 +326,7 @@ export default function TestimonialsPage() {
             <PaginationLink
               onClick={() => handlePageChange(i)}
               isActive={currentPage === i}
-              className={`cursor-pointer ${currentPage === i ? "bg-[#8CC63F] text-white hover:bg-[#7AB82F] hover:text-white border-0" : ""}`}
+              className={`cursor-pointer ${currentPage === i ? "bg-[#014a74] text-white hover:bg-[#012d47] hover:text-white border-0" : ""}`}
             >
               {i}
             </PaginationLink>
@@ -357,9 +355,9 @@ export default function TestimonialsPage() {
   }
 
   const stats = [
-    { title: "Total Testimonials", value: statsData.total, icon: Quote, color: "text-[#1E3A5F]" },
-    { title: "Published", value: statsData.published, icon: Star, color: "text-[#1E3A5F]" },
-    { title: "Draft", value: statsData.draft, icon: Edit, color: "text-[#1E3A5F]" },
+    { title: "Total Testimonials", value: statsData.total, icon: Quote, color: "text-[#014a74]" },
+    { title: "Published", value: statsData.published, icon: Star, color: "text-[#f58420]" },
+    { title: "Draft", value: statsData.draft, icon: Edit, color: "text-[#014a74]" },
   ]
 
   return (
@@ -367,12 +365,12 @@ export default function TestimonialsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#1E3A5F]">Testimonials</h1>
+          <h1 className="text-3xl font-bold text-[#014a74]">Testimonials</h1>
           <p className="text-gray-600 mt-1">Manage client feedback and success stories</p>
         </div>
         <Button
           onClick={() => setIsEditing(true)}
-          className="bg-[#8CC63F] hover:bg-[#7AB82F] text-white"
+          className="bg-[#f58420] hover:bg-[#e67a1c] text-white"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Testimonial
@@ -428,9 +426,9 @@ export default function TestimonialsPage() {
 
       {/* Table */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-[#1E3A5F]/10 to-[#8CC63F]/10 p-4 border-b">
-          <CardTitle className="flex items-center gap-2 text-[#1E3A5F]">
-            <Quote className="h-5 w-5 text-[#8CC63F]" />
+        <CardHeader className="bg-gradient-to-r from-[#014a74]/10 to-[#f58420]/10 p-4 border-b">
+          <CardTitle className="flex items-center gap-2 text-[#014a74]">
+            <Quote className="h-5 w-5 text-[#f58420]" />
             Testimonials List
           </CardTitle>
         </CardHeader>
@@ -451,7 +449,7 @@ export default function TestimonialsPage() {
                 {loading ? (
                   <TableRow>
                     <TableCell colSpan={6} className="h-48 text-center">
-                      <Loader2 className="h-8 w-8 animate-spin text-[#8CC63F] mx-auto mb-2" />
+                      <Loader2 className="h-8 w-8 animate-spin text-[#f58420] mx-auto mb-2" />
                       <p className="text-gray-500">Loading testimonials...</p>
                     </TableCell>
                   </TableRow>
@@ -600,24 +598,9 @@ export default function TestimonialsPage() {
                   <SelectContent>
                     {services.length > 0 && (
                       <>
-                        <SelectItem value="__services_header__" disabled className="font-semibold text-[#1E3A5F]">
-                          — Services —
-                        </SelectItem>
-                        {services.map(s => (
+                        {services.map((s: any) => (
                           <SelectItem key={s._id} value={s.serviceName}>
                             {s.serviceName}
-                          </SelectItem>
-                        ))}
-                      </>
-                    )}
-                    {supportModels.length > 0 && (
-                      <>
-                        <SelectItem value="__support_header__" disabled className="font-semibold text-[#1E3A5F]">
-                          — Support Models —
-                        </SelectItem>
-                        {supportModels.map(sm => (
-                          <SelectItem key={sm._id} value={sm.title}>
-                            {sm.title}
                           </SelectItem>
                         ))}
                       </>
@@ -672,7 +655,7 @@ export default function TestimonialsPage() {
             <Button 
               onClick={handleSave} 
               disabled={isSaving}
-              className="bg-[#8CC63F] hover:bg-[#7AB82F] text-white min-w-[120px]"
+              className="bg-[#f58420] hover:bg-[#e67a1c] text-white min-w-[120px]"
             >
               {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-2" /> Save</>}
             </Button>
