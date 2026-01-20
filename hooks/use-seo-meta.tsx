@@ -36,9 +36,9 @@ export function useSEOMeta({ pageId, fallback }: SEOMetaOptions) {
   
   useEffect(() => {
     // Set initial values with fallback
-    const initialTitle = fallback?.title || 'Elegant Care Service | NDIS Disability Service Provider'
-    const initialDesc = fallback?.description || 'Professional NDIS disability support services. We provide supported independent living, respite support, community participation, and personalized care services.'
-    const initialKeys = fallback?.keywords || 'NDIS provider, disability support, supported independent living, respite care, community participation'
+    const initialTitle = fallback?.title || 'Blufacade | Premium Facade & Architectural Solutions'
+    const initialDesc = fallback?.description || 'Blufacade specializes in innovative, high-quality facade solutions including ACP cladding, structural glazing, aluminium doors & windows, HPL, and spider glazing systems.'
+    const initialKeys = fallback?.keywords || 'facade solutions, ACP cladding, structural glazing, aluminium windows, architectural solutions, building facades'
     
     // Always set fallback values first
     updateMetaTags(initialTitle, initialDesc, initialKeys)
