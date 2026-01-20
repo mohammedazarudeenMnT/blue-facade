@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
-import { TopBar } from "@/components/top-bar";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { CtaBanner } from "@/components/cta-banner";
+import { Header } from "@/components/Blufacade/Header";
+import { Footer } from "@/components/Blufacade/Footer";
 import { DynamicPageBanner } from "@/components/DynamicPageBanner";
-import ServiceDetailClient from "@/components/Services/ServiceDetailClient";
+import { ServiceDetailContent } from "@/components/Blufacade/pages/ServiceDetailContent";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -65,7 +63,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   if (!serviceData) {
     return {
-      title: "Service Not Found - Elegant Care Service",
+      title: "Service Not Found - Blufacade",
       description: "The requested service could not be found.",
     };
   }
@@ -73,11 +71,11 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title:
       serviceData.seoTitle ||
-      `${serviceData.serviceName} - Elegant Care Service`,
+      `${serviceData.serviceName} - Blufacade Facade Solutions`,
     description: serviceData.seoDescription || serviceData.description,
     keywords:
       serviceData.seoKeywords ||
-      `${serviceData.serviceName}, NDIS services, disability support, Elegant Care Service`,
+      `${serviceData.serviceName}, facade solutions, ACP cladding, structural glazing, Blufacade`,
   };
 }
 
@@ -91,19 +89,17 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen">
-      <TopBar />
       <Header />
       <DynamicPageBanner
         pageKey="services"
-        title={serviceData.serviceName.toUpperCase()}
+        title=""
         breadcrumb={[
           { label: "Home", href: "/" },
           { label: "Services", href: "/services" },
           { label: serviceData.serviceName, href: `/services/${resolvedParams.slug}` },
         ]}
       />
-      <ServiceDetailClient serviceData={serviceData} />
-      <CtaBanner />
+      <ServiceDetailContent serviceData={serviceData} />
       <Footer />
     </main>
   );

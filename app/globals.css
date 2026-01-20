@@ -31,10 +31,15 @@
   --radius: 0.5rem;
 
   /* Custom brand colors - Blufacade */
+  --blufacade-primary: #014a74;
+  --blufacade-secondary: #f58420;
+  --blufacade-light: #fefaf6;
+  --blufacade-dark: #1a1a1a;
+  --blufacade-text: #282828;
+  --blufacade-accent: #f58420;
   --blufacade-blue: #014a74;
   --blufacade-orange: #f58420;
   --blufacade-cream: #fefaf6;
-  --blufacade-dark: #012d47;
   --blufacade-light-blue: #0369a1;
 
   --chart-1: oklch(0.646 0.222 41.116);

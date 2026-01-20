@@ -41,7 +41,7 @@ export function ServicesHero() {
             Our <span className="text-[#f58420]">Services</span>
           </h1>
           <p className="text-xl text-white/80 leading-relaxed">
-            Comprehensive façade solutions from concept to completion. We deliver 
+            Comprehensive facade solutions from concept to completion. We deliver 
             end-to-end services with expertise spanning a wide range of systems.
           </p>
         </motion.div>

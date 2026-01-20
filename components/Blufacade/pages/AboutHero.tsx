@@ -42,7 +42,7 @@ export function AboutHero() {
           </h1>
           <p className="text-xl text-white/80 leading-relaxed">
             Transforming architectural visions into iconic realities with innovative, 
-            high-quality façade solutions since 2009.
+            high-quality facade solutions since 2009.
           </p>
         </motion.div>
       </div>

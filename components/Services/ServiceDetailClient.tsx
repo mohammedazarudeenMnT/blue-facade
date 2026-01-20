@@ -205,7 +205,7 @@ export default function ServiceDetailClient({
                 >
                   <Button
                     size="lg"
-                    className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white w-full h-11 sm:h-12 text-sm sm:text-base"
+                    className="bg-[#014a74] hover:bg-[#012d47] text-white w-full h-11 sm:h-12 text-sm sm:text-base"
                   >
                     <Phone className="h-4 w-4 mr-2" />
                     Contact Us
@@ -220,7 +220,7 @@ export default function ServiceDetailClient({
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-[#1E3A5F] text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white w-full h-11 sm:h-12 text-sm sm:text-base"
+                    className="border-[#014a74] text-[#014a74] hover:bg-[#014a74] hover:text-white w-full h-11 sm:h-12 text-sm sm:text-base"
                   >
                     <WhatsAppIcon className="h-4 w-4 mr-2" />
                     Get a Quote
@@ -232,69 +232,7 @@ export default function ServiceDetailClient({
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-10 sm:py-12 lg:py-16 bg-[#F5F5F5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-8 sm:mb-10"
-          >
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold">
-              <span className="text-[#1E3A5F]">WHY CHOOSE</span>{" "}
-              <span className="text-[#8CC63F]">US</span>
-            </h3>
-            <div className="w-12 sm:w-16 h-1 bg-[#8CC63F] mx-auto mt-3 sm:mt-4" />
-          </motion.div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 bg-white rounded-xl overflow-hidden shadow-sm">
-            {[
-              {
-                title: "NDIS Registered",
-                description: "Fully registered NDIS provider with qualified and experienced staff dedicated to your care."
-              },
-              {
-                title: "Personalized Care",
-                description: "Tailored support plans designed around your unique needs, goals, and preferences."
-              },
-              {
-                title: "24/7 Support",
-                description: "Round-the-clock assistance and support whenever you need it most."
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`relative group/feature py-6 sm:py-8 px-5 sm:px-6 border-gray-100
-                  ${index < 2 ? 'sm:border-r lg:border-r' : ''}
-                  ${index === 0 ? 'border-b sm:border-b-0' : ''}
-                  ${index === 1 ? 'border-b lg:border-b-0' : ''}
-                `}
-              >
-                {/* Hover gradient effect */}
-                <div className="opacity-0 group-hover/feature:opacity-100 transition duration-300 absolute inset-0 h-full w-full bg-gradient-to-b from-[#8CC63F]/10 to-transparent pointer-events-none" />
-                
-                {/* Title with animated bar */}
-                <div className="text-base sm:text-lg font-semibold mb-2 relative z-10">
-                  <div className="absolute left-0 inset-y-0 h-5 group-hover/feature:h-7 w-1 rounded-tr-full rounded-br-full bg-gray-200 group-hover/feature:bg-[#8CC63F] transition-all duration-300 origin-center -ml-5 sm:-ml-6" />
-                  <span className="group-hover/feature:translate-x-2 transition duration-300 inline-block text-[#1E3A5F]">
-                    {item.title}
-                  </span>
-                </div>
-                
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed relative z-10">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }

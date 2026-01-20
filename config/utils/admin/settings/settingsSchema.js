@@ -13,12 +13,12 @@ const settingsSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      default: "Elegant Care Service",
+      default: "Blufacade",
     },
     siteTagline: {
       type: String,
       trim: true,
-      default: "Quality NDIS Support Services",
+      default: "Expert Facade Construction Services",
     },
     logo: {
       type: String,
@@ -49,11 +49,11 @@ settingsSchema.index({ isActive: 1 });
 const Settings =
   mongoose.models.Settings || mongoose.model("Settings", settingsSchema);
 
-// Default settings data for Elegant Care Service
+// Default settings data for Blufacade
 const defaultSettingsData = {
   id: "default",
-  siteName: "Elegant Care Service",
-  siteTagline: "Quality NDIS Support Services",
+  siteName: "Blufacade",
+  siteTagline: "Expert Facade Construction Services",
   logo: null,
   favicon: null,
   isActive: true,

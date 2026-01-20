@@ -41,7 +41,7 @@ export function PortfolioHero() {
             Our <span className="text-[#f58420]">Portfolio</span>
           </h1>
           <p className="text-xl text-white/80 leading-relaxed">
-            Explore our collection of iconic façade projects that showcase our 
+            Explore our collection of iconic facade projects that showcase our 
             commitment to excellence and innovation.
           </p>
         </motion.div>

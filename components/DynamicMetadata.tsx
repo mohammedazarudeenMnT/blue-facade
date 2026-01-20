@@ -33,8 +33,8 @@ export function DynamicMetadata() {
 
     // Update document title with siteName and siteTagline
     if (settings?.siteName || settings?.siteTagline) {
-      const siteName = settings.siteName || "Elegant Care Service"
-      const tagline = settings.siteTagline || "NDIS Disability Service Provider"
+      const siteName = settings.siteName || "Blufacade"
+      const tagline = settings.siteTagline || "Premium Facade & Cladding Solutions"
       document.title = `${siteName} | ${tagline}`
     }
   }, [settings])
