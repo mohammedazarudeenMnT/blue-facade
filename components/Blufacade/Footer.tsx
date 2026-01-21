@@ -1,7 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Linkedin,
+  Facebook,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,9 +25,17 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { label: "Instagram", href: "https://www.instagram.com/blufacade_/" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/blufacade/" },
-  { label: "Facebook", href: "#" },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/blufacade_/",
+    icon: <Instagram className="h-5 w-5" />,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/blufacade/",
+    icon: <Linkedin className="h-5 w-5" />,
+  },
+  { label: "Facebook", href: "#", icon: <Facebook className="h-5 w-5" /> },
 ];
 
 export function Footer() {
@@ -154,9 +169,9 @@ export function Footer() {
                   href={social.href}
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f58420] hover:border-[#f58420] transition-colors text-xs font-bold"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f58420] hover:border-[#f58420] transition-colors"
                 >
-                  {social.label.charAt(0)}
+                  {social.icon}
                 </motion.a>
               ))}
             </div>
