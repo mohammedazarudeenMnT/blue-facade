@@ -184,7 +184,7 @@ export function Footer() {
       </div>
 
       {/* Text Hover Effect - Hidden on mobile, visible on large screens */}
-      <div className="lg:flex hidden h-[30rem] -mt-52 -mb-36 relative z-20">
+      <div className="lg:flex hidden h-[30rem] -mt-52 -mb-36 relative z-20 pointer-events-none">
         <TextHoverEffect text="BLUFACADE" className="z-50" />
       </div>
 
