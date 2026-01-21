@@ -29,7 +29,7 @@ export function Logo({ className = "" }: { className?: string }) {
       )}
       <div className="flex flex-col">
         <span className="text-[#1E3A5F] font-bold text-base sm:text-lg leading-tight">
-          {settings?.siteName?.split(" ")[0] || "Elegant"}
+          {settings?.siteName?.split(" ")[0] || "Blufacade"}
         </span>
       </div>
     </div>

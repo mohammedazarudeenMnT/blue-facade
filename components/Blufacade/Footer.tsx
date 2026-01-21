@@ -1,10 +1,20 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Mail, Phone, MapPin } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { TextHoverEffect, FooterBackgroundGradient } from "@/components/ui/hover-footer"
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Linkedin,
+  Facebook,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  TextHoverEffect,
+  FooterBackgroundGradient,
+} from "@/components/ui/hover-footer";
 
 const footerLinks = [
   { label: "Home", href: "/" },
@@ -12,17 +22,28 @@ const footerLinks = [
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Contact", href: "/contact" },
-]
+];
 
 const socialLinks = [
-  { label: "Instagram", href: "https://www.instagram.com/blufacade_/" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/blufacade/" },
-  { label: "Facebook", href: "#" },
-]
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/blufacade_/",
+    icon: <Instagram className="h-5 w-5" />,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/blufacade/",
+    icon: <Linkedin className="h-5 w-5" />,
+  },
+  { label: "Facebook", href: "#", icon: <Facebook className="h-5 w-5" /> },
+];
 
 export function Footer() {
   return (
-    <footer id="contact" className="bg-[#1a1a1a] text-white relative overflow-hidden">
+    <footer
+      id="contact"
+      className="bg-[#1a1a1a] text-white relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-10 relative z-10">
         {/* Contact Info Section */}
         <motion.div
@@ -44,11 +65,14 @@ export function Footer() {
               </div>
               <div>
                 <h3 className="font-bold text-lg">BLUFACADE</h3>
-                <p className="text-[#f58420] text-xs font-semibold">Inspiring Skylines</p>
+                <p className="text-[#f58420] text-xs font-semibold">
+                  Inspiring Skylines
+                </p>
               </div>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
-              Innovating iconic facades through premium materials, expert engineering, and design excellence.
+              Innovating iconic facades through premium materials, expert
+              engineering, and design excellence.
             </p>
           </div>
 
@@ -86,7 +110,9 @@ export function Footer() {
                 </div>
               </div>
               <div className="pt-2 border-t border-white/20">
-                <p className="text-xs font-semibold text-[#f58420] mb-2">BRANCHES</p>
+                <p className="text-xs font-semibold text-[#f58420] mb-2">
+                  BRANCHES
+                </p>
                 <p className="text-sm text-white/70">Madurai, Dindigul</p>
               </div>
             </div>
@@ -102,11 +128,16 @@ export function Footer() {
         >
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             <div>
-              <h5 className="font-bold text-sm text-[#f58420] mb-4 uppercase">Menu</h5>
+              <h5 className="font-bold text-sm text-[#f58420] mb-4 uppercase">
+                Menu
+              </h5>
               <ul className="space-y-2">
                 {footerLinks.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-white/70 hover:text-white text-sm transition-colors">
+                    <Link
+                      href={link.href}
+                      className="text-white/70 hover:text-white text-sm transition-colors"
+                    >
                       {link.label}
                     </Link>
                   </li>
@@ -114,7 +145,9 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h5 className="font-bold text-sm text-[#f58420] mb-4 uppercase">Services</h5>
+              <h5 className="font-bold text-sm text-[#f58420] mb-4 uppercase">
+                Services
+              </h5>
               <ul className="space-y-2 text-sm text-white/70">
                 <li>ACP Cladding</li>
                 <li>Glass Facades</li>
@@ -126,7 +159,9 @@ export function Footer() {
 
           {/* Social Links */}
           <div className="flex items-center gap-6 pt-8 border-t border-white/20">
-            <p className="text-sm font-semibold text-[#f58420] uppercase">Follow Us</p>
+            <p className="text-sm font-semibold text-[#f58420] uppercase">
+              Follow Us
+            </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <motion.a
@@ -134,9 +169,9 @@ export function Footer() {
                   href={social.href}
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f58420] hover:border-[#f58420] transition-colors text-xs font-bold"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f58420] hover:border-[#f58420] transition-colors"
                 >
-                  {social.label.charAt(0)}
+                  {social.icon}
                 </motion.a>
               ))}
             </div>
@@ -147,10 +182,16 @@ export function Footer() {
         <div className="border-t border-white/20 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white/60">
           <p>© 2025 Blufacade. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">
+            <Link
+              href="/privacy-policy"
+              className="hover:text-white transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white transition-colors">
+            <Link
+              href="/terms-conditions"
+              className="hover:text-white transition-colors"
+            >
               Terms & Conditions
             </Link>
           </div>
@@ -158,12 +199,12 @@ export function Footer() {
       </div>
 
       {/* Text Hover Effect - Hidden on mobile, visible on large screens */}
-      <div className="lg:flex hidden h-[30rem] -mt-52 -mb-36 relative z-20">
+      <div className="lg:flex hidden h-[30rem] -mt-52 -mb-36 relative z-20 pointer-events-none">
         <TextHoverEffect text="BLUFACADE" className="z-50" />
       </div>
 
       {/* Background Gradient */}
       <FooterBackgroundGradient />
     </footer>
-  )
+  );
 }
