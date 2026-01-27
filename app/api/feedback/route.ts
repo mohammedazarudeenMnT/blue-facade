@@ -10,22 +10,30 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const body = await request.json();
 
-    const { isAnonymous, name, email, phone, feedbackType, feedback, resolution } = body;
+    const {
+      isAnonymous,
+      name,
+      email,
+      phone,
+      feedbackType,
+      feedback,
+      resolution,
+    } = body;
 
     // Validate required fields
     if (!feedbackType || !feedback) {
       return NextResponse.json(
         { success: false, error: "Feedback type and message are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Create new feedback
     const newFeedback = new Feedback({
       isAnonymous: isAnonymous || false,
-      name: isAnonymous ? "Anonymous" : (name || ""),
-      email: isAnonymous ? "" : (email || ""),
-      phone: isAnonymous ? "" : (phone || ""),
+      name: isAnonymous ? "Anonymous" : name || "",
+      email: isAnonymous ? "" : email || "",
+      phone: isAnonymous ? "" : phone || "",
       feedbackType,
       feedback,
       resolution: resolution || "",
@@ -51,7 +59,7 @@ export async function POST(request: NextRequest) {
     console.error("Feedback submission error:", error);
     return NextResponse.json(
       { success: false, error: "Failed to submit feedback" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -65,13 +73,15 @@ async function sendFeedbackEmails(feedbackData: any) {
   });
 
   if (!smtpConfig) {
-    console.warn("SMTP configuration not found - feedback submitted without email notification");
+    console.warn(
+      "SMTP configuration not found - feedback submitted without email notification",
+    );
     return;
   }
 
   // Send admin notification
   await sendAdminFeedbackNotification(smtpConfig, feedbackData);
-  
+
   // Send customer confirmation (only if not anonymous and email provided)
   if (!feedbackData.isAnonymous && feedbackData.email) {
     await sendCustomerFeedbackConfirmation(smtpConfig, feedbackData);
@@ -91,7 +101,10 @@ function getFeedbackTypeStyle(type: string) {
 }
 
 // Function to send admin notification for feedback
-async function sendAdminFeedbackNotification(smtpConfig: any, feedbackData: any) {
+async function sendAdminFeedbackNotification(
+  smtpConfig: any,
+  feedbackData: any,
+) {
   const transporter = createSMTPTransporter(smtpConfig);
   const adminEmail = process.env.SMTP_FROM_EMAIL || smtpConfig.fromEmail;
   const typeStyle = getFeedbackTypeStyle(feedbackData.feedbackType);
@@ -100,7 +113,7 @@ async function sendAdminFeedbackNotification(smtpConfig: any, feedbackData: any)
     <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; background-color: #f8fafc;">
       <div style="background: linear-gradient(135deg, #8CC63F 0%, #6BA32D 100%); padding: 30px; text-align: center;">
         <h1 style="color: white; margin: 0; font-size: 28px;">New Feedback Received</h1>
-        <p style="color: #E8F5E0; margin: 10px 0 0 0; font-size: 16px;">Elegant Care Service Admin Panel</p>
+        <p style="color: #E8F5E0; margin: 10px 0 0 0; font-size: 16px;">Blufacade Admin Panel</p>
       </div>
       
       <div style="padding: 30px; background-color: white; margin: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -109,23 +122,27 @@ async function sendAdminFeedbackNotification(smtpConfig: any, feedbackData: any)
           <div style="background-color: #F0F9E8; padding: 15px; border-radius: 8px;">
             <p style="margin: 5px 0;"><strong>Status:</strong> <span style="background-color: #8CC63F; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">NEW FEEDBACK</span></p>
             <p style="margin: 5px 0;"><strong>Type:</strong> <span style="background-color: ${typeStyle.color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${typeStyle.label.toUpperCase()}</span></p>
-            <p style="margin: 5px 0;"><strong>Anonymous:</strong> <span style="background-color: ${feedbackData.isAnonymous ? '#6B7280' : '#8CC63F'}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${feedbackData.isAnonymous ? 'YES' : 'NO'}</span></p>
+            <p style="margin: 5px 0;"><strong>Anonymous:</strong> <span style="background-color: ${feedbackData.isAnonymous ? "#6B7280" : "#8CC63F"}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${feedbackData.isAnonymous ? "YES" : "NO"}</span></p>
           </div>
         </div>
 
-        ${!feedbackData.isAnonymous ? `
+        ${
+          !feedbackData.isAnonymous
+            ? `
         <div style="margin-bottom: 30px;">
           <h3 style="color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">Contact Details</h3>
-          <p style="margin: 10px 0;"><strong>Name:</strong> ${feedbackData.name || 'Not provided'}</p>
-          ${feedbackData.email ? `<p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${feedbackData.email}" style="color: #8CC63F;">${feedbackData.email}</a></p>` : ''}
-          ${feedbackData.phone ? `<p style="margin: 10px 0;"><strong>Phone:</strong> <a href="tel:${feedbackData.phone}" style="color: #8CC63F;">${feedbackData.phone}</a></p>` : ''}
+          <p style="margin: 10px 0;"><strong>Name:</strong> ${feedbackData.name || "Not provided"}</p>
+          ${feedbackData.email ? `<p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${feedbackData.email}" style="color: #8CC63F;">${feedbackData.email}</a></p>` : ""}
+          ${feedbackData.phone ? `<p style="margin: 10px 0;"><strong>Phone:</strong> <a href="tel:${feedbackData.phone}" style="color: #8CC63F;">${feedbackData.phone}</a></p>` : ""}
         </div>
-        ` : `
+        `
+            : `
         <div style="margin-bottom: 30px;">
           <h3 style="color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">Contact Details</h3>
           <p style="margin: 10px 0; color: #6b7280; font-style: italic;">This feedback was submitted anonymously</p>
         </div>
-        `}
+        `
+        }
 
         <div style="margin-bottom: 30px;">
           <h3 style="color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">Feedback Message</h3>
@@ -134,18 +151,22 @@ async function sendAdminFeedbackNotification(smtpConfig: any, feedbackData: any)
           </div>
         </div>
 
-        ${feedbackData.resolution ? `
+        ${
+          feedbackData.resolution
+            ? `
         <div style="margin-bottom: 30px;">
           <h3 style="color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">Suggested Resolution</h3>
           <div style="background-color: #eff6ff; padding: 20px; border-radius: 8px; border-left: 4px solid #3B82F6;">
             <p style="margin: 0; line-height: 1.6; color: #1f2937;">${feedbackData.resolution}</p>
           </div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
           <p style="color: #6b7280; margin: 0; font-size: 14px;">
-            This email was automatically generated from the Elegant Care Service website.<br>
+            This email was automatically generated from the Blufacade website.<br>
             Feedback ID: #${feedbackData._id}<br>
             Received at: ${new Date().toLocaleString("en-AU", { timeZone: "Australia/Sydney" })}
           </p>
@@ -157,7 +178,7 @@ async function sendAdminFeedbackNotification(smtpConfig: any, feedbackData: any)
   const mailOptions = {
     from: `"${smtpConfig.fromName}" <${smtpConfig.fromEmail}>`,
     to: adminEmail,
-    subject: `New ${typeStyle.label}: ${feedbackData.isAnonymous ? 'Anonymous Feedback' : feedbackData.name || 'Customer Feedback'}`,
+    subject: `New ${typeStyle.label}: ${feedbackData.isAnonymous ? "Anonymous Feedback" : feedbackData.name || "Customer Feedback"}`,
     html: emailHTML,
   };
 
@@ -165,7 +186,10 @@ async function sendAdminFeedbackNotification(smtpConfig: any, feedbackData: any)
 }
 
 // Function to send customer confirmation for feedback
-async function sendCustomerFeedbackConfirmation(smtpConfig: any, feedbackData: any) {
+async function sendCustomerFeedbackConfirmation(
+  smtpConfig: any,
+  feedbackData: any,
+) {
   const transporter = createSMTPTransporter(smtpConfig);
   const typeStyle = getFeedbackTypeStyle(feedbackData.feedbackType);
 
@@ -173,12 +197,12 @@ async function sendCustomerFeedbackConfirmation(smtpConfig: any, feedbackData: a
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc;">
       <div style="background: linear-gradient(135deg, #8CC63F 0%, #6BA32D 100%); padding: 30px; text-align: center;">
         <h1 style="color: white; margin: 0; font-size: 28px;">Thank You for Your Feedback!</h1>
-        <p style="color: #E8F5E0; margin: 10px 0 0 0; font-size: 16px;">Elegant Care Service</p>
+        <p style="color: #E8F5E0; margin: 10px 0 0 0; font-size: 16px;">Blufacade</p>
       </div>
       
       <div style="padding: 30px; background-color: white; margin: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div style="text-align: center; margin-bottom: 30px;">
-          <h2 style="color: #1f2937; margin: 0 0 15px 0;">Hi ${feedbackData.name || 'there'}!</h2>
+          <h2 style="color: #1f2937; margin: 0 0 15px 0;">Hi ${feedbackData.name || "there"}!</h2>
           <p style="color: #4b5563; line-height: 1.6; margin: 0;">
             Thank you for taking the time to share your feedback with us. Your input is invaluable and helps us improve our services.
           </p>
@@ -203,14 +227,14 @@ async function sendCustomerFeedbackConfirmation(smtpConfig: any, feedbackData: a
         <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
           <h3 style="color: #1f2937; margin: 0 0 15px 0;">We Value Your Voice</h3>
           <p style="color: #4b5563; line-height: 1.6; margin: 0;">
-            At Elegant Care Service, we are committed to providing the highest quality care. Your feedback, whether it's a compliment, suggestion, or concern, helps us understand how we can better serve you and our community.
+            At Blufacade, we are committed to providing the highest quality facade solutions. Your feedback, whether it's a compliment, suggestion, or concern, helps us understand how we can better serve you and our community.
           </p>
         </div>
 
         <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
           <p style="color: #6b7280; margin: 0; font-size: 14px;">
             Best regards,<br>
-            Elegant Care Service Team<br>
+            Blufacade Team<br>
             Quality Care, Compassionate Support
           </p>
         </div>
@@ -221,7 +245,7 @@ async function sendCustomerFeedbackConfirmation(smtpConfig: any, feedbackData: a
   const mailOptions = {
     from: `"${smtpConfig.fromName}" <${smtpConfig.fromEmail}>`,
     to: feedbackData.email,
-    subject: "Thank You for Your Feedback - Elegant Care Service",
+    subject: "Thank You for Your Feedback - Blufacade",
     html: emailHTML,
   };
 

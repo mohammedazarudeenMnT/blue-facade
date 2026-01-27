@@ -25,8 +25,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 /references/
 
 *.md
+next-env.d.ts

@@ -8,7 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Star, User, Calendar, CheckCircle, AlertCircle, Heart } from "lucide-react";
+import {
+  Star,
+  User,
+  Calendar,
+  CheckCircle,
+  AlertCircle,
+  Heart,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LeadDetails {
@@ -52,7 +59,7 @@ function ReviewPageContent() {
 
         if (result.success) {
           setLeadDetails(result.data);
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             serviceType: result.data.subject || "",
           }));
@@ -72,7 +79,7 @@ function ReviewPageContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.content.trim()) {
       toast({
         title: "Error",
@@ -149,7 +156,9 @@ function ReviewPageContent() {
         <Card className="max-w-md mx-auto">
           <CardContent className="p-8 text-center">
             <AlertCircle className="h-12 w-12 mx-auto text-red-500 mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Invalid Review Link</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Invalid Review Link
+            </h2>
             <p className="text-gray-600">{error}</p>
           </CardContent>
         </Card>
@@ -163,9 +172,12 @@ function ReviewPageContent() {
         <Card className="max-w-md mx-auto">
           <CardContent className="p-8 text-center">
             <CheckCircle className="h-12 w-12 mx-auto text-[#8CC63F] mb-4" />
-            <h2 className="text-xl font-semibold text-[#1E3A5F] mb-2">Thank You!</h2>
+            <h2 className="text-xl font-semibold text-[#1E3A5F] mb-2">
+              Thank You!
+            </h2>
             <p className="text-gray-600">
-              Your review has been submitted successfully. It will be published after admin approval.
+              Your review has been submitted successfully. It will be published
+              after admin approval.
             </p>
             <div className="mt-6">
               <Heart className="h-6 w-6 mx-auto text-[#8CC63F]" />
@@ -185,8 +197,12 @@ function ReviewPageContent() {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#1E3A5F] mb-2">Share Your Experience</h1>
-            <p className="text-gray-600">Help others by sharing your experience with Elegant Care Service</p>
+            <h1 className="text-3xl font-bold text-[#1E3A5F] mb-2">
+              Share Your Experience
+            </h1>
+            <p className="text-gray-600">
+              Help others by sharing your experience with Blufacade
+            </p>
           </div>
 
           {leadDetails && (
@@ -208,7 +224,11 @@ function ReviewPageContent() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Calendar className="h-4 w-4" />
-                  <span>{new Date(leadDetails.submittedAt).toLocaleDateString('en-AU')}</span>
+                  <span>
+                    {new Date(leadDetails.submittedAt).toLocaleDateString(
+                      "en-AU",
+                    )}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -216,7 +236,9 @@ function ReviewPageContent() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-[#1E3A5F]">Write Your Review</CardTitle>
+              <CardTitle className="text-[#1E3A5F]">
+                Write Your Review
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -230,7 +252,9 @@ function ReviewPageContent() {
                       <button
                         key={star}
                         type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, rating: star }))}
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, rating: star }))
+                        }
                         className="p-1 hover:scale-110 transition-transform"
                       >
                         <Star
@@ -260,7 +284,12 @@ function ReviewPageContent() {
                   <Input
                     id="serviceType"
                     value={formData.serviceType}
-                    onChange={(e) => setFormData(prev => ({ ...prev, serviceType: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        serviceType: e.target.value,
+                      }))
+                    }
                     placeholder="e.g., NDIS Support, Daily Living Assistance"
                     className="mt-1"
                     required
@@ -275,7 +304,12 @@ function ReviewPageContent() {
                   <Input
                     id="location"
                     value={formData.location}
-                    onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        location: e.target.value,
+                      }))
+                    }
                     placeholder="e.g., Sydney, Melbourne, Brisbane"
                     className="mt-1"
                     required
@@ -290,7 +324,12 @@ function ReviewPageContent() {
                   <Textarea
                     id="content"
                     value={formData.content}
-                    onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
                     placeholder="Share your experience with our service..."
                     className="mt-1 min-h-[120px]"
                     required
@@ -316,7 +355,8 @@ function ReviewPageContent() {
           </Card>
 
           <p className="text-center text-sm text-gray-500 mt-6">
-            Your review helps us improve our services and assists others in making informed decisions.
+            Your review helps us improve our services and assists others in
+            making informed decisions.
           </p>
         </motion.div>
       </div>
@@ -326,11 +366,13 @@ function ReviewPageContent() {
 
 export default function ReviewPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-[#F0F9E8] to-[#E8F5E0] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8CC63F]"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-[#F0F9E8] to-[#E8F5E0] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8CC63F]"></div>
+        </div>
+      }
+    >
       <ReviewPageContent />
     </Suspense>
   );

@@ -1,18 +1,40 @@
-"use client"
+"use client";
 
-import { Logo } from "@/components/logo"
-import { CheckCircle, Check } from "lucide-react"
-import Image from "next/image"
+import { Logo } from "@/components/logo";
+import { CheckCircle, Check } from "lucide-react";
+import Image from "next/image";
 
 export function AboutContent() {
   const values = [
-    { title: "Respect", description: "We treat every individual with dignity and respect their choices." },
-    { title: "Integrity", description: "We operate with honesty and transparency in all our services." },
-    { title: "Excellence", description: "We strive for the highest quality in everything we do." },
-    { title: "Compassion", description: "We provide care with empathy and understanding." },
-    { title: "Empowerment", description: "We support individuals to achieve their goals and independence." },
-    { title: "Inclusion", description: "We embrace diversity and create welcoming environments for all." },
-  ]
+    {
+      title: "Respect",
+      description:
+        "We treat every individual with dignity and respect their choices.",
+    },
+    {
+      title: "Integrity",
+      description:
+        "We operate with honesty and transparency in all our services.",
+    },
+    {
+      title: "Excellence",
+      description: "We strive for the highest quality in everything we do.",
+    },
+    {
+      title: "Compassion",
+      description: "We provide care with empathy and understanding.",
+    },
+    {
+      title: "Empowerment",
+      description:
+        "We support individuals to achieve their goals and independence.",
+    },
+    {
+      title: "Inclusion",
+      description:
+        "We embrace diversity and create welcoming environments for all.",
+    },
+  ];
 
   return (
     <>
@@ -31,19 +53,26 @@ export function AboutContent() {
                 <span className="text-[#8CC63F]">STORY</span>
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4 text-justify">
-                Elegant Care Service was founded with a simple yet powerful vision: to provide
-                <strong className="text-[#1E3A5F]"> person-centered disability support services</strong> that truly make
-                a difference in people's lives.
+                Blufacade was founded with a simple yet powerful vision: to
+                provide
+                <strong className="text-[#1E3A5F]">
+                  {" "}
+                  person-centered disability support services
+                </strong>{" "}
+                that truly make a difference in people's lives.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4 text-justify">
-                As a registered NDIS service provider, we understand that each individual has unique needs, goals, and
-                aspirations. Our team of dedicated professionals works tirelessly to ensure that every participant
-                receives the support they need to live their best life.
+                As a registered NDIS service provider, we understand that each
+                individual has unique needs, goals, and aspirations. Our team of
+                dedicated professionals works tirelessly to ensure that every
+                participant receives the support they need to live their best
+                life.
               </p>
               <p className="text-gray-600 leading-relaxed text-justify">
-                We have extended our services across Adelaide, Adelaide Hills, Mount Barker, Riverland region, Renmark,
-                Mildura, and Murray region, bringing quality disability support to communities throughout South
-                Australia.
+                We have extended our services across Adelaide, Adelaide Hills,
+                Mount Barker, Riverland region, Renmark, Mildura, and Murray
+                region, bringing quality disability support to communities
+                throughout South Australia.
               </p>
             </div>
           </div>
@@ -60,13 +89,18 @@ export function AboutContent() {
                 <span className="text-[#8CC63F]">MISSION</span>
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4 text-justify">
-                Our mission is to <strong className="text-[#1E3A5F]">empower individuals with disabilities</strong> to
-                live fulfilling, independent lives by providing tailored support services that respect their choices and
-                promote their wellbeing.
+                Our mission is to{" "}
+                <strong className="text-[#1E3A5F]">
+                  empower individuals with disabilities
+                </strong>{" "}
+                to live fulfilling, independent lives by providing tailored
+                support services that respect their choices and promote their
+                wellbeing.
               </p>
               <p className="text-gray-600 leading-relaxed mb-6 text-justify">
-                We believe that everyone deserves access to quality support that enables them to participate fully in
-                their community and achieve their personal goals.
+                We believe that everyone deserves access to quality support that
+                enables them to participate fully in their community and achieve
+                their personal goals.
               </p>
               <ul className="space-y-3">
                 {[
@@ -75,7 +109,10 @@ export function AboutContent() {
                   "Community integration",
                   "Continuous improvement",
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-gray-700">
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-gray-700"
+                  >
                     <div className="mt-0.5 p-1 bg-[#8CC63F] rounded-full flex-shrink-0">
                       <Check className="h-3 w-3 text-white" />
                     </div>
@@ -105,13 +142,19 @@ export function AboutContent() {
               <span className="text-[#8CC63F]">VALUES</span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our core values guide everything we do and shape how we deliver our services.
+              Our core values guide everything we do and shape how we deliver
+              our services.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {values.map((value) => (
-              <div key={value.title} className="bg-[#F5F5F5] p-6 rounded-lg hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-semibold text-[#1E3A5F] mb-2">{value.title}</h3>
+              <div
+                key={value.title}
+                className="bg-[#F5F5F5] p-6 rounded-lg hover:shadow-md transition-shadow"
+              >
+                <h3 className="text-lg font-semibold text-[#1E3A5F] mb-2">
+                  {value.title}
+                </h3>
                 <p className="text-gray-600 text-sm">{value.description}</p>
               </div>
             ))}
@@ -119,5 +162,5 @@ export function AboutContent() {
         </div>
       </section>
     </>
-  )
+  );
 }

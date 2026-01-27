@@ -1,175 +1,324 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
+import { Menu, X, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { siteConfig } from "@/config/site"
+import Image from "next/image"
+import Link from "next/link"
+import { useServices } from "@/hooks/use-services"
+import { usePortfolio } from "@/hooks/use-portfolio"
 
 const navItems = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { 
-    name: "Services", 
-    href: "/services",
-    children: siteConfig.services.map(s => ({ name: s.title, href: `/services/${s.id}` }))
-  },
-  { name: "Portfolio", href: "/portfolio" },
-  { name: "Contact", href: "/contact" },
+  { label: "HOME", href: "/" },
+  { label: "ABOUT", href: "/about" },
+  { label: "SERVICES", href: "/services", hasDropdown: true },
+  { label: "PORTFOLIO", href: "/portfolio", hasDropdown: true },
+  { label: "CONTACT", href: "/contact" },
 ]
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+  const [portfolioDropdownOpen, setPortfolioDropdownOpen] = useState(false)
+  
+  const { services } = useServices(1, 100)
+  const { portfolios } = usePortfolio(1, 100)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY >= 50)
     }
+
+    handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+  }, [menuOpen])
+
   return (
     <>
-      {/* Top Bar */}
-      <div className="bg-[#014a74] text-white py-2 px-4 hidden md:block">
-        <div className="container mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center gap-6">
-            <a href={`tel:${siteConfig.contact.phone}`} className="flex items-center gap-2 hover:text-[#f58420] transition-colors">
-              <Phone className="w-4 h-4" />
-              <span>{siteConfig.contact.phone}</span>
-            </a>
-            <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-2 hover:text-[#f58420] transition-colors">
-              <Mail className="w-4 h-4" />
-              <span>{siteConfig.contact.email}</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-white/80">Branches: {siteConfig.branches.join(" | ")}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Header */}
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg"
-            : "bg-white"
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? "bg-white/95 backdrop-blur-md shadow-lg" 
+            : "bg-gradient-to-b from-black/50 to-transparent"
         }`}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex items-center">
-                <span className="text-2xl font-bold">
-                  <span className="text-[#014a74]">blu</span>
-                  <span className="text-[#f58420]">facade</span>
-                </span>
+        <div className="mx-auto px-6 md:px-12 flex items-center justify-between h-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center gap-3"
+          >
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 relative shrink-0">
+                <Image
+                  src="/images/logo/Blufacade Logo PNG (1).png"
+                  alt="Blufacade"
+                  fill
+                  className="object-contain"
+                />
               </div>
+              <h1 className="font-bold text-2xl tracking-tight transition-colors duration-300">
+                <span className={scrolled ? "text-[#014a74]" : "text-[#014a74]"}>blu</span>
+                <span className={scrolled ? "text-[#f58420]" : "text-[#f58420]"}>facade</span>
+              </h1>
             </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center gap-4"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setMenuOpen(!menuOpen)}
+              className={`p-2 rounded-lg transition-colors px-3 py-2.5 md:hidden ${
+                scrolled 
+                  ? "bg-[#014a74] text-white" 
+                  : "bg-white/20 backdrop-blur-sm text-white border border-white/30"
+              }`}
+              aria-label="Menu"
+            >
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </motion.button>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) => (
-                <div
-                  key={item.name}
-                  className="relative"
-                  onMouseEnter={() => item.children && setActiveDropdown(item.name)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-1 px-4 py-2 text-[#014a74] font-medium hover:text-[#f58420] transition-colors"
-                  >
-                    {item.name}
-                    {item.children && <ChevronDown className="w-4 h-4" />}
-                  </Link>
-                  
-                  {/* Dropdown */}
-                  <AnimatePresence>
-                    {item.children && activeDropdown === item.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 mt-1"
-                      >
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.name}
-                            href={child.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#014a74]/5 hover:text-[#014a74] transition-colors"
-                          >
-                            {child.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </nav>
-
-            {/* CTA Button */}
-            <div className="hidden lg:flex items-center gap-4">
-              <Button
-                asChild
-                className="bg-[#f58420] hover:bg-[#e07310] text-white px-6"
-              >
-                <Link href="/contact">Get a Quote</Link>
-              </Button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 text-[#014a74]"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white border-t"
-            >
-              <nav className="container mx-auto px-4 py-4">
-                {navItems.map((item) => (
-                  <div key={item.name}>
-                    <Link
-                      href={item.href}
-                      className="block py-3 text-[#014a74] font-medium border-b border-gray-100"
-                      onClick={() => setIsMobileMenuOpen(false)}
+            <nav className="hidden md:flex items-center gap-6">
+              {navItems.map((item) => {
+                if (item.label === "SERVICES") {
+                  return (
+                    <div 
+                      key={item.label} 
+                      className="relative group"
+                      onMouseEnter={() => setServicesDropdownOpen(true)}
+                      onMouseLeave={() => setServicesDropdownOpen(false)}
                     >
-                      {item.name}
-                    </Link>
-                  </div>
-                ))}
-                <Button
-                  asChild
-                  className="w-full mt-4 bg-[#f58420] hover:bg-[#e07310] text-white"
-                >
-                  <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                    Get a Quote
+                      <Link
+                        href={item.href}
+                        className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                          scrolled ? "text-[#014a74]" : "text-white"
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                      </Link>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {servicesDropdownOpen && services.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-xl py-2 border border-gray-100 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
+                          >
+                            {services.map((service) => (
+                              <Link
+                                key={service._id}
+                                href={`/services/${service.slug}`}
+                                className="block px-4 py-2.5 text-[13px] text-gray-600 hover:text-[#014a74] hover:bg-gray-50 transition-colors font-medium border-b border-gray-50 last:border-0 leading-snug"
+                              >
+                                <span className="line-clamp-2">{service.serviceName}</span>
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )
+                }
+
+                if (item.label === "PORTFOLIO") {
+                   return (
+                    <div 
+                      key={item.label} 
+                      className="relative group"
+                      onMouseEnter={() => setPortfolioDropdownOpen(true)}
+                      onMouseLeave={() => setPortfolioDropdownOpen(false)}
+                    >
+                      <Link
+                        href={item.href}
+                        className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                          scrolled ? "text-[#014a74]" : "text-white"
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                      </Link>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {portfolioDropdownOpen && portfolios.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full -right-12 w-80 bg-white rounded-xl shadow-xl py-2 border border-gray-100 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
+                          >
+                            {portfolios.map((project) => (
+                              <Link
+                                key={project._id}
+                                href={`/portfolio/${project.slug}`}
+                                className="block px-4 py-2.5 text-[13px] text-gray-600 hover:text-[#014a74] hover:bg-gray-50 transition-colors font-medium border-b border-gray-50 last:border-0 leading-snug"
+                              >
+                                <span className="line-clamp-2">{project.projectName}</span>
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )
+                }
+
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
+                      scrolled ? "text-[#014a74]" : "text-white"
+                    }`}
+                  >
+                    {item.label}
                   </Link>
-                </Button>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+                )
+              })}
+            </nav>
+          </motion.div>
+        </div>
+      </motion.header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-[#014a74]/95 backdrop-blur-xl z-40 flex items-center justify-center overflow-y-auto py-10"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setMenuOpen(false)
+            }}
+          >
+            <motion.nav
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={{
+                open: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+                closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+              }}
+              className="text-center w-full px-6"
+            >
+              <motion.ul className="space-y-6 text-2xl md:text-5xl font-black uppercase text-white flex flex-col items-center">
+                {navItems.map((item) => (
+                  <motion.li
+                    key={item.label}
+                    variants={{
+                      open: { opacity: 1, y: 0, rotate: 0 },
+                      closed: { opacity: 0, y: 20, rotate: -5 },
+                    }}
+                    className="w-full"
+                  >
+                    {item.label === "SERVICES" && services.length > 0 ? (
+                      <div className="flex flex-col items-center gap-4">
+                         <Link
+                          href={item.href}
+                          className="hover:text-[#f58420] transition-colors duration-300"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                        {/* Mobile Submenu */}
+                        <div className="flex flex-col gap-2 text-base font-medium capitalize text-white/70">
+                          {services.map((service) => (
+                             <Link
+                                key={service._id}
+                                href={`/services/${service.slug}`}
+                                className="hover:text-white transition-colors py-1"
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {service.serviceName}
+                              </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : item.label === "PORTFOLIO" && portfolios.length > 0 ? (
+                       <div className="flex flex-col items-center gap-4">
+                         <Link
+                          href={item.href}
+                          className="hover:text-[#f58420] transition-colors duration-300"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                        {/* Mobile Submenu */}
+                        <div className="flex flex-col gap-2 text-base font-medium capitalize text-white/70">
+                          {portfolios.map((project) => (
+                             <Link
+                                key={project._id}
+                                href={`/portfolio/${project.slug}`}
+                                className="hover:text-white transition-colors py-1"
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {project.projectName}
+                              </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className="inline-block hover:text-[#f58420] transition-colors duration-300 hover:scale-110 transform"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </motion.li>
+                ))}
+              </motion.ul>
+
+              <motion.div
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: 20 },
+                }}
+                className="mt-12 flex justify-center gap-6"
+              >
+                {["INSTAGRAM", "LINKEDIN", "FACEBOOK"].map((social) => (
+                  <motion.a
+                    key={social}
+                    whileHover={{ scale: 1.1, color: "#f58420" }}
+                    href="#"
+                    className="text-sm font-bold text-white/60 hover:text-[#f58420] transition-colors"
+                  >
+                    {social}
+                  </motion.a>
+                ))}
+              </motion.div>
+            </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

@@ -1,18 +1,20 @@
-"use client"
+"use client";
 
-import { useSEOMeta } from "@/hooks/use-seo-meta"
+import { useSEOMeta } from "@/hooks/use-seo-meta";
 
 export function HomeSeo() {
   // Use SEO data for home page
   useSEOMeta({
-    pageId: 'home',
+    pageId: "home",
     fallback: {
-      title: 'Elegant Care Service | NDIS Disability Service Provider',
-      description: 'Professional NDIS disability support services. We provide supported independent living, respite support, community participation, and personalized care services.',
-      keywords: 'NDIS provider, disability support, supported independent living, respite care, community participation'
-    }
-  })
+      title: "Blufacade | Premium Facade & Cladding Solutions",
+      description:
+        "Blufacade specializes in innovative, high-quality facade solutions including ACP cladding, structural glazing, aluminium doors & windows, HPL, and spider glazing systems.",
+      keywords:
+        "facade solutions, ACP cladding, structural glazing, aluminium windows, architectural solutions, building facades",
+    },
+  });
 
   // This component doesn't render anything visible, it just handles SEO
-  return null
+  return null;
 }

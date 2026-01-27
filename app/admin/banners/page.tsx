@@ -23,9 +23,7 @@ export default function BannersPage() {
     { key: "home", label: "Home" },
     { key: "about", label: "About Us" },
     { key: "services", label: "Services" },
-    { key: "support-model", label: "Support Model" },
-    { key: "ndis", label: "NDIS Information" },
-    { key: "feedback", label: "Feedback" },
+    { key: "portfolio", label: "Portfolio" },
     { key: "contact", label: "Contact" },
   ];
 
@@ -222,7 +220,7 @@ export default function BannersPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#1E3A5F]">
+          <h1 className="text-3xl font-bold text-[#014a74]">
             Banner Manager
           </h1>
           <p className="text-gray-600 mt-1">
@@ -271,7 +269,7 @@ export default function BannersPage() {
                     <Button
                       type="button"
                       onClick={onChooseImage}
-                      className="bg-[#8CC63F] hover:bg-[#7AB52F] text-white"
+                      className="bg-[#f58420] hover:bg-[#d97419] text-white"
                     >
                       <Upload className="mr-2 h-4 w-4" />
                       Choose Image
@@ -295,7 +293,7 @@ export default function BannersPage() {
                 type="button"
                 onClick={handleSave}
                 disabled={loading}
-                className="w-full bg-[#1E3A5F] hover:bg-[#152B47] text-white"
+                className="w-full bg-[#014a74] hover:bg-[#012d47] text-white"
               >
                 {loading ? (
                   <>

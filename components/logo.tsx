@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useSettings } from "@/hooks/use-settings"
-import Image from "next/image"
+import { useSettings } from "@/hooks/use-settings";
+import Image from "next/image";
 
 export function Logo({ className = "" }: { className?: string }) {
-  const { settings } = useSettings()
+  const { settings } = useSettings();
 
   return (
     <div className={`flex items-center gap-2 sm:gap-3 ${className}`}>
@@ -20,7 +20,7 @@ export function Logo({ className = "" }: { className?: string }) {
       ) : (
         <Image
           src="/placeholder-logo.png"
-          alt="Elegant Care Service Logo"
+          alt="Blufacade Logo"
           width={48}
           height={48}
           className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
@@ -29,13 +29,9 @@ export function Logo({ className = "" }: { className?: string }) {
       )}
       <div className="flex flex-col">
         <span className="text-[#1E3A5F] font-bold text-base sm:text-lg leading-tight">
-          {settings?.siteName?.split(" ")[0] || "Elegant"}
-        </span>
-        <span className="text-[#8CC63F] font-bold text-base sm:text-lg leading-tight">
-          {settings?.siteName?.split(" ").slice(1).join(" ") || "Care Service"}
+          {settings?.siteName?.split(" ")[0] || "Blufacade"}
         </span>
       </div>
     </div>
-  )
+  );
 }
-

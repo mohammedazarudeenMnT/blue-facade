@@ -133,62 +133,56 @@ export default function AdminLayout({
       name: "Dashboard",
       href: "/admin",
       icon: <LayoutDashboard className="h-5 w-5" />,
-      color: "text-[#8CC63F]",
+      color: "text-[#014a74]",
     },
     {
       name: "SEO Manager",
       href: "/admin/seo",
       icon: <Search className="h-5 w-5" />,
-      color: "text-[#1E3A5F]",
+      color: "text-[#f58420]",
     },
     {
       name: "Page Manager",
       icon: <Globe className="h-5 w-5" />,
-      color: "text-[#8CC63F]",
+      color: "text-[#014a74]",
       isCollapsible: true,
       collapsibleKey: "pageManager",
       subItems: [
         { name: "Banner Manager", href: "/admin/banners", icon: <FileText className="h-4 w-4" /> },
         { name: "Contact Manager", href: "/admin/contact", icon: <Phone className="h-4 w-4" /> },
         { name: "Services", href: "/admin/services", icon: <Briefcase className="h-4 w-4" /> },
-        { name: "Support Models", href: "/admin/support-models", icon: <Users className="h-4 w-4" /> },
+        { name: "Portfolio", href: "/admin/portfolio", icon: <Briefcase className="h-4 w-4" /> },
       ],
     },
-  /*   {
-      name: "Support Workers",
-      href: "/admin/workers",
-      icon: <Users className="h-5 w-5" />,
-      color: "text-[#8CC63F]",
-    }, */
     {
       name: "Lead Manager",
       href: "/admin/leads",
       icon: <MessageSquare className="h-5 w-5" />,
-      color: "text-[#1E3A5F]",
+      color: "text-[#f58420]",
     },
     {
       name: "Feedback",
       href: "/admin/feedback",
       icon: <Heart className="h-5 w-5" />,
-      color: "text-[#8CC63F]",
+      color: "text-[#014a74]",
     },
     {
       name: "Testimonials",
       href: "/admin/testimonials",
       icon: <MessageSquare className="h-5 w-5" />,
-      color: "text-[#1E3A5F]",
+      color: "text-[#f58420]",
     },
     {
       name: "Settings",
       href: "/admin/settings",
       icon: <Settings className="h-5 w-5" />,
-      color: "text-[#8CC63F]",
+      color: "text-[#014a74]",
     },
     {
       name: "Profile",
       href: "/admin/profile",
       icon: <User className="h-5 w-5" />,
-      color: "text-[#1E3A5F]",
+      color: "text-[#f58420]",
     },
   ]
 
@@ -199,7 +193,7 @@ export default function AdminLayout({
           <div className="mb-4">
             <Logo />
           </div>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8CC63F] mx-auto mb-2"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#014a74] mx-auto mb-2"></div>
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -217,7 +211,7 @@ export default function AdminLayout({
   }
 
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8CC63F]"></div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#014a74]"></div></div>}>
       <Toaster />
       <div className="min-h-screen bg-[#F5F5F5] flex">
         {sidebarOpen && (
@@ -232,7 +226,7 @@ export default function AdminLayout({
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } border-r border-gray-200 flex flex-col h-screen overflow-hidden`}
         >
-          <div className="flex items-center justify-start h-16 px-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-start h-16 px-6 border-b border-gray-200 shrink-0">
             <Logo />
           </div>
 
@@ -247,8 +241,8 @@ export default function AdminLayout({
                     <Collapsible key={item.name} open={isOpen} onOpenChange={setIsOpen}>
                       <CollapsibleTrigger asChild>
                         <button
-                          className={`flex items-center justify-between w-full px-4 py-3 text-[#1E3A5F] hover:bg-[#F0F9E8] transition-all duration-200 rounded-lg group ${
-                            isOpen ? "bg-[#F0F9E8]" : ""
+                          className={`flex items-center justify-between w-full px-4 py-3 text-[#014a74] hover:bg-[#fef5ed] transition-all duration-200 rounded-lg group ${
+                            isOpen ? "bg-[#fef5ed]" : ""
                           }`}
                         >
                           <div className="flex items-center">
@@ -269,8 +263,8 @@ export default function AdminLayout({
                           <Link
                             key={subItem.name}
                             href={subItem.href}
-                            className={`flex items-center px-4 py-2 ml-6 text-[#1E3A5F] hover:bg-[#F0F9E8] transition-all duration-200 rounded-lg text-sm ${
-                              pathname === subItem.href ? "bg-[#F0F9E8] text-[#8CC63F] border-r-2 border-[#8CC63F]" : ""
+                            className={`flex items-center px-4 py-2 ml-6 text-[#014a74] hover:bg-[#fef5ed] transition-all duration-200 rounded-lg text-sm ${
+                              pathname === subItem.href ? "bg-[#fef5ed] text-[#f58420] border-r-2 border-[#f58420]" : ""
                             }`}
                             onClick={() => {
                               if (window.innerWidth < 1024) {
@@ -291,8 +285,8 @@ export default function AdminLayout({
                   <Link
                     key={item.name}
                     href={item.href!}
-                    className={`flex items-center px-4 py-3 text-[#1E3A5F] hover:bg-[#F0F9E8] transition-all duration-200 rounded-lg group ${
-                      pathname === item.href ? "bg-[#F0F9E8] text-[#8CC63F] border-r-2 border-[#8CC63F]" : ""
+                    className={`flex items-center px-4 py-3 text-[#014a74] hover:bg-[#fef5ed] transition-all duration-200 rounded-lg group ${
+                      pathname === item.href ? "bg-[#fef5ed] text-[#f58420] border-r-2 border-[#f58420]" : ""
                     }`}
                     onClick={() => {
                       if (window.innerWidth < 1024) {
@@ -310,16 +304,16 @@ export default function AdminLayout({
             </div>
           </nav>
 
-          <div className="p-6 border-t border-gray-200 flex-shrink-0">
-            <div className="flex items-center mb-4 p-3 bg-[#F0F9E8] rounded-lg">
+          <div className="p-6 border-t border-gray-200 shrink-0">
+            <div className="flex items-center mb-4 p-3 bg-[#fef5ed] rounded-lg">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={adminProfile?.avatar || ""} alt="Admin" />
-                <AvatarFallback className="bg-[#8CC63F] text-white font-semibold text-sm">
+                <AvatarFallback className="bg-[#014a74] text-white font-semibold text-sm">
                   {adminProfile ? `${adminProfile.firstName.charAt(0)}${adminProfile.lastName.charAt(0)}` : 'A'}
                 </AvatarFallback>
               </Avatar>
               <div className="ml-3">
-                <div className="font-semibold text-[#1E3A5F] text-sm">
+                <div className="font-semibold text-[#014a74] text-sm">
                   {adminProfile ? `${adminProfile.firstName} ${adminProfile.lastName}` : 'Admin User'}
                 </div>
                 <div className="text-xs text-gray-500">{adminProfile?.role || 'Administrator'}</div>
@@ -339,7 +333,7 @@ export default function AdminLayout({
         <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out ${
           sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'
         }`}>
-          <div className="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-30">
+          <div className="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center justify-between px-6 shrink-0 sticky top-0 z-30">
             <div className="flex items-center">
               <button
                 className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 mr-4"
@@ -352,10 +346,10 @@ export default function AdminLayout({
                 )}
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-[#1E3A5F]">
+                <h1 className="text-xl font-semibold text-[#014a74]">
                   {pathname === "/admin" ? "Dashboard" : pathname.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || "Admin Panel"}
                 </h1>
-                <p className="text-sm text-gray-500">Manage your care services</p>
+                <p className="text-sm text-gray-500">Manage your facade projects</p>
               </div>
             </div>
 
@@ -366,7 +360,7 @@ export default function AdminLayout({
               >
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={adminProfile?.avatar || ""} alt="Admin" />
-                  <AvatarFallback className="bg-[#8CC63F] text-white text-sm font-semibold">
+                  <AvatarFallback className="bg-[#014a74] text-white text-sm font-semibold">
                     {adminProfile ? `${adminProfile.firstName.charAt(0)}${adminProfile.lastName.charAt(0)}` : 'A'}
                   </AvatarFallback>
                 </Avatar>
@@ -385,7 +379,7 @@ export default function AdminLayout({
                       onClick={() => setUserDropdownOpen(false)}
                       className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-50"
                     >
-                      <User className="h-4 w-4 mr-3 text-[#8CC63F]" />
+                      <User className="h-4 w-4 mr-3 text-[#014a74]" />
                       Profile
                     </Link>
                     <button

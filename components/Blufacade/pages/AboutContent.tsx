@@ -17,7 +17,7 @@ const values = [
   {
     icon: Building2,
     title: "Innovation",
-    description: "We continuously adopt advanced technology and innovative approaches in façade engineering.",
+    description: "We continuously adopt advanced technology and innovative approaches in facade engineering.",
   },
   {
     icon: Clock,
@@ -54,20 +54,20 @@ export function AboutContent() {
             </h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                At Blufacade, we specialize in delivering innovative, high-quality façade solutions 
+                At Blufacade, we specialize in delivering innovative, high-quality facade solutions 
                 that redefine the visual identity and performance of modern buildings. With a strong 
                 commitment to design excellence, engineering precision, and timely execution, we help 
                 transform architectural visions into iconic realities.
               </p>
               <p>
-                Backed by a team of experienced professionals, Blufacade offers end-to-end façade 
+                Backed by a team of experienced professionals, Blufacade offers end-to-end facade 
                 services—from concept and design coordination to fabrication, installation, and 
-                project management. Our expertise spans a wide range of façade systems, including 
-                glass façades, aluminium cladding, curtain wall systems, louvers, glazing solutions, 
+                project management. Our expertise spans a wide range of facade systems, including 
+                glass facades, aluminium cladding, curtain wall systems, louvers, glazing solutions, 
                 and customized architectural exteriors.
               </p>
               <p>
-                We believe that a building&apos;s façade is more than just an outer skin—it is a statement 
+                We believe that a building&apos;s facade is more than just an outer skin—it is a statement 
                 of identity, efficiency, and durability. By combining advanced technology, premium 
                 materials, and strict quality control, we ensure every project meets the highest 
                 standards of safety, sustainability, and aesthetics.
@@ -92,7 +92,7 @@ export function AboutContent() {
                 <h3 className="text-xl font-semibold text-[#014a74]">Our Mission</h3>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                To deliver exceptional façade solutions that combine innovation, quality, and 
+                To deliver exceptional facade solutions that combine innovation, quality, and 
                 sustainability, while exceeding client expectations through collaborative partnerships 
                 and unwavering commitment to excellence.
               </p>
@@ -107,7 +107,7 @@ export function AboutContent() {
                 <h3 className="text-xl font-semibold">Our Vision</h3>
               </div>
               <p className="text-white/80 leading-relaxed">
-                To be the most trusted and innovative façade solutions provider in India, known for 
+                To be the most trusted and innovative facade solutions provider in India, known for 
                 transforming skylines and setting new benchmarks in architectural excellence.
               </p>
             </div>

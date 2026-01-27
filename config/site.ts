@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Blufacade",
   tagline: "Inspiring Skylines",
-  description: "At Blufacade, we specialize in delivering innovative, high-quality façade solutions that redefine the visual identity and performance of modern buildings.",
+  description: "At Blufacade, we specialize in delivering innovative, high-quality facade solutions that redefine the visual identity and performance of modern buildings.",
   url: "https://www.blufacade.com",
   
   contact: {

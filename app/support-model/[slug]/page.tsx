@@ -20,13 +20,13 @@ import { cache } from "react";
 // Base fetcher to be deduplicated
 const getSupportModelBase = cache(async (slug: string) => {
   const connectDB = (await import("@/config/models/connectDB")).default;
-  const SupportModel = (
-    await import("@/config/utils/admin/supportModel/supportModelSchema")
+  const Portfolio = (
+    await import("@/config/utils/admin/portfolio/portfolioSchema")
   ).default;
 
   await connectDB();
 
-  const supportModel = await SupportModel.findOne({
+  const supportModel = await Portfolio.findOne({
     slug,
     status: "active",
     $or: [{ isDeleted: false }, { isDeleted: { $exists: false } }],
@@ -43,11 +43,11 @@ async function getSupportModelBySlug(slug: string, increment = false) {
     const supportModel = await getSupportModelBase(slug);
 
     if (supportModel && increment) {
-      const SupportModel = (
-        await import("@/config/utils/admin/supportModel/supportModelSchema")
+      const Portfolio = (
+        await import("@/config/utils/admin/portfolio/portfolioSchema")
       ).default;
       // Increment view count separately from fetch
-      await SupportModel.findByIdAndUpdate(supportModel._id, {
+      await Portfolio.findByIdAndUpdate(supportModel._id, {
         $inc: { views: 1 },
       });
     }
@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   if (!supportModelData) {
     return {
-      title: "Support Model Not Found - Elegant Care Service",
+      title: "Support Model Not Found - Blufacade",
       description: "The requested support model could not be found.",
     };
   }
@@ -73,17 +73,21 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title:
       supportModelData.seoTitle ||
-      `${supportModelData.title} - Elegant Care Service`,
-    description: supportModelData.seoDescription || supportModelData.description,
+      `${supportModelData.projectName} - Blufacade`,
+    description:
+      supportModelData.seoDescription || supportModelData.description,
     keywords:
       supportModelData.seoKeywords ||
-      `${supportModelData.title}, NDIS support, disability support, Elegant Care Service`,
+      `${supportModelData.projectName}, facade solutions, architectural solutions, Blufacade`,
   };
 }
 
 export default async function SupportModelDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const supportModelData = await getSupportModelBySlug(resolvedParams.slug, true);
+  const supportModelData = await getSupportModelBySlug(
+    resolvedParams.slug,
+    true,
+  );
 
   if (!supportModelData) {
     notFound();
@@ -99,7 +103,10 @@ export default async function SupportModelDetailPage({ params }: PageProps) {
         breadcrumb={[
           { label: "Home", href: "/" },
           { label: "Support Model", href: "/support-model" },
-          { label: supportModelData.title, href: `/support-model/${resolvedParams.slug}` },
+          {
+            label: supportModelData.title,
+            href: `/support-model/${resolvedParams.slug}`,
+          },
         ]}
       />
       <SupportModelDetailClient supportModelData={supportModelData} />

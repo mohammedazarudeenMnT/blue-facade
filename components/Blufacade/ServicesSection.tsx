@@ -1,154 +1,175 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { 
-  Building2, 
-  DoorOpen, 
-  Layers, 
-  LayoutGrid, 
-  Square, 
-  Umbrella, 
-  PanelLeft, 
-  Sparkles,
-  ArrowRight
-} from "lucide-react"
-import Link from "next/link"
-import { siteConfig } from "@/config/site"
+import Image from "next/image";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useServices } from "@/hooks/use-services";
+import { Loader2 } from "lucide-react";
 
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Building2,
-  DoorOpen,
-  Layers,
-  LayoutGrid,
-  Square,
-  Umbrella,
-  PanelLeft,
-  Sparkles,
-}
+// Helper function to strip HTML tags and decode entities
+const stripHtml = (html: string) => {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .trim();
+};
+
+// Helper to get aspect ratio based on index
+const getAspectRatio = (index: number) => {
+  return index % 2 === 0 ? "aspect-[3/4]" : "aspect-[4/3]";
+};
 
 export function ServicesSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
-    },
-  }
+  const { services, isLoading } = useServices(1, 6);
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white via-[#fefaf6] to-white relative overflow-hidden">
-      {/* Background Decoration */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#014a74]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#f58420]/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f58420]/10 border border-[#f58420]/20 mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#f58420] animate-pulse" />
-            <span className="text-[#f58420] text-sm font-semibold">Our Services</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-[#014a74] to-[#0369a1] bg-clip-text text-transparent">
-              Comprehensive Façade Solutions
-            </span>
-          </h2>
-          <p className="text-gray-600 text-lg leading-relaxed">
-            From concept to completion, we deliver end-to-end façade services with 
-            expertise spanning a wide range of systems and materials.
+    <section id="services" className="relative py-20 bg-[#fefaf6]">
+      <div className="relative w-full max-w-350 mx-auto px-4 md:px-8">
+        <div className="text-center mb-12">
+          <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
+            Our Expertise
           </p>
-        </motion.div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#014a74]">
+            Featured <span className="text-[#f58420]">Services</span>
+          </h2>
+          <p className="text-lg text-[#282828]/70 max-w-2xl mx-auto mt-4">
+            Comprehensive facade solutions that combine innovation, precision
+            engineering, and premium materials.
+          </p>
+        </div>
 
-        {/* Services Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
-          {siteConfig.services.map((service, index) => {
-            const IconComponent = iconMap[service.icon] || Building2
-            return (
-              <motion.div
-                key={service.id}
-                variants={itemVariants}
-                className="group"
-              >
-                <Link href={`/services/${service.id}`}>
-                  <div className="relative h-full p-6 rounded-3xl bg-white border border-gray-100 hover:border-[#014a74]/20 hover:shadow-2xl transition-all duration-500 overflow-hidden">
-                    {/* Animated Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#014a74]/0 via-[#014a74]/0 to-[#014a74]/0 group-hover:from-[#014a74]/5 group-hover:via-[#0369a1]/5 group-hover:to-[#f58420]/5 transition-all duration-500" />
-                    
-                    {/* Decorative Circle */}
-                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-[#f58420]/10 to-transparent rounded-full group-hover:scale-150 transition-transform duration-700" />
-                    
-                    {/* Icon */}
-                    <div className="relative mb-5">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#014a74] to-[#0369a1] flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-[#014a74]/20">
-                        <IconComponent className="w-8 h-8 text-white" />
-                      </div>
-                    </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-8 h-8 text-[#f58420] animate-spin" />
+          </div>
+        ) : services && services.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Column 1 */}
+            <div className="flex flex-col gap-8">
+              {services
+                .filter((_, i) => i % 3 === 0)
+                .map((service, index) => (
+                  <ServiceCard
+                    key={`col1-${service._id}`}
+                    service={service}
+                    index={index * 3}
+                  />
+                ))}
+            </div>
 
-                    {/* Content */}
-                    <h3 className="text-lg font-bold text-[#014a74] mb-3 group-hover:text-[#f58420] transition-colors duration-300 relative">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed relative">
-                      {service.description}
-                    </p>
+            {/* Column 2 */}
+            <div className="flex flex-col gap-8">
+              {services
+                .filter((_, i) => i % 3 === 1)
+                .map((service, index) => (
+                  <ServiceCard
+                    key={`col2-${service._id}`}
+                    service={service}
+                    index={index * 3 + 1}
+                  />
+                ))}
+            </div>
 
-                    {/* Arrow */}
-                    <div className="flex items-center text-[#014a74] text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 relative">
-                      <span className="mr-2">Learn More</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
-                    </div>
-
-                    {/* Bottom Accent Line */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#014a74] via-[#0369a1] to-[#f58420] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  </div>
-                </Link>
-              </motion.div>
-            )
-          })}
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-16"
-        >
-          <Link
-            href="/services"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#014a74] to-[#0369a1] text-white rounded-full font-semibold hover:shadow-xl hover:shadow-[#014a74]/30 transition-all duration-300 group"
-          >
-            View All Services
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-          </Link>
-        </motion.div>
+            {/* Column 3 */}
+            <div className="flex flex-col gap-8">
+              {services
+                .filter((_, i) => i % 3 === 2)
+                .map((service, index) => (
+                  <ServiceCard
+                    key={`col3-${service._id}`}
+                    service={service}
+                    index={index * 3 + 2}
+                  />
+                ))}
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-[#282828]/70">
+              No services available at the moment
+            </p>
+          </div>
+        )}
       </div>
     </section>
-  )
+  );
+}
+
+function ServiceCard({
+  service,
+  index,
+}: {
+  service: {
+    _id: string;
+    serviceName: string;
+    shortDescription?: string;
+    description: string;
+    image: string;
+    slug: string;
+  };
+  index: number;
+}) {
+  const aspect = getAspectRatio(index);
+  const href = `/services/${service.slug}`;
+
+  return (
+    <Link href={href}>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        className={`relative overflow-hidden rounded-xl shadow-2xl transition-all duration-500 bg-linear-to-br from-[#014a74] to-[#0369a1] border-2 border-transparent w-full ${aspect} group cursor-pointer`}
+      >
+        {/* Image Background */}
+        <div className="absolute inset-0 bg-linear-to-br from-[#014a74] via-[#0369a1] to-[#014a74]">
+          {service.image && (
+            <Image
+              src={service.image}
+              alt={service.serviceName}
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          )}
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)`,
+            }}
+          />
+        </div>
+
+        {/* Service Icon/Text Placeholder */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-white/20 text-6xl font-black uppercase tracking-wider">
+            {service.serviceName.charAt(0)}
+          </span>
+        </div>
+
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-linear-to-t from-[#014a74]/90 via-[#014a74]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* Content */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <span className="text-[#f58420] text-sm font-bold uppercase">
+            {service.serviceName}
+          </span>
+          <h3 className="text-white text-xl font-black line-clamp-2">
+            {stripHtml(service.shortDescription || service.description)}
+          </h3>
+        </div>
+
+        {/* Always visible title at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-linear-to-t from-black/60 to-transparent group-hover:opacity-0 transition-opacity duration-300">
+          <h3 className="text-white text-lg font-bold line-clamp-1">
+            {service.serviceName}
+          </h3>
+        </div>
+      </motion.div>
+    </Link>
+  );
 }

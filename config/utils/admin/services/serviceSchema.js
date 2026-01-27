@@ -8,6 +8,11 @@ const serviceSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
+    category: {
+      type: String,
+      trim: true,
+      index: true,
+    },
     shortDescription: {
       type: String,
       required: false,
@@ -36,6 +41,54 @@ const serviceSchema = new mongoose.Schema(
         trim: true,
       },
     ],
+    // Service Coverage Areas
+    serviceLocations: [
+      {
+        region: {
+          type: String,
+          trim: true,
+        },
+        cities: {
+          type: String,
+          trim: true,
+        },
+      },
+    ],
+    // Technical Specifications
+    technicalSpecs: [
+      {
+        label: {
+          type: String,
+          trim: true,
+        },
+        value: {
+          type: String,
+          trim: true,
+        },
+      },
+    ],
+    // Applications/Use Cases
+    applications: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    // Warranty Information
+    warranty: {
+      type: String,
+      trim: true,
+    },
+    // Estimated Duration
+    estimatedDuration: {
+      type: String,
+      trim: true,
+    },
+    // Price Range
+    priceRange: {
+      type: String,
+      trim: true,
+    },
     slug: {
       type: String,
       required: true,

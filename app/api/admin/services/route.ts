@@ -112,11 +112,18 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const serviceName = formData.get("serviceName") as string;
+    const category = formData.get("category") as string;
     const shortDescription = formData.get("shortDescription") as string;
     const description = formData.get("description") as string;
     const status = formData.get("status") as string;
     const order = Number.parseInt(formData.get("order") as string) || 0;
     const features = JSON.parse(formData.get("features") as string || "[]");
+    const serviceLocations = JSON.parse(formData.get("serviceLocations") as string || "[]");
+    const technicalSpecs = JSON.parse(formData.get("technicalSpecs") as string || "[]");
+    const applications = JSON.parse(formData.get("applications") as string || "[]");
+    const warranty = formData.get("warranty") as string;
+    const estimatedDuration = formData.get("estimatedDuration") as string;
+    const priceRange = formData.get("priceRange") as string;
     const seoTitle = formData.get("seoTitle") as string;
     const seoDescription = formData.get("seoDescription") as string;
     const seoKeywords = formData.get("seoKeywords") as string;
@@ -187,11 +194,18 @@ export async function POST(request: NextRequest) {
     // Create service
     const service = new Service({
       serviceName,
+      category,
       shortDescription,
       description,
       image: imageResult.secure_url,
       gallery: galleryUrls,
       features,
+      serviceLocations,
+      technicalSpecs,
+      applications,
+      warranty,
+      estimatedDuration,
+      priceRange,
       slug,
       status,
       order,

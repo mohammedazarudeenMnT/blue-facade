@@ -11,68 +11,50 @@ export async function GET() {
     let seoData = await SEO.find({}).sort({ lastUpdated: -1 });
     
     if (seoData.length === 0) {
-      // Create default SEO data for Elegant Care Service
+      // Create default SEO data for Blufacade
       const defaultSEOData = [
         {
           id: "home",
           pageName: "Home Page",
-          title: "Elegant Care Service - Quality NDIS Support Services in Australia",
-          description: "Elegant Care Service provides compassionate NDIS support services across Australia. Expert care workers, personalized support plans, and 24/7 assistance for people with disabilities.",
-          keywords: "NDIS support services, disability care Australia, support workers, NDIS provider, quality care services, disability support, home care, community access",
+          title: "Blufacade - Premium Facade Construction & Cladding Solutions",
+          description: "Blufacade offers premium facade construction services including ACP cladding, structural glazing, aluminium doors & windows, and modern architectural solutions in Chennai, India.",
+          keywords: "facade construction, ACP cladding, structural glazing, aluminium windows, facade contractor Chennai, building facade, modern architecture, HPL cladding, spider glazing",
           lastUpdated: new Date(),
           isActive: true,
         },
         {
           id: "about",
           pageName: "About Us",
-          title: "About Elegant Care Service - Your Trusted NDIS Support Provider",
-          description: "Learn about Elegant Care Service, a trusted NDIS registered provider offering quality disability support services. Our experienced team is dedicated to empowering individuals with disabilities.",
-          keywords: "about elegant care, NDIS registered provider, disability support team, quality care provider, experienced support workers, trusted NDIS service",
+          title: "About Blufacade - Leading Facade Construction Company in Chennai",
+          description: "Learn about Blufacade, a trusted facade construction company with 15+ years of experience. We specialize in innovative architectural solutions and premium cladding services.",
+          keywords: "about blufacade, facade company Chennai, experienced facade contractor, architectural solutions, premium cladding services, building exterior specialists",
           lastUpdated: new Date(),
           isActive: true,
         },
         {
           id: "services",
           pageName: "Services Page",
-          title: "NDIS Support Services - Personal Care, Community Access & More",
-          description: "Explore our comprehensive NDIS support services including personal care, community access, supported independent living, and specialized disability support tailored to your needs.",
-          keywords: "NDIS services, personal care, community access, supported independent living, disability support services, respite care, daily living assistance",
+          title: "Facade Services - ACP, Glazing, Aluminium & HPL Solutions",
+          description: "Explore our comprehensive facade services including ACP cladding, structural glazing, aluminium doors & windows, HPL panels, spider glazing, and glass partition systems.",
+          keywords: "facade services, ACP cladding services, structural glazing, aluminium fabrication, HPL panels, spider glazing, glass partition, DGU unitised, canopy work",
           lastUpdated: new Date(),
           isActive: true,
         },
         {
-          id: "support-model",
-          pageName: "Support Model",
-          title: "Our Support Model - Person-Centered NDIS Care Approach",
-          description: "Discover our person-centered support model designed to empower NDIS participants. We focus on individual goals, independence, and quality of life improvements.",
-          keywords: "support model, person-centered care, NDIS approach, individual goals, independence support, quality care model, participant empowerment",
-          lastUpdated: new Date(),
-          isActive: true,
-        },
-        {
-          id: "ndis",
-          pageName: "NDIS Information",
-          title: "NDIS Information - Understanding Your NDIS Plan & Support",
-          description: "Learn about the NDIS, how to access support services, understanding your NDIS plan, and how Elegant Care Service can help you achieve your goals.",
-          keywords: "NDIS information, NDIS plan, disability support scheme, NDIS access, understanding NDIS, NDIS funding, support coordination",
-          lastUpdated: new Date(),
-          isActive: true,
-        },
-        {
-          id: "feedback",
-          pageName: "Feedback",
-          title: "Feedback - Share Your Experience with Elegant Care Service",
-          description: "We value your feedback! Share your compliments, suggestions, or concerns about our NDIS support services. Your input helps us improve and deliver better care.",
-          keywords: "feedback, customer feedback, service feedback, NDIS feedback, compliments, suggestions, concerns, service improvement, client feedback",
+          id: "portfolio",
+          pageName: "Portfolio",
+          title: "Blufacade Portfolio - Our Completed Facade Projects",
+          description: "View our portfolio of completed facade projects showcasing modern architecture, innovative designs, and quality craftsmanship across residential and commercial buildings.",
+          keywords: "facade portfolio, completed projects, facade gallery, architectural projects, building facades, construction portfolio, modern facades, commercial facades",
           lastUpdated: new Date(),
           isActive: true,
         },
         {
           id: "contact",
           pageName: "Contact Us",
-          title: "Contact Elegant Care Service - Get NDIS Support Today",
-          description: "Contact Elegant Care Service for NDIS support services. Our friendly team is available 24/7 to discuss your care needs and create a personalized support plan.",
-          keywords: "contact elegant care, NDIS inquiry, support services contact, 24/7 care support, NDIS consultation, get support, care inquiry",
+          title: "Contact Blufacade - Get Expert Facade Solutions Today",
+          description: "Contact Blufacade for premium facade construction services in Chennai, Madurai, and Dindigul. Call 9994162996 or email blufacadein@gmail.com for consultation.",
+          keywords: "contact blufacade, facade inquiry, Chennai facade contractor, facade consultation, building exterior services, ACP cladding quote, glazing services Chennai",
           lastUpdated: new Date(),
           isActive: true,
         },
@@ -89,7 +71,7 @@ export async function GET() {
 
       await SEO.bulkWrite(bulkOps);
       seoData = await SEO.find({}).sort({ lastUpdated: -1 });
-      console.log("✅ SEO data initialized for Elegant Care Service");
+      console.log("✅ SEO data initialized for Blufacade");
     }
     
     return NextResponse.json({
