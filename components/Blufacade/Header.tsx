@@ -13,6 +13,7 @@ const navItems = [
   { label: "ABOUT", href: "/about" },
   { label: "SERVICES", href: "/services", hasDropdown: true },
   { label: "PORTFOLIO", href: "/portfolio", hasDropdown: true },
+  { label: "BLOG", href: "/blog" },
   { label: "CONTACT", href: "/contact" },
 ]
 
@@ -59,21 +60,19 @@ export function Header() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="flex items-center gap-3"
+            className="flex items-center"
           >
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 relative shrink-0">
+            <Link href="/" className="flex items-center">
+              <div className="h-20 md:h-24 lg:h-28 w-auto relative">
                 <Image
-                  src="/images/logo/Blufacade Logo PNG (1).png"
-                  alt="Blufacade"
-                  fill
-                  className="object-contain"
+                  src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
+                  alt="Blufacade - Inspiring Skylines"
+                  width={400}
+                  height={112}
+                  className="object-contain h-full w-auto"
+                  priority
                 />
               </div>
-              <h1 className="font-bold text-2xl tracking-tight transition-colors duration-300">
-                <span className={scrolled ? "text-[#014a74]" : "text-[#014a74]"}>blu</span>
-                <span className={scrolled ? "text-[#f58420]" : "text-[#f58420]"}>facade</span>
-              </h1>
             </Link>
           </motion.div>
 
@@ -238,61 +237,13 @@ export function Header() {
                     }}
                     className="w-full"
                   >
-                    {item.label === "SERVICES" && services.length > 0 ? (
-                      <div className="flex flex-col items-center gap-4">
-                         <Link
-                          href={item.href}
-                          className="hover:text-[#f58420] transition-colors duration-300"
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-                        {/* Mobile Submenu */}
-                        <div className="flex flex-col gap-2 text-base font-medium capitalize text-white/70">
-                          {services.map((service) => (
-                             <Link
-                                key={service._id}
-                                href={`/services/${service.slug}`}
-                                className="hover:text-white transition-colors py-1"
-                                onClick={() => setMenuOpen(false)}
-                              >
-                                {service.serviceName}
-                              </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ) : item.label === "PORTFOLIO" && portfolios.length > 0 ? (
-                       <div className="flex flex-col items-center gap-4">
-                         <Link
-                          href={item.href}
-                          className="hover:text-[#f58420] transition-colors duration-300"
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-                        {/* Mobile Submenu */}
-                        <div className="flex flex-col gap-2 text-base font-medium capitalize text-white/70">
-                          {portfolios.map((project) => (
-                             <Link
-                                key={project._id}
-                                href={`/portfolio/${project.slug}`}
-                                className="hover:text-white transition-colors py-1"
-                                onClick={() => setMenuOpen(false)}
-                              >
-                                {project.projectName}
-                              </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className="inline-block hover:text-[#f58420] transition-colors duration-300 hover:scale-110 transform"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
+                    <Link
+                      href={item.href}
+                      className="inline-block hover:text-[#f58420] transition-colors duration-300 hover:scale-110 transform"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
                   </motion.li>
                 ))}
               </motion.ul>

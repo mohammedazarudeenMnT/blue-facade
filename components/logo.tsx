@@ -19,7 +19,7 @@ export function Logo({ className = "" }: { className?: string }) {
         />
       ) : (
         <Image
-          src="/placeholder-logo.png"
+          src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
           alt="Blufacade Logo"
           width={48}
           height={48}

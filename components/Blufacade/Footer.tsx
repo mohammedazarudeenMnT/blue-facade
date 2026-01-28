@@ -8,6 +8,10 @@ import {
   Instagram,
   Linkedin,
   Facebook,
+  Twitter,
+  Youtube,
+  MessageCircle,
+  Send,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +19,8 @@ import {
   TextHoverEffect,
   FooterBackgroundGradient,
 } from "@/components/ui/hover-footer";
+import { useServices } from "@/hooks/use-services";
+import { useContact } from "@/hooks/use-contact";
 
 const footerLinks = [
   { label: "Home", href: "/" },
@@ -24,21 +30,48 @@ const footerLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-const socialLinks = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/blufacade_/",
-    icon: <Instagram className="h-5 w-5" />,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/blufacade/",
-    icon: <Linkedin className="h-5 w-5" />,
-  },
-  { label: "Facebook", href: "#", icon: <Facebook className="h-5 w-5" /> },
-];
-
 export function Footer() {
+  const { services } = useServices(1, 3); // Fetch first 3 services for footer
+  const { contactInfo } = useContact();
+
+  // Dynamic social links from contact info
+  const socialLinks = [
+    {
+      label: "Facebook",
+      href: contactInfo?.facebook,
+      icon: <Facebook className="h-5 w-5" />,
+    },
+    {
+      label: "Twitter",
+      href: contactInfo?.twitter,
+      icon: <Twitter className="h-5 w-5" />,
+    },
+    {
+      label: "LinkedIn",
+      href: contactInfo?.linkedin || "https://www.linkedin.com/company/blufacade/",
+      icon: <Linkedin className="h-5 w-5" />,
+    },
+    {
+      label: "Instagram",
+      href: contactInfo?.instagram || "https://www.instagram.com/blufacade_/",
+      icon: <Instagram className="h-5 w-5" />,
+    },
+    {
+      label: "YouTube",
+      href: contactInfo?.youtube,
+      icon: <Youtube className="h-5 w-5" />,
+    },
+    {
+      label: "WhatsApp",
+      href: contactInfo?.whatsapp,
+      icon: <MessageCircle className="h-5 w-5" />,
+    },
+    {
+      label: "Telegram",
+      href: contactInfo?.telegram,
+      icon: <Send className="h-5 w-5" />,
+    },
+  ].filter(link => link.href); // Only show links that have URLs
   return (
     <footer
       id="contact"
@@ -54,23 +87,19 @@ export function Footer() {
         >
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 relative">
+            <h4 className="font-bold text-lg text-[#f58420] mb-4">Company</h4>
+            <div className="mb-4">
+              <div className="h-20 w-auto relative">
                 <Image
-                  src="/images/logo/Blufacade Logo PNG (1).png"
-                  alt="Blufacade Logo"
-                  fill
-                  className="object-contain"
+                  src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
+                  alt="Blufacade - Inspiring Skylines"
+                  width={300}
+                  height={80}
+                  className="object-contain h-full w-auto"
                 />
               </div>
-              <div>
-                <h3 className="font-bold text-lg">BLUFACADE</h3>
-                <p className="text-[#f58420] text-xs font-semibold">
-                  Inspiring Skylines
-                </p>
-              </div>
             </div>
-            <p className="text-white/70 text-sm leading-relaxed">
+            <p className="text-white/70 text-sm leading-relaxed max-w-sm">
               Innovating iconic facades through premium materials, expert
               engineering, and design excellence.
             </p>
@@ -81,18 +110,18 @@ export function Footer() {
             <h4 className="font-bold text-lg text-[#f58420]">Contact Us</h4>
             <div className="space-y-3">
               <a
-                href="tel:9994162996"
+                href={`tel:${contactInfo?.primaryPhone || '9994162996'}`}
                 className="flex items-center gap-3 text-white/80 hover:text-[#f58420] transition-colors"
               >
                 <Phone className="w-5 h-5 shrink-0" />
-                <span className="text-sm">9994162996</span>
+                <span className="text-sm">{contactInfo?.primaryPhone || '9994162996'}</span>
               </a>
               <a
-                href="mailto:blufacadein@gmail.com"
+                href={`mailto:${contactInfo?.email || 'blufacadein@gmail.com'}`}
                 className="flex items-center gap-3 text-white/80 hover:text-[#f58420] transition-colors"
               >
                 <Mail className="w-5 h-5 shrink-0" />
-                <span className="text-sm">blufacadein@gmail.com</span>
+                <span className="text-sm">{contactInfo?.email || 'blufacadein@gmail.com'}</span>
               </a>
             </div>
           </div>
@@ -104,17 +133,19 @@ export function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 shrink-0 mt-0.5 text-[#f58420]" />
                 <div className="text-sm text-white/80">
-                  <p className="font-semibold">Chennai (Head Office)</p>
-                  <p>#35/39, S5, Avyaya Apartments</p>
-                  <p>East Tambaram, Chennai - 600059</p>
+                  <p className="font-semibold">{contactInfo?.city || 'Chennai'} (Head Office)</p>
+                  <p>{contactInfo?.address || '#35/39, S5, Avyaya Apartments'}</p>
+                  <p>{contactInfo?.city || 'East Tambaram'}, {contactInfo?.state || 'Chennai'} - {contactInfo?.postcode || '600059'}</p>
                 </div>
               </div>
-              <div className="pt-2 border-t border-white/20">
-                <p className="text-xs font-semibold text-[#f58420] mb-2">
-                  BRANCHES
-                </p>
-                <p className="text-sm text-white/70">Madurai, Dindigul</p>
-              </div>
+              {contactInfo?.serviceAreas && (
+                <div className="pt-2 border-t border-white/20">
+                  <p className="text-xs font-semibold text-[#f58420] mb-2">
+                    BRANCHES
+                  </p>
+                  <p className="text-sm text-white/70">{contactInfo.serviceAreas}</p>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
@@ -149,10 +180,24 @@ export function Footer() {
                 Services
               </h5>
               <ul className="space-y-2 text-sm text-white/70">
-                <li>ACP Cladding</li>
-                <li>Glass Facades</li>
-                <li>Aluminum Systems</li>
-                <li>Custom Solutions</li>
+                {services.length > 0 ? (
+                  services.map((service: any) => (
+                    <li key={service._id}>
+                      <Link
+                        href={`/services/${service.slug}`}
+                        className="hover:text-white transition-colors"
+                      >
+                        {service.serviceName}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li>ACP Cladding</li>
+                    <li>Glass Facades</li>
+                    <li>Aluminum Systems</li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

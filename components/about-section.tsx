@@ -23,7 +23,7 @@ export function AboutSection() {
                 />
               ) : (
                 <Image
-                  src="/placeholder-logo.png"
+                  src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
                   alt="Blufacade Logo"
                   width={320}
                   height={384}
