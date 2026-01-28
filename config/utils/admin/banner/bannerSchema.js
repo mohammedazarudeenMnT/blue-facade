@@ -5,9 +5,8 @@ const bannerSchema = new mongoose.Schema(
     pageKey: {
       type: String,
       required: true,
-      trim: true,
       unique: true,
-      index: true,
+      trim: true,
     },
     image: {
       type: String,

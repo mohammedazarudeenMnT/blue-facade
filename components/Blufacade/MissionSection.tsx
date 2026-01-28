@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion"
 import { ArrowRight, Award, Users, Calendar, TrendingUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 // Stat Counter Component
 interface StatCounterProps {
@@ -89,15 +90,17 @@ export function MissionSection() {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Our Mission</h2>
             <p className="text-white/80 text-lg mb-6">
-              At <span className="text-[#014a74] font-semibold">Blufacade</span>, we are committed to delivering exceptional facade solutions that enhance the beauty and
+              At <span className="text-[#f58420] font-semibold">Blufacade</span>, we are committed to delivering exceptional facade solutions that enhance the beauty and
               performance of buildings while prioritizing sustainability and innovation.
             </p>
             <p className="text-white/80 text-lg mb-8">
               Our team of experts combines years of experience with cutting-edge technology to create facades that
               stand the test of time.
             </p>
-            <Button className="bg-[#f58420] hover:bg-[#f58420]/90 text-white">
-              Learn More <ArrowRight className="w-4 h-4 ml-2" />
+            <Button asChild className="bg-[#f58420] hover:bg-[#f58420]/90 text-white">
+              <Link href="/about">
+                Learn More <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </motion.div>
           <motion.div

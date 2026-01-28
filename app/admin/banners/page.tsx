@@ -313,12 +313,12 @@ export default function BannersPage() {
               {pageKey === "home" ? (
                 <div className="mt-2 space-y-4">
                   <p className="text-sm text-gray-600">
-                    Upload up to 3 images for the home page carousel
+                    Upload banner image for the home page
                   </p>
-                  {[0, 1, 2].map((index) => (
+                  {[0].map((index) => (
                     <div key={index} className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label className="text-sm">Image {index + 1}</Label>
+                        <Label className="text-sm">Banner Image</Label>
                         {homeImages[index] && (
                           <Button
                             type="button"
@@ -355,7 +355,7 @@ export default function BannersPage() {
                         className="w-full"
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        Choose Image {index + 1}
+                        Choose Banner Image
                       </Button>
                       <input
                         ref={homeFileInputRefs[index]}
@@ -366,6 +366,62 @@ export default function BannersPage() {
                       />
                     </div>
                   ))}
+                  
+                  {/* 
+                    Commented out - Additional image slots not needed
+                    
+                    {[1, 2].map((index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label className="text-sm">Image {index + 1}</Label>
+                          {homeImages[index] && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeHomeImage(index)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <X className="h-4 w-4 mr-1" />
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                        <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-100 border">
+                          {homeImages[index] ? (
+                            <Image
+                              src={homeImages[index]}
+                              alt={`Home banner ${index + 1}`}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
+                              <ImageIcon className="h-8 w-8 mb-2" />
+                              <p className="text-sm">No image selected</p>
+                            </div>
+                          )}
+                        </div>
+                        <Button
+                          type="button"
+                          onClick={() => onChooseHomeImage(index)}
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                        >
+                          <Upload className="mr-2 h-4 w-4" />
+                          Choose Image {index + 1}
+                        </Button>
+                        <input
+                          ref={homeFileInputRefs[index]}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => onHomeFileChange(e, index)}
+                        />
+                      </div>
+                    ))}
+                  */}
                 </div>
               ) : (
                 <div className="mt-2 relative w-full h-64 rounded-lg overflow-hidden bg-gray-100 border">
