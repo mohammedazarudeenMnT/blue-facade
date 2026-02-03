@@ -40,9 +40,9 @@ interface DashboardMetrics {
   totalServices: number;
   activeServices: number;
   totalServiceViews: number;
-  totalSupportModels: number;
-  activeSupportModels: number;
-  totalSupportModelViews: number;
+  totalPortfolio: number;
+  activePortfolio: number;
+  totalPortfolioViews: number;
 }
 
 interface RecentLead {
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
     { title: "Service Views", value: metrics.totalServiceViews, change: `${metrics.activeServices} active`, icon: Eye },
     { title: "Total Feedback", value: metrics.totalFeedback, change: `${metrics.newFeedback} new`, icon: MessageSquare },
     { title: "Testimonials", value: metrics.publishedTestimonials, change: `${metrics.totalTestimonials} total`, icon: Star },
-    { title: "Support Models", value: metrics.activeSupportModels, change: `${metrics.totalSupportModels} total`, icon: Heart },
+    { title: "Portfolio Projects", value: metrics.activePortfolio, change: `${metrics.totalPortfolio} total`, icon: Heart },
   ];
 
   const formatDate = (date: string) => {
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
 
   const quickActions = [
     { title: "Services", href: "/admin/services", icon: Briefcase },
-    { title: "Support Models", href: "/admin/support-models", icon: Heart },
+    { title: "Portfolio", href: "/admin/portfolio", icon: Heart },
     { title: "Leads", href: "/admin/leads", icon: Users },
     { title: "Testimonials", href: "/admin/testimonials", icon: Star },
     { title: "Banners", href: "/admin/banners", icon: Image },
