@@ -4,7 +4,7 @@ import Lead from "@/config/utils/admin/lead/leadSchema";
 import Feedback from "@/config/utils/admin/feedback/feedbackSchema";
 import Testimonial from "@/config/utils/admin/testimonial/testimonialSchema";
 import Service from "@/config/utils/admin/services/serviceSchema";
-// import SupportModel from "@/config/utils/admin/supportModel/supportModelSchema";
+import Portfolio from "@/config/utils/admin/portfolio/portfolioSchema";
 
 export async function GET() {
   try {
@@ -47,10 +47,10 @@ export async function GET() {
       activeServices,
       totalServiceViews,
 
-      // Support Model metrics
-     /*  totalSupportModels,
-      activeSupportModels,
-      totalSupportModelViews, */
+      // Portfolio metrics
+      totalPortfolio,
+      activePortfolio,
+      totalPortfolioViews,
     ] = await Promise.all([
       // Lead queries
       Lead.countDocuments(),
@@ -91,13 +91,13 @@ export async function GET() {
         { $group: { _id: null, totalViews: { $sum: "$views" } } }
       ]),
 
-      // Support Model queries
-     /*  SupportModel.countDocuments({ isDeleted: { $ne: true } }),
-      SupportModel.countDocuments({ status: "active", isDeleted: { $ne: true } }),
-      SupportModel.aggregate([
+      // Portfolio queries
+      Portfolio.countDocuments({ isDeleted: { $ne: true } }),
+      Portfolio.countDocuments({ status: "active", isDeleted: { $ne: true } }),
+      Portfolio.aggregate([
         { $match: { isDeleted: { $ne: true } } },
         { $group: { _id: null, totalViews: { $sum: "$views" } } }
-      ]), */
+      ]),
     ]);
 
     // Calculate growth percentage
@@ -148,10 +148,10 @@ export async function GET() {
         activeServices,
         totalServiceViews: totalServiceViews[0]?.totalViews || 0,
 
-        // Support Model metrics
-       /*  totalSupportModels,
-        activeSupportModels,
-        totalSupportModelViews: totalSupportModelViews[0]?.totalViews || 0, */
+        // Portfolio metrics
+        totalPortfolio,
+        activePortfolio,
+        totalPortfolioViews: totalPortfolioViews[0]?.totalViews || 0,
       },
       recentLeads: formattedRecentLeads,
       analytics: {
