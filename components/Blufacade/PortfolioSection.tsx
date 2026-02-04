@@ -102,17 +102,17 @@ export function PortfolioSection() {
     <section id="portfolio" className="relative bg-[#fefaf6]">
       {/* Section Header */}
       <div className="h-[200px] md:h-[300px] flex flex-col items-center justify-center space-y-3 md:space-y-4 pt-8 px-4">
-        <div className="space-y-1 text-center">
-          <span className="text-[10px] md:text-xs font-bold tracking-widest text-[#f58420] uppercase">
+        <div className="text-center mb-4">
+          <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
             Our Work
-          </span>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-[#014a74]">
+          </p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#014a74]">
             Featured <span className="text-[#f58420]">Projects</span>
-          </h1>
+          </h2>
+          <p className="text-lg text-[#282828]/70 max-w-2xl mx-auto mt-4">
+            Explore our portfolio of iconic facade projects
+          </p>
         </div>
-        <p className="text-sm md:text-base lg:text-lg text-[#282828]/70 max-w-2xl mx-auto text-center px-4">
-          Explore our portfolio of iconic facade projects
-        </p>
         <div className="animate-bounce text-[#f58420] text-xs">
           {isMobile ? "↓ Swipe to View" : "↓ Scroll to Navigate"}
         </div>
