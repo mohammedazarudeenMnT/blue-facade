@@ -126,8 +126,8 @@ export function TestimonialsSection() {
   const firstCol = baseTestimonials.filter((_, i) => i % 2 === 0);
   const secondCol = baseTestimonials.filter((_, i) => i % 2 !== 0);
 
-  // Helper for vertical scrolling marquee
-  const VerticalMarquee = ({
+  // Helper for horizontal scrolling marquee
+  const HorizontalMarquee = ({
     items,
     reverse = false,
     duration = 30,
@@ -140,26 +140,26 @@ export function TestimonialsSection() {
     const duplicatedItems = [...items, ...items, ...items];
 
     return (
-      <div className="flex flex-col gap-6 overflow-hidden h-175 relative pointer-events-none">
-        {/* Fade gradient overlays - adjusted for dark deep blue BG */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-[#014a74] via-[#014a74]/80 to-transparent z-10" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-[#014a74] via-[#014a74]/80 to-transparent z-10" />
+      <div className="flex flex-row overflow-hidden w-full relative pointer-events-none fade-mask">
+        {/* Fade gradient overlays */}
+        <div className="absolute inset-y-0 left-0 w-24 bg-linear-to-r from-[#014a74] via-[#014a74]/80 to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-24 bg-linear-to-l from-[#014a74] via-[#014a74]/80 to-transparent z-10" />
 
         <motion.div
           animate={{
-            y: reverse ? ["-66.666%", "0%"] : ["0%", "-66.666%"],
+            x: reverse ? ["-66.666%", "0%"] : ["0%", "-66.666%"],
           }}
           transition={{
             duration: duration,
             repeat: Infinity,
             ease: "linear",
           }}
-          className="flex flex-col gap-6"
+          className="flex flex-row gap-6 py-4"
         >
           {duplicatedItems.map((testimonial, index) => (
             <div
               key={`${testimonial._id}-${index}`}
-              className="w-full bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 relative flex flex-col pointer-events-auto group hover:bg-white/10 transition-all duration-300"
+              className="w-[350px] shrink-0 bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 relative flex flex-col pointer-events-auto group hover:bg-white/10 transition-all duration-300"
             >
               <Quote className="absolute top-6 right-8 w-10 h-10 text-white/5 group-hover:text-white/10 transition-colors" />
 
@@ -176,11 +176,11 @@ export function TestimonialsSection() {
                 ))}
               </div>
 
-              <p className="text-white/80 leading-relaxed mb-6 italic text-lg font-medium">
+              <p className="text-white/80 leading-relaxed mb-6 italic text-lg font-medium line-clamp-4">
                 "{testimonial.content}"
               </p>
 
-              <div className="flex items-center gap-4">
+              <div className="mt-auto flex items-center gap-4">
                 <div className="relative w-12 h-12 rounded-2xl overflow-hidden bg-white/10 border border-white/20 shadow-md shrink-0">
                   {testimonial.avatar ? (
                     <Image
@@ -238,7 +238,7 @@ export function TestimonialsSection() {
         />
       </div>
 
-      <div className="relative w-full max-w-350 mx-auto px-4 md:px-8 z-10 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 z-10 grid lg:grid-cols-2 gap-16 items-center">
         {/* Left Content */}
         <div className="relative max-w-xl">
           <motion.div
@@ -310,11 +310,9 @@ export function TestimonialsSection() {
             <Loader2 className="w-8 h-8 text-[#f58420] animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-            <VerticalMarquee items={firstCol} duration={35} />
-            <div className="hidden md:block">
-              <VerticalMarquee items={secondCol} reverse={true} duration={40} />
-            </div>
+          <div className="flex flex-col gap-6 relative w-full overflow-hidden">
+            <HorizontalMarquee items={firstCol} duration={35} />
+            <HorizontalMarquee items={secondCol} reverse={true} duration={40} />
           </div>
         )}
       </div>

@@ -8,6 +8,7 @@ import { AboutTextSection } from "@/components/Blufacade/AboutTextSection"
 import { MissionSection } from "@/components/Blufacade/MissionSection"
 import { PortfolioSection } from "@/components/Blufacade/PortfolioSection"
 import { TestimonialsSection } from "@/components/Blufacade/TestimonialsSection"
+import { ClientLogosSection } from "@/components/Blufacade/ClientLogosSection"
 import { FAQSection } from "@/components/Blufacade/FAQSection"
 import { Footer } from "@/components/Blufacade/Footer"
 
@@ -34,6 +35,7 @@ export default function Home() {
         <HeroTextSection />
         <PortfolioSection />
         <ServicesSection />
+        <ClientLogosSection />
         <AboutTextSection />
         <MissionSection />
         <TestimonialsSection />

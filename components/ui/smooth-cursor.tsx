@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useRef, useState } from "react"
 import { motion, useSpring } from "framer-motion"
+import { usePathname } from "next/navigation"
 
 interface Position {
   x: number
@@ -89,6 +90,7 @@ export function SmoothCursor({
     restDelta: 0.001,
   },
 }: SmoothCursorProps) {
+  const pathname = usePathname()
   const [isMoving, setIsMoving] = useState(false)
   const lastMousePos = useRef<Position>({ x: 0, y: 0 })
   const velocity = useRef<Position>({ x: 0, y: 0 })
@@ -109,7 +111,15 @@ export function SmoothCursor({
     damping: 35,
   })
 
+  // Don't render cursor on admin or login pages
+  const isAdminOrLogin = pathname?.startsWith('/admin') || pathname?.startsWith('/login')
+
   useEffect(() => {
+    if (isAdminOrLogin) {
+      document.body.style.cursor = "auto"
+      return
+    }
+
     const updateVelocity = (currentPos: Position) => {
       const currentTime = Date.now()
       const deltaTime = currentTime - lastUpdateTime.current
@@ -178,7 +188,9 @@ export function SmoothCursor({
       document.body.style.cursor = "auto"
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [cursorX, cursorY, rotation, scale])
+  }, [cursorX, cursorY, rotation, scale, isAdminOrLogin])
+
+  if (isAdminOrLogin) return null
 
   return (
     <motion.div

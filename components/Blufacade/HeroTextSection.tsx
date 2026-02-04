@@ -28,7 +28,7 @@ export function HeroTextSection() {
       </div>
 
       <style jsx>{`
-        @keyframes marquee {
+        @keyframes hero-marquee {
           0% {
             transform: translateX(0%);
           }
@@ -36,7 +36,7 @@ export function HeroTextSection() {
             transform: translateX(-100%);
           }
         }
-        @keyframes marquee2 {
+        @keyframes hero-marquee2 {
           0% {
             transform: translateX(100%);
           }
@@ -45,10 +45,10 @@ export function HeroTextSection() {
           }
         }
         .animate-marquee {
-          animation: marquee 25s linear infinite;
+          animation: hero-marquee 25s linear infinite;
         }
         .animate-marquee2 {
-          animation: marquee2 25s linear infinite;
+          animation: hero-marquee2 25s linear infinite;
         }
       `}</style>
     </div>
