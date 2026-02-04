@@ -5,6 +5,8 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { DynamicMetadata } from "@/components/DynamicMetadata";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
+import FloatingContactButtons from "@/components/FloatingContactButtons";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -60,8 +62,10 @@ export default function RootLayout({
         className={`${poppins.variable} ${openSans.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
+        <SmoothCursor />
         <DynamicMetadata />
         {children}
+        <FloatingContactButtons />
         <Toaster />
         <Analytics />
       </body>
