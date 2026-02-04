@@ -89,7 +89,14 @@ export function PortfolioSection() {
   const galleryItems: GalleryItem[] = displayProjects.map((project) => ({
     image: project.image,
     text: project.projectName,
+    link: `/portfolio/${project.slug}`,
   }));
+
+  const handleProjectClick = (index: number, item: GalleryItem) => {
+    if (item.link) {
+      window.location.href = item.link;
+    }
+  };
 
   return (
     <section id="portfolio" className="relative bg-[#fefaf6]">
@@ -130,6 +137,7 @@ export function PortfolioSection() {
               fontClassName="font-bold text-[30px]"
               itemWidth={900}
               itemHeight={600}
+              onItemClick={handleProjectClick}
             />
           </div>
 

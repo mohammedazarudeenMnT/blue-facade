@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"; // Assuming shadcn 'cn' utility path
 export interface GalleryItem {
   image: string;
   text: string;
+  link?: string; // Optional URL for navigation on click
 }
 
 interface CircularGalleryProps
@@ -51,6 +52,10 @@ interface CircularGalleryProps
    * Optional class name to override the default font (e.g., from Next/font).
    */
   fontClassName?: string;
+  /**
+   * Optional callback when an item is clicked. Receives the item index and item data.
+   */
+  onItemClick?: (index: number, item: GalleryItem) => void;
 }
 
 /* --------------------------------
@@ -462,6 +467,9 @@ function createTextTexture(
      medias!: Media[];
      isDown: boolean = false;
      start: number = 0;
+     clickStartTime: number = 0;
+     clickStartX: number = 0;
+     onItemClickCallback?: (index: number, item: GalleryItem) => void;
      screen!: { width: number; height: number };
      viewport!: { width: number; height: number };
      raf!: number;
@@ -469,7 +477,7 @@ function createTextTexture(
      boundOnWheel: (e: WheelEvent) => void;
      boundOnTouchDown: (e: MouseEvent | TouchEvent) => void;
      boundOnTouchMove: (e: MouseEvent | TouchEvent) => void;
-     boundOnTouchUp: () => void;
+     boundOnTouchUp: (e?: MouseEvent | TouchEvent) => void;
      itemWidth: number;
      itemHeight: number;
    
@@ -485,6 +493,7 @@ function createTextTexture(
          scrollEase,
          itemWidth,
          itemHeight,
+         onItemClick,
        }: {
          items?: GalleryItem[];
          bend: number;
@@ -495,6 +504,7 @@ function createTextTexture(
          scrollEase: number;
          itemWidth: number;
          itemHeight: number;
+         onItemClick?: (index: number, item: GalleryItem) => void;
        },
      ) {
        this.container = container;
@@ -503,6 +513,7 @@ function createTextTexture(
        this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
        this.itemWidth = itemWidth;
        this.itemHeight = itemHeight;
+       this.onItemClickCallback = onItemClick;
    
        autoBind(this);
    
@@ -591,6 +602,8 @@ function createTextTexture(
        this.isDown = true;
        this.scroll.position = this.scroll.current;
        this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
+       this.clickStartTime = Date.now();
+       this.clickStartX = this.start;
      }
    
      onTouchMove(e: MouseEvent | TouchEvent) {
@@ -600,7 +613,16 @@ function createTextTexture(
        this.scroll.target = (this.scroll as any).position + distance;
      }
    
-     onTouchUp() {
+     onTouchUp(e?: MouseEvent | TouchEvent) {
+       const clickDuration = Date.now() - this.clickStartTime;
+       const currentX = e ? ("touches" in e ? e.changedTouches[0].clientX : e.clientX) : this.start;
+       const moveDistance = Math.abs(currentX - this.clickStartX);
+       
+       // Detect click (short duration and minimal movement)
+       if (clickDuration < 300 && moveDistance < 10 && this.onItemClickCallback) {
+         this.handleClick();
+       }
+       
        this.isDown = false;
        this.onCheck();
      }
@@ -609,6 +631,20 @@ function createTextTexture(
        const delta = e.deltaY || (e as any).wheelDelta || e.detail;
        this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
        this.onCheckDebounce();
+     }
+   
+     handleClick() {
+       if (!this.medias || !this.medias[0] || !this.onItemClickCallback) return;
+       
+       // Find the centered item based on scroll position
+       const width = this.medias[0].width;
+       const itemIndex = Math.round(Math.abs(this.scroll.current) / width);
+       const actualIndex = itemIndex % (this.mediasImages.length / 2); // Account for duplicated items
+       
+       const item = this.mediasImages[actualIndex];
+       if (item) {
+         this.onItemClickCallback(actualIndex, item);
+       }
      }
    
      onCheck() {
@@ -662,27 +698,27 @@ function createTextTexture(
        this.boundOnTouchUp = this.onTouchUp;
    
        window.addEventListener("resize", this.boundOnResize);
-       window.addEventListener("mousewheel", this.boundOnWheel);
+       window.addEventListener("mousewheel" as any, this.boundOnWheel);
        window.addEventListener("wheel", this.boundOnWheel);
        this.container.addEventListener("mousedown", this.boundOnTouchDown);
        window.addEventListener("mousemove", this.boundOnTouchMove);
-       window.addEventListener("mouseup", this.boundOnTouchUp);
+       window.addEventListener("mouseup", this.boundOnTouchUp as any);
        this.container.addEventListener("touchstart", this.boundOnTouchDown);
        window.addEventListener("touchmove", this.boundOnTouchMove);
-       window.addEventListener("touchend", this.boundOnTouchUp);
+       window.addEventListener("touchend", this.boundOnTouchUp as any);
      }
    
      destroy() {
        window.cancelAnimationFrame(this.raf);
        window.removeEventListener("resize", this.boundOnResize);
-       window.removeEventListener("mousewheel", this.boundOnWheel);
+       window.removeEventListener("mousewheel" as any, this.boundOnWheel);
        window.removeEventListener("wheel", this.boundOnWheel);
        this.container.removeEventListener("mousedown", this.boundOnTouchDown);
        window.removeEventListener("mousemove", this.boundOnTouchMove);
-       window.removeEventListener("mouseup", this.boundOnTouchUp);
+       window.removeEventListener("mouseup", this.boundOnTouchUp as any);
        this.container.removeEventListener("touchstart", this.boundOnTouchDown);
        window.removeEventListener("touchmove", this.boundOnTouchMove);
-       window.removeEventListener("touchend", this.boundOnTouchUp);
+       window.removeEventListener("touchend", this.boundOnTouchUp as any);
    
        if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
          this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
@@ -703,6 +739,7 @@ function createTextTexture(
      fontClassName,
      itemWidth = 700,
      itemHeight = 900,
+     onItemClick,
      ...props
    }: CircularGalleryProps & { itemWidth?: number; itemHeight?: number }) => {
      const containerRef = useRef<HTMLDivElement>(null);
@@ -729,12 +766,13 @@ function createTextTexture(
          scrollEase,
          itemWidth,
          itemHeight,
+         onItemClick,
        });
    
        return () => {
          app.destroy();
        };
-     }, [items, bend, borderRadius, scrollSpeed, scrollEase, fontClassName, itemWidth, itemHeight]);
+     }, [items, bend, borderRadius, scrollSpeed, scrollEase, fontClassName, itemWidth, itemHeight, onItemClick]);
    
      return (
        <div
