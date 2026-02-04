@@ -121,6 +121,7 @@ function createTextTexture(
      textColor: string;
      font: string;
      mesh!: Mesh;
+     aspect: number = 1;
    
      constructor({
        gl,
@@ -148,12 +149,19 @@ function createTextTexture(
      }
    
      createMesh() {
+       // Generate high-res font string for texture to avoid pixelation
+       const highResFont = this.font.replace(/(\d+)px/, (match, p1) => {
+         return `${parseInt(p1, 10) * 4}px`;
+       });
+
        const { texture, width, height } = createTextTexture(
          this.gl,
          this.text,
-         this.font,
+         highResFont,
          this.textColor,
        );
+       this.aspect = width / height;
+
        const geometry = new Plane(this.gl);
        const program = new Program(this.gl, {
          vertex: `
@@ -181,12 +189,50 @@ function createTextTexture(
          transparent: true,
        });
        this.mesh = new Mesh(this.gl, { geometry, program });
-       const aspect = width / height;
-       const textHeight = this.plane.scale.y * 0.15;
-       const textWidth = textHeight * aspect;
-       this.mesh.scale.set(textWidth, textHeight, 1);
-       this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
        this.mesh.setParent(this.plane);
+     }
+
+     onResize() {
+        if (!this.mesh || !this.plane) return;
+
+        // Parent world scales (approximate via local scale if parent is direct child of scene/unscaled group)
+        // Since plane is child of Scene (Transform), assuming Scale 1.
+        // Media.onResize sets plane.scale.
+        const px = this.plane.scale.x;
+        const py = this.plane.scale.y;
+        
+        // Prevent division by zero
+        if (px === 0 || py === 0) return;
+
+        // Target: Text visual height = 23% of Image Height
+        let visualHeightRatio = 0.23; 
+        
+        // Calculate constrained dimensions
+        // Visual Height = py * visualHeightRatio
+        // Unconstrained Visual Width = Visual Height * this.aspect
+        let visualWidth = (py * visualHeightRatio) * this.aspect;
+        
+        const maxVisualWidth = 1.5 * px; // Max width 1.5x of Image Width
+        
+        if (visualWidth > maxVisualWidth) {
+           visualWidth = maxVisualWidth;
+           // Recalculate height ratio to preserve aspect
+           // visualHeight = visualWidth / this.aspect
+           // newRatio = visualHeight / py
+           visualHeightRatio = (visualWidth / this.aspect) / py;
+        }
+        
+        // Apply to Local Scale of text mesh
+        // sx * px = visualWidth  => sx = visualWidth / px
+        // sy * py = visualHeight => sy = visualHeightRatio
+        const sx = visualWidth / px;
+        const sy = visualHeightRatio;
+        
+        this.mesh.scale.set(sx, sy, 1);
+        
+        // Position Y: Top of image (0.5) + Padding (0.08) + Half Text Height (sy * 0.5)
+        // All in local space of the plane
+        this.mesh.position.y = 0.5 + 0.08 + sy * 0.5;
      }
    }
    
@@ -273,7 +319,7 @@ function createTextTexture(
        this.itemHeight = itemHeight;
        this.createShader();
        this.createMesh();
-       // this.createTitle(); // Removed to eliminate pixelated text below images
+       this.createTitle();
        this.onResize();
      }
    
@@ -363,16 +409,16 @@ function createTextTexture(
        this.plane.setParent(this.scene);
      }
    
-     // createTitle() {
-     //   this.title = new Title({
-     //     gl: this.gl,
-     //     plane: this.plane,
-     //     renderer: this.renderer,
-     //     text: this.text,
-     //     textColor: this.textColor,
-     //     font: this.font,
-     //   });
-     // }
+     createTitle() {
+       this.title = new Title({
+         gl: this.gl,
+         plane: this.plane,
+         renderer: this.renderer,
+         text: this.text,
+         textColor: this.textColor,
+         font: this.font,
+       });
+     }
    
      update(
        scroll: { current: number; last: number },
@@ -450,6 +496,10 @@ function createTextTexture(
        this.width = this.plane.scale.x + this.padding;
        this.widthTotal = this.width * this.length;
        this.x = this.width * this.index;
+       
+       if (this.title) {
+         this.title.onResize();
+       }
      }
    }
    
