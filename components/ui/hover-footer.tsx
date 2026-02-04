@@ -80,14 +80,25 @@ export const TextHoverEffect = ({
         </mask>
       </defs>
 
+      {/* Add glow filter for better visibility */}
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
       <text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.3"
-        className="fill-transparent stroke-neutral-200 font-[helvetica] text-7xl font-bold dark:stroke-neutral-800"
-        style={{ opacity: hovered ? 0.7 : 0 }}
+        strokeWidth="0.5"
+        className="fill-transparent stroke-[#0369a1] font-[helvetica] text-7xl font-bold"
+        style={{ opacity: hovered ? 0.8 : 0.3, filter: 'url(#glow)' }}
       >
         {text}
       </text>
@@ -97,8 +108,8 @@ export const TextHoverEffect = ({
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.3"
-        className="fill-transparent stroke-[#014a74] font-[helvetica] text-7xl font-bold"
+        strokeWidth="0.5"
+        className="fill-transparent stroke-[#0ea5e9] font-[helvetica] text-7xl font-bold"
         initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
         animate={{
           strokeDashoffset: 0,
@@ -108,6 +119,7 @@ export const TextHoverEffect = ({
           duration: 4,
           ease: "easeInOut",
         }}
+        style={{ filter: 'url(#glow)' }}
       >
         {text}
       </motion.text>

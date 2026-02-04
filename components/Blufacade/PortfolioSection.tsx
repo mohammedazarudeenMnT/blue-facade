@@ -89,7 +89,14 @@ export function PortfolioSection() {
   const galleryItems: GalleryItem[] = displayProjects.map((project) => ({
     image: project.image,
     text: project.projectName,
+    link: `/portfolio/${project.slug}`,
   }));
+
+  const handleProjectClick = (index: number, item: GalleryItem) => {
+    if (item.link) {
+      window.location.href = item.link;
+    }
+  };
 
   return (
     <section id="portfolio" className="relative bg-[#fefaf6]">
@@ -128,6 +135,9 @@ export function PortfolioSection() {
               scrollEase={0.05}
               className="text-[#014a74] font-bold"
               fontClassName="font-bold text-[30px]"
+              itemWidth={900}
+              itemHeight={600}
+              onItemClick={handleProjectClick}
             />
           </div>
 
@@ -140,7 +150,7 @@ export function PortfolioSection() {
                   href={`/portfolio/${project.slug}`}
                   className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
                 >
-                  <div className="relative h-[300px] overflow-hidden">
+                  <div className="relative h-[250px] overflow-hidden">
                     <Image
                       src={project.image}
                       alt={project.projectName}
@@ -191,10 +201,10 @@ export function PortfolioSection() {
                 <Link
                   key={project.id}
                   href={`/portfolio/${project.slug}`}
-                  className="shrink-0 w-[280px] snap-center"
+                  className="shrink-0 w-[320px] snap-center"
                 >
                   <div className="group relative overflow-hidden rounded-xl bg-white shadow-lg">
-                    <div className="relative h-[350px] overflow-hidden">
+                    <div className="relative h-[220px] overflow-hidden">
                       <Image
                         src={project.image}
                         alt={project.projectName}
@@ -234,6 +244,9 @@ export function PortfolioSection() {
           </div>
         </>
       )}
+
+      {/* Bottom Divider Line - Full Width */}
+      <div className="w-full border-b border-[#014a74]/20 mt-8"></div>
     </section>
   );
 }

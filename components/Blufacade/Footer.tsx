@@ -88,15 +88,16 @@ export function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <h4 className="font-bold text-lg text-[#f58420] mb-4">Company</h4>
-            <div className="mb-4">
-              <div className="h-20 w-auto relative">
-                <Image
-                  src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
-                  alt="Blufacade - Inspiring Skylines"
-                  width={300}
-                  height={80}
-                  className="object-contain h-full w-auto"
-                />
+            <div className="mb-4 flex justify-start">
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden w-48 sm:w-60">
+                <div className="h-12 sm:h-16 w-full relative">
+                  <Image
+                    src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
+                    alt="Blufacade - Inspiring Skylines"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               </div>
             </div>
             <p className="text-white/70 text-sm leading-relaxed max-w-sm">

@@ -5,6 +5,7 @@ import { Menu, X, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useServices } from "@/hooks/use-services"
 import { usePortfolio } from "@/hooks/use-portfolio"
 
@@ -22,9 +23,13 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
   const [portfolioDropdownOpen, setPortfolioDropdownOpen] = useState(false)
+  const pathname = usePathname()
   
   const { services } = useServices(1, 100)
   const { portfolios } = usePortfolio(1, 100)
+
+  // Check if we're on the home page
+  const isHomePage = pathname === "/"
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,10 +57,10 @@ export function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
             ? "bg-white/95 backdrop-blur-md shadow-lg" 
-            : "bg-gradient-to-b from-black/50 to-transparent"
+            : "bg-transparent"
         }`}
       >
-        <div className="mx-auto px-6 md:px-12 flex items-center justify-between h-16">
+        <div className="mx-auto pl-2 md:pl-4 pr-6 md:pr-12 flex items-center justify-between h-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -63,12 +68,12 @@ export function Header() {
             className="flex items-center"
           >
             <Link href="/" className="flex items-center">
-              <div className="h-20 md:h-24 lg:h-28 w-auto relative">
+              <div className="h-14 md:h-16 lg:h-20 w-auto relative">
                 <Image
                   src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
                   alt="Blufacade - Inspiring Skylines"
-                  width={400}
-                  height={112}
+                  width={280}
+                  height={80}
                   className="object-contain h-full w-auto"
                   priority
                 />
@@ -89,7 +94,9 @@ export function Header() {
               className={`p-2 rounded-lg transition-colors px-3 py-2.5 md:hidden ${
                 scrolled 
                   ? "bg-[#014a74] text-white" 
-                  : "bg-white/20 backdrop-blur-sm text-white border border-white/30"
+                  : isHomePage 
+                    ? "bg-[#014a74] text-white border border-[#014a74]"
+                    : "bg-white/20 backdrop-blur-sm text-white border border-white/30"
               }`}
               aria-label="Menu"
             >
@@ -110,7 +117,7 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                          scrolled ? "text-[#014a74]" : "text-white"
+                          scrolled ? "text-[#014a74]" : isHomePage ? "text-[#014a74]" : "text-white"
                         }`}
                       >
                         {item.label}
@@ -154,7 +161,7 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                          scrolled ? "text-[#014a74]" : "text-white"
+                          scrolled ? "text-[#014a74]" : isHomePage ? "text-[#014a74]" : "text-white"
                         }`}
                       >
                         {item.label}
@@ -192,7 +199,7 @@ export function Header() {
                     key={item.label}
                     href={item.href}
                     className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                      scrolled ? "text-[#014a74]" : "text-white"
+                      scrolled ? "text-[#014a74]" : isHomePage ? "text-[#014a74]" : "text-white"
                     }`}
                   >
                     {item.label}
