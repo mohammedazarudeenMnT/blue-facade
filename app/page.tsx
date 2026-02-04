@@ -8,6 +8,7 @@ import { AboutTextSection } from "@/components/Blufacade/AboutTextSection"
 import { MissionSection } from "@/components/Blufacade/MissionSection"
 import { PortfolioSection } from "@/components/Blufacade/PortfolioSection"
 import { TestimonialsSection } from "@/components/Blufacade/TestimonialsSection"
+import { FAQSection } from "@/components/Blufacade/FAQSection"
 import { Footer } from "@/components/Blufacade/Footer"
 
 export const metadata: Metadata = {
@@ -31,11 +32,12 @@ export default function Home() {
         <Header />
         <HeroSection />
         <HeroTextSection />
+        <PortfolioSection />
         <ServicesSection />
         <AboutTextSection />
         <MissionSection />
-        <PortfolioSection />
         <TestimonialsSection />
+        <FAQSection />
         <Footer />
       </main>
     </>
