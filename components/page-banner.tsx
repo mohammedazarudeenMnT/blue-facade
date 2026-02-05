@@ -43,11 +43,11 @@ export function PageBanner({ title, breadcrumb, backgroundImage }: PageBannerPro
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-2 text-white/80 text-sm mb-6 font-medium"
+            className="flex items-center gap-2 text-white/80 text-lg mb-6 font-medium"
           >
             {breadcrumb.map((item, index) => (
               <div key={item.href} className="flex items-center gap-2">
-                {index > 0 && <ChevronRight className="w-4 h-4" />}
+                {index > 0 && <ChevronRight className="w-5 h-5" />}
                 {index === breadcrumb.length - 1 ? (
                   <span className="text-[#f58420]">{item.label}</span>
                 ) : (
@@ -67,7 +67,7 @@ export function PageBanner({ title, breadcrumb, backgroundImage }: PageBannerPro
           className="max-w-4xl"
         >
           <h1 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-md"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-md"
             dangerouslySetInnerHTML={{ 
               __html: title.replace(/(Blufacade|Services|Portfolio|Contact)/g, '<span class="text-[#f58420]">$1</span>') 
             }} 

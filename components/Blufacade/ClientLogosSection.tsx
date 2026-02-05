@@ -34,6 +34,9 @@ export function ClientLogosSection() {
 
   return (
     <section className="py-16 bg-[#fefaf6] overflow-hidden">
+      {/* Top Divider */}
+      <div className="w-full border-b border-[#014a74]/20 mb-12"></div>
+
       <div className="container mx-auto px-6 mb-8">
         <div className="text-center mb-12">
           <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
@@ -74,6 +77,9 @@ export function ClientLogosSection() {
           </div>
         </div>
       </div>
+
+      {/* Bottom Divider */}
+      <div className="w-full border-b border-[#014a74]/20 mt-12"></div>
 
       <style jsx>{`
         .marquee-container {
