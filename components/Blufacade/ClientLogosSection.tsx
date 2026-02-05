@@ -33,7 +33,7 @@ export function ClientLogosSection() {
   const duplicatedLogos = [...clientLogos, ...clientLogos];
 
   return (
-    <section className="py-16 bg-[#fefaf6] overflow-hidden">
+    <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6 mb-8">
         <div className="text-center mb-12">
           <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
@@ -50,8 +50,8 @@ export function ClientLogosSection() {
 
       <div className="relative">
         {/* Gradient Overlays */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-[#fefaf6] to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-[#fefaf6] to-transparent z-10" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-white to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-white to-transparent z-10" />
 
         {/* Marquee Container */}
         <div className="marquee-container">

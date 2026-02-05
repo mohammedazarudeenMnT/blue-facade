@@ -158,7 +158,7 @@ export function Footer() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="border-t border-white/20 py-12"
         >
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             <div>
               <h5 className="font-bold text-sm text-[#f58420] mb-4 uppercase">
                 Menu
@@ -200,6 +200,17 @@ export function Footer() {
                   </>
                 )}
               </ul>
+            </div>
+            {/* BNI Member Logo */}
+            <div className="col-span-2 md:col-span-2 flex flex-col items-center md:items-end justify-center">
+              <div className="relative w-full max-w-[350px] h-[180px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <Image
+                  src="/proud-bni-member.jpg"
+                  alt="Proud BNI Member"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </div>
           </div>
 

@@ -32,10 +32,10 @@ export default function Home() {
       <main className="relative w-full overflow-x-hidden">
         <Header />
         <HeroSection />
-        <HeroTextSection />
+        <ClientLogosSection />  
         <PortfolioSection />
         <ServicesSection />
-        <ClientLogosSection />
+        <HeroTextSection />
         <AboutTextSection />
         <MissionSection />
         <TestimonialsSection />

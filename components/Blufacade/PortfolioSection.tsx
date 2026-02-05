@@ -245,8 +245,6 @@ export function PortfolioSection() {
         </>
       )}
 
-      {/* Bottom Divider Line - Full Width */}
-      <div className="w-full border-b border-[#014a74]/20 mt-8"></div>
     </section>
   );
 }
