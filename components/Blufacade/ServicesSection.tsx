@@ -144,11 +144,7 @@ function ServiceCard({
         </div>
 
         {/* Service Icon/Text Placeholder */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white/20 text-6xl font-black uppercase tracking-wider">
-            {service.serviceName.charAt(0)}
-          </span>
-        </div>
+
 
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-[#014a74]/90 via-[#014a74]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
