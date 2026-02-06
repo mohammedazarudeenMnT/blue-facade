@@ -27,7 +27,7 @@ export function ServicesSection() {
   const { services, isLoading } = useServices(1, 6);
 
   return (
-    <section id="services" className="relative py-20 bg-[#fefaf6]">
+    <section id="services" className="relative pt-8 -mt-10 pb-20 bg-[#fefaf6] z-10">
       <div className="relative w-full max-w-350 mx-auto px-4 md:px-8">
         <div className="text-center mb-12">
           <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">

@@ -73,19 +73,19 @@ const palettes = {
     overlay: 'linear-gradient(130deg, rgba(255,255,255,0.04) 0%, transparent 65%)',
   },
   light: {
-    surface: 'bg-slate-100 text-neutral-900',
-    panel: 'bg-white/70',
-    border: 'border-neutral-200',
-    heading: 'text-neutral-900',
-    muted: 'text-neutral-600',
-    iconRing: 'border-neutral-300',
-    iconSurface: 'bg-neutral-900/5',
-    icon: 'text-neutral-900',
-    glow: 'rgba(15, 15, 15, 0.08)',
+    surface: 'bg-[#fefaf6] text-[#282828]',
+    panel: 'bg-white/60',
+    border: 'border-[#014a74]/10',
+    heading: 'text-[#014a74]',
+    muted: 'text-[#282828]/70',
+    iconRing: 'border-[#f58420]/20',
+    iconSurface: 'bg-[#f58420]/5',
+    icon: 'text-[#f58420]',
+    glow: 'rgba(1, 74, 116, 0.05)',
     aurora:
-      'radial-gradient(ellipse 50% 100% at 10% 0%, rgba(15, 23, 42, 0.08), rgba(255, 255, 255, 0.95) 70%)',
-    shadow: 'shadow-[0_36px_120px_-70px_rgba(15,15,15,0.18)]',
-    overlay: 'linear-gradient(130deg, rgba(15,23,42,0.08) 0%, transparent 70%)',
+      'radial-gradient(ellipse 50% 100% at 10% 0%, rgba(1, 74, 116, 0.05), rgba(254, 250, 246, 0.95) 70%)',
+    shadow: 'shadow-[0_36px_120px_-70px_rgba(1,74,116,0.1)]',
+    overlay: 'linear-gradient(130deg, rgba(1,74,116,0.02) 0%, transparent 70%)',
   },
 }
 
@@ -93,12 +93,6 @@ type ThemeType = keyof typeof palettes
 
 export function FAQSection() {
   const getRootTheme = (): ThemeType => {
-    if (typeof document === 'undefined') return 'dark'
-    if (document.documentElement.classList.contains('dark')) return 'dark'
-    if (document.documentElement.classList.contains('light')) return 'light'
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    }
     return 'light'
   }
 
