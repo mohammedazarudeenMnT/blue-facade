@@ -92,7 +92,7 @@ export function Footer() {
               <div className="bg-white rounded-lg shadow-lg overflow-hidden w-48 sm:w-60">
                 <div className="h-12 sm:h-16 w-full relative">
                   <Image
-                    src="/images/logo/Blufacade Logo PNG (1)-Photoroom.png"
+                    src="/images/logo2/Blufacade Logo PNG.png"
                     alt="Blufacade - Inspiring Skylines"
                     fill
                     className="object-cover"

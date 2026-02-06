@@ -30,10 +30,10 @@ export function ServicesSection() {
     <section id="services" className="relative pt-8 -mt-10 pb-20 bg-[#fefaf6] z-10">
       <div className="relative w-full max-w-350 mx-auto px-4 md:px-8">
         <div className="text-center mb-12">
-          <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
+          <p className="text-[#f58420] font-black text-xl tracking-widest uppercase mb-4">
             Our Expertise
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#014a74]">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#014a74]">
             Featured <span className="text-[#f58420]">Services</span>
           </h2>
           <p className="text-lg text-[#282828]/70 max-w-2xl mx-auto mt-4">

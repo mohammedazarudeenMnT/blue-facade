@@ -145,7 +145,7 @@ export function FAQSection() {
         color: rgba(248, 250, 252, 0.92);
         text-transform: uppercase;
         letter-spacing: 0.35em;
-        font-size: 0.65rem;
+        font-size: 0.85rem;
         width: 100%;
         max-width: 24rem;
         margin: 0 auto;
