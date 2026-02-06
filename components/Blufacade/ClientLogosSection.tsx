@@ -36,10 +36,10 @@ export function ClientLogosSection() {
     <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6 mb-8">
         <div className="text-center mb-12">
-          <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
+          <p className="text-[#f58420] font-black text-xl tracking-widest uppercase mb-4">
             Trusted By
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#014a74]">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#014a74]">
             Our <span className="text-[#f58420]">Happy Clients</span>
           </h2>
           <p className="text-lg text-[#282828]/70 max-w-2xl mx-auto mt-4">

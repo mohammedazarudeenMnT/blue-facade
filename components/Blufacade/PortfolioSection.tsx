@@ -104,10 +104,10 @@ export function PortfolioSection() {
       {/* Section Header */}
       <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4 py-12 px-4">
         <div className="text-center mb-4">
-          <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
+          <p className="text-[#f58420] font-black text-xl tracking-widest uppercase mb-4">
             Our Work
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#014a74]">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#014a74]">
             Featured <span className="text-[#f58420]">Projects</span>
           </h2>
           <p className="text-lg text-[#282828]/70 max-w-2xl mx-auto mt-4">

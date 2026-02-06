@@ -11,17 +11,31 @@ export function HeroTextSection() {
   ]
 
   return (
-    <div className="relative flex w-full overflow-x-hidden border-b-2 border-t-2 border-[#014a74]/20 bg-[#fefaf6] text-[#014a74]">
+    <div className="relative flex w-full overflow-x-hidden border-b border-t border-[#014a74]/20 bg-[#fefaf6] text-transparent">
       <div className="animate-marquee whitespace-nowrap py-12">
         {textItems.map((item, index) => (
-          <span key={`${item}-${index}`} className="mx-4 text-4xl font-bold">
+          <span
+            key={`${item}-${index}`}
+            className="mx-4 text-4xl sm:text-6xl font-black tracking-widest transition-all duration-300 hover:text-[#014a74]"
+            style={{ 
+              WebkitTextStroke: "1px #014a74",
+              filter: "drop-shadow(0 0 2px rgba(1, 74, 116, 0.3))" 
+            }}
+          >
             {item}
           </span>
         ))}
       </div>
       <div className="absolute top-0 animate-marquee2 whitespace-nowrap py-12">
         {textItems.map((item, index) => (
-          <span key={`${item}-${index}-2`} className="mx-4 text-4xl font-bold">
+          <span
+            key={`${item}-${index}-2`}
+            className="mx-4 text-4xl sm:text-6xl font-black tracking-widest transition-all duration-300 hover:text-[#014a74]"
+            style={{ 
+              WebkitTextStroke: "1px #014a74",
+              filter: "drop-shadow(0 0 2px rgba(1, 74, 116, 0.3))" 
+            }}
+          >
             {item}
           </span>
         ))}

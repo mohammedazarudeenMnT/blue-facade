@@ -159,7 +159,7 @@ export function TestimonialsSection() {
           {duplicatedItems.map((testimonial, index) => (
             <div
               key={`${testimonial._id}-${index}`}
-              className="w-[350px] shrink-0 bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 relative flex flex-col pointer-events-auto group hover:bg-white/10 transition-all duration-300"
+              className="w-[420px] shrink-0 bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 relative flex flex-col pointer-events-auto group hover:bg-white/10 transition-all duration-300"
             >
               <Quote className="absolute top-6 right-8 w-10 h-10 text-white/5 group-hover:text-white/10 transition-colors" />
 
