@@ -101,7 +101,8 @@ export function PortfolioSection() {
   return (
     <section id="portfolio" className="relative bg-[#fefaf6]">
       {/* Section Header */}
-      <div className="h-[200px] md:h-[300px] flex flex-col items-center justify-center space-y-3 md:space-y-4 pt-8 px-4">
+      {/* Section Header */}
+      <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4 py-12 px-4">
         <div className="text-center mb-4">
           <p className="text-[#f58420] font-black text-sm tracking-widest uppercase mb-4">
             Our Work
@@ -134,9 +135,9 @@ export function PortfolioSection() {
               scrollSpeed={2}
               scrollEase={0.05}
               className="text-[#014a74] font-bold"
-              fontClassName="font-bold text-[30px]"
-              itemWidth={900}
-              itemHeight={600}
+              fontClassName="font-bold text-[35px]"
+              itemWidth={1000}
+              itemHeight={700}
               onItemClick={handleProjectClick}
             />
           </div>

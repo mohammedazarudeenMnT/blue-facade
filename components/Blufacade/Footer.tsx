@@ -201,36 +201,37 @@ export function Footer() {
                 )}
               </ul>
             </div>
-            {/* BNI Member Logo */}
-            <div className="col-span-2 md:col-span-2 flex flex-col items-center md:items-end justify-center">
-              <div className="relative w-full max-w-[350px] h-[180px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <Image
-                  src="/proud-bni-member.jpg"
-                  alt="Proud BNI Member"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-6 pt-8 border-t border-white/20">
-            <p className="text-sm font-semibold text-[#f58420] uppercase">
-              Follow Us
-            </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f58420] hover:border-[#f58420] transition-colors"
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
+          {/* Social Links & BNI Logo */}
+          <div className="flex flex-col md:flex-row items-center justify-start gap-12 pt-8 border-t border-white/20">
+            <div className="flex items-center gap-6">
+              <p className="text-sm font-semibold text-[#f58420] uppercase">
+                Follow Us
+              </p>
+              <div className="flex gap-4">
+                {socialLinks.map((social) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-[#f58420] hover:border-[#f58420] transition-colors"
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* BNI Member Logo */}
+            <div className="relative w-full max-w-[140px] h-[80px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Image
+                src="/proud-bni-member.jpg"
+                alt="Proud BNI Member"
+                fill
+                className="object-contain"
+              />
             </div>
           </div>
         </motion.div>
