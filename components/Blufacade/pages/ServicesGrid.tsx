@@ -9,6 +9,7 @@ import {
 import Link from "next/link"
 import Image from "next/image" // Use Next.js Image for better performance
 import { useServices } from "@/hooks/use-services"
+import { stripHtml } from "@/lib/utils"
 
 export function ServicesGrid() {
   const { services, isLoading } = useServices(1, 100) // Fetch all/many services
@@ -65,7 +66,7 @@ export function ServicesGrid() {
                   </div>
                   
                   <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
-                    {service.shortDescription || service.description}
+                    {stripHtml(service.shortDescription || service.description)}
                   </p>
 
                   {/* Features */}

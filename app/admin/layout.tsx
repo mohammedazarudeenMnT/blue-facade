@@ -150,6 +150,7 @@ export default function AdminLayout({
       subItems: [
         { name: "Banner Manager", href: "/admin/banners", icon: <FileText className="h-4 w-4" /> },
         { name: "Contact Manager", href: "/admin/contact", icon: <Phone className="h-4 w-4" /> },
+        { name: "Careers Manager", href: "/admin/careers", icon: <Briefcase className="h-4 w-4" /> },
         { name: "Services", href: "/admin/services", icon: <Briefcase className="h-4 w-4" /> },
         { name: "Portfolio", href: "/admin/portfolio", icon: <Briefcase className="h-4 w-4" /> },
         { name: "Blog", href: "/admin/blog", icon: <FileText className="h-4 w-4" /> },

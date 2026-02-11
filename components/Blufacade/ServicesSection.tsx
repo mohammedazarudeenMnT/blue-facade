@@ -5,18 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useServices } from "@/hooks/use-services";
 import { Loader2 } from "lucide-react";
-
-// Helper function to strip HTML tags and decode entities
-const stripHtml = (html: string) => {
-  return html
-    .replace(/<[^>]*>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .trim();
-};
+import { stripHtml } from "@/lib/utils";
 
 // Helper to get aspect ratio based on index
 const getAspectRatio = (index: number) => {

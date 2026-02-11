@@ -15,6 +15,7 @@ const navItems = [
   { label: "SERVICES", href: "/services", hasDropdown: true },
   { label: "PORTFOLIO", href: "/portfolio", hasDropdown: true },
   { label: "BLOG", href: "/blog" },
+  { label: "CAREERS", href: "/careers" },
   { label: "CONTACT", href: "/contact" },
 ]
 
