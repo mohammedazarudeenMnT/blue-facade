@@ -67,7 +67,7 @@ export function CareersContent() {
             <h1 className="text-4xl md:text-5xl font-bold text-[#014a74] mb-6">
               {careersInfo?.pageTitle || "Join Our Team"}
             </h1>
-            <p className="text-lg text-gray-600 leading-relaxed text-justify max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
               {careersInfo?.pageDescription || "Be part of a dynamic team that's transforming skylines across India."}
             </p>
           </motion.div>
