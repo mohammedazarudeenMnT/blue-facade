@@ -183,7 +183,7 @@ export function ServiceDetailContent({
               <div
                 className="prose prose-lg max-w-none text-gray-600
                   prose-headings:text-[#014a74] prose-headings:font-bold
-                  prose-p:leading-relaxed
+                  prose-p:leading-relaxed prose-p:text-justify
                   prose-li:text-gray-600
                   prose-strong:text-[#014a74]
                   prose-a:text-[#f58420] hover:prose-a:text-[#014a74]"

@@ -89,11 +89,11 @@ export function MissionSection() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Our Mission</h2>
-            <p className="text-white/80 text-lg mb-6">
+            <p className="text-white/80 text-lg mb-6 text-justify">
               At <span className="text-[#f58420] font-semibold">Blufacade</span>, we are committed to delivering exceptional facade solutions that enhance the beauty and
               performance of buildings while prioritizing sustainability and innovation.
             </p>
-            <p className="text-white/80 text-lg mb-8">
+            <p className="text-white/80 text-lg mb-8 text-justify">
               Our team of experts combines years of experience with cutting-edge technology to create facades that
               stand the test of time.
             </p>

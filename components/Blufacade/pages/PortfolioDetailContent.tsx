@@ -167,7 +167,7 @@ export function PortfolioDetailContent({
               <div
                 className="prose prose-lg max-w-none text-gray-600
                   prose-headings:text-[#014a74] prose-headings:font-bold
-                  prose-p:leading-relaxed
+                  prose-p:leading-relaxed prose-p:text-justify
                   prose-li:text-gray-600
                   prose-strong:text-[#014a74]"
                 dangerouslySetInnerHTML={{ __html: portfolioData.description }}

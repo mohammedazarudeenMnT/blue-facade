@@ -428,7 +428,7 @@ export function FAQSection() {
                         open ? 'max-h-64' : 'max-h-0'
                       } ${palette.muted}`}
                     >
-                      <p className="pr-2">{item.answer}</p>
+                      <p className="pr-2 text-justify">{item.answer}</p>
                     </div>
                   </div>
                 </button>
