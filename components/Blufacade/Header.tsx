@@ -75,11 +75,7 @@ export function Header() {
                   alt="Blufacade - Inspiring Skylines"
                   width={280}
                   height={80}
-                  className={`object-contain h-full w-auto transition-all duration-300 ${
-                    !scrolled && (pathname.startsWith('/careers') || pathname.startsWith('/blog') || pathname.startsWith('/services') || pathname.startsWith('/portfolio') || pathname.startsWith('/about') || pathname.startsWith('/contact')) 
-                      ? "brightness-0 invert" 
-                      : ""
-                  }`}
+                  className="object-contain h-full w-auto"
                   priority
                 />
               </div>
@@ -122,11 +118,7 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                          scrolled 
-                            ? "text-[#014a74]" 
-                            : (pathname.startsWith('/careers') || pathname.startsWith('/blog') || pathname.startsWith('/services') || pathname.startsWith('/portfolio') || pathname.startsWith('/about') || pathname.startsWith('/contact'))
-                              ? "text-white" 
-                              : "text-[#014a74]"
+                          scrolled ? "text-[#014a74]" : isHomePage ? "text-[#014a74]" : "text-white"
                         }`}
                       >
                         {item.label}
@@ -170,11 +162,7 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                          scrolled 
-                            ? "text-[#014a74]" 
-                            : (pathname.startsWith('/careers') || pathname.startsWith('/blog') || pathname.startsWith('/services') || pathname.startsWith('/portfolio') || pathname.startsWith('/about') || pathname.startsWith('/contact'))
-                              ? "text-white" 
-                              : "text-[#014a74]"
+                          scrolled ? "text-[#014a74]" : isHomePage ? "text-[#014a74]" : "text-white"
                         }`}
                       >
                         {item.label}
@@ -212,11 +200,7 @@ export function Header() {
                     key={item.label}
                     href={item.href}
                     className={`text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#f58420] ${
-                      scrolled 
-                        ? "text-[#014a74]" 
-                        : (pathname.startsWith('/careers') || pathname.startsWith('/blog') || pathname.startsWith('/services') || pathname.startsWith('/portfolio') || pathname.startsWith('/about') || pathname.startsWith('/contact'))
-                          ? "text-white" 
-                          : "text-[#014a74]"
+                      scrolled ? "text-[#014a74]" : isHomePage ? "text-[#014a74]" : "text-white"
                     }`}
                   >
                     {item.label}
