@@ -52,7 +52,7 @@ export function AboutContent() {
             <h2 className="text-3xl md:text-4xl font-bold text-[#014a74] mb-6">
               Innovating Iconic Facades
             </h2>
-            <div className="space-y-4 text-gray-600 leading-relaxed">
+            <div className="space-y-4 text-gray-600 leading-relaxed text-justify">
               <p>
                 At Blufacade, we specialize in delivering innovative, high-quality facade solutions 
                 that redefine the visual identity and performance of modern buildings. With a strong 
@@ -91,7 +91,7 @@ export function AboutContent() {
                 </div>
                 <h3 className="text-xl font-semibold text-[#014a74]">Our Mission</h3>
               </div>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed text-justify">
                 To deliver exceptional facade solutions that combine innovation, quality, and 
                 sustainability, while exceeding client expectations through collaborative partnerships 
                 and unwavering commitment to excellence.
@@ -106,7 +106,7 @@ export function AboutContent() {
                 </div>
                 <h3 className="text-xl font-semibold">Our Vision</h3>
               </div>
-              <p className="text-white/80 leading-relaxed">
+              <p className="text-white/80 leading-relaxed text-justify">
                 To be the most trusted and innovative facade solutions provider in India, known for 
                 transforming skylines and setting new benchmarks in architectural excellence.
               </p>
@@ -160,7 +160,7 @@ export function AboutContent() {
                 <value.icon className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-[#014a74] mb-2">{value.title}</h3>
-              <p className="text-gray-600 text-sm">{value.description}</p>
+              <p className="text-gray-600 text-sm text-justify">{value.description}</p>
             </motion.div>
           ))}
         </div>

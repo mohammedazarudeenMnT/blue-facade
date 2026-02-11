@@ -33,17 +33,17 @@ export function ClientLogosSection() {
   const duplicatedLogos = [...clientLogos, ...clientLogos];
 
   return (
-    <section className="py-16 bg-white overflow-hidden">
-      <div className="container mx-auto px-6 mb-8">
-        <div className="text-center mb-12">
+    <section className="py-20 bg-white overflow-hidden">
+      <div className="container mx-auto px-6 mb-10">
+        <div className="text-center mb-4">
           <p className="text-[#f58420] font-black text-xl tracking-widest uppercase mb-4">
             Trusted By
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#014a74]">
             Our <span className="text-[#f58420]">Happy Clients</span>
           </h2>
-          <p className="text-lg text-[#282828]/70 max-w-2xl mx-auto mt-4">
-            Partnering with industry leaders to deliver exceptional facade solutions
+          <p className="text-base text-[#282828]/70 max-w-2xl mx-auto mt-4">
+            Trusted partnerships delivering exceptional facade solutions
           </p>
         </div>
       </div>
@@ -61,7 +61,7 @@ export function ClientLogosSection() {
                 key={`${logo._id}-${index}`}
                 className="marquee-item shrink-0 mx-8"
               >
-                <div className="relative w-40 h-24 transition-all duration-300 hover:scale-105">
+                <div className="relative w-52 h-20 transition-all duration-300 hover:scale-105">
                   <Image
                     src={logo.logo}
                     alt={logo.name}
@@ -83,6 +83,7 @@ export function ClientLogosSection() {
 
         .marquee-content {
           display: flex;
+          align-items: center;
           animation: logos-marquee 30s linear infinite;
           will-change: transform;
         }

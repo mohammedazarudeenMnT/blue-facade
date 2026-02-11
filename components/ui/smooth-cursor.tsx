@@ -111,11 +111,22 @@ export function SmoothCursor({
     damping: 35,
   })
 
-  // Don't render cursor on admin or login pages
-  const isAdminOrLogin = pathname?.startsWith('/admin') || pathname?.startsWith('/login')
+  // Don't render cursor on admin, login pages, or mobile devices
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    if (isAdminOrLogin) {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  const shouldHideCursor = pathname?.startsWith('/admin') || pathname?.startsWith('/login') || isMobile
+
+  useEffect(() => {
+    if (shouldHideCursor) {
       document.body.style.cursor = "auto"
       return
     }
@@ -188,9 +199,9 @@ export function SmoothCursor({
       document.body.style.cursor = "auto"
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [cursorX, cursorY, rotation, scale, isAdminOrLogin])
+  }, [cursorX, cursorY, rotation, scale, shouldHideCursor])
 
-  if (isAdminOrLogin) return null
+  if (shouldHideCursor) return null
 
   return (
     <motion.div

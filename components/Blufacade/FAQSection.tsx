@@ -344,11 +344,11 @@ export function FAQSection() {
 
         <header className="flex flex-col gap-8">
           <div className="space-y-4">
-            <p className={`text-xs uppercase tracking-[0.35em] ${palette.muted}`}>Questions</p>
-            <h1 className={`text-4xl font-semibold leading-tight md:text-5xl ${palette.heading}`}>
+            <p className={`text-[10px] uppercase tracking-[0.35em] ${palette.muted}`}>Questions</p>
+            <h1 className={`text-3xl font-semibold leading-tight md:text-4xl ${palette.heading}`}>
               Everything you need to know about our facade solutions.
             </h1>
-            <p className={`max-w-xl text-base ${palette.muted}`}>
+            <p className={`max-w-xl text-sm ${palette.muted}`}>
               Get answers to common questions about partnering with Blufacade for your architectural glass and facade
               projects.
             </p>
@@ -408,7 +408,7 @@ export function FAQSection() {
 
                   <div className="flex flex-1 flex-col gap-4">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                      <h2 className={`text-lg font-medium leading-tight sm:text-xl ${palette.heading}`}>
+                      <h2 className={`text-base font-medium leading-tight sm:text-lg ${palette.heading}`}>
                         {item.question}
                       </h2>
                       {item.meta && (
@@ -428,7 +428,7 @@ export function FAQSection() {
                         open ? 'max-h-64' : 'max-h-0'
                       } ${palette.muted}`}
                     >
-                      <p className="pr-2">{item.answer}</p>
+                      <p className="pr-2 text-justify">{item.answer}</p>
                     </div>
                   </div>
                 </button>
@@ -439,8 +439,8 @@ export function FAQSection() {
 
         {/* WhatsApp CTA Section */}
         <div className={`text-center p-8 rounded-3xl border backdrop-blur-xl ${palette.border} ${palette.panel}`}>
-          <h3 className={`text-2xl font-bold mb-4 ${palette.heading}`}>Have More Questions?</h3>
-          <p className={`mb-6 ${palette.muted}`}>
+          <h3 className={`text-xl font-bold mb-4 ${palette.heading}`}>Have More Questions?</h3>
+          <p className={`mb-6 text-sm ${palette.muted}`}>
             Chat with us on WhatsApp for instant answers and personalized assistance.
           </p>
           <button

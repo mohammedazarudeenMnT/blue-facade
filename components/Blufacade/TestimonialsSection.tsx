@@ -136,18 +136,18 @@ export function TestimonialsSection() {
     reverse?: boolean;
     duration?: number;
   }) => {
-    // Duplicate items for seamless loop
-    const duplicatedItems = [...items, ...items, ...items];
+    // Duplicate items for seamless loop (4x for wider container)
+    const duplicatedItems = [...items, ...items, ...items, ...items];
 
     return (
       <div className="flex flex-row overflow-hidden w-full relative pointer-events-none fade-mask">
-        {/* Fade gradient overlays */}
-        <div className="absolute inset-y-0 left-0 w-24 bg-linear-to-r from-[#014a74] via-[#014a74]/80 to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-24 bg-linear-to-l from-[#014a74] via-[#014a74]/80 to-transparent z-10" />
+        {/* Fade gradient overlays - Subtle edge fade */}
+        <div className="absolute inset-y-0 left-0 w-6 bg-linear-to-r from-[#014a74] to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-6 bg-linear-to-l from-[#014a74] to-transparent z-10" />
 
         <motion.div
           animate={{
-            x: reverse ? ["-66.666%", "0%"] : ["0%", "-66.666%"],
+            x: reverse ? ["-75%", "0%"] : ["0%", "-75%"],
           }}
           transition={{
             duration: duration,
@@ -159,9 +159,9 @@ export function TestimonialsSection() {
           {duplicatedItems.map((testimonial, index) => (
             <div
               key={`${testimonial._id}-${index}`}
-              className="w-[420px] shrink-0 bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 relative flex flex-col pointer-events-auto group hover:bg-white/10 transition-all duration-300"
+              className="w-[420px] shrink-0 bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/10 relative flex flex-col pointer-events-auto group hover:bg-white/15 transition-all duration-300"
             >
-              <Quote className="absolute top-6 right-8 w-10 h-10 text-white/5 group-hover:text-white/10 transition-colors" />
+              <Quote className="absolute top-6 right-8 w-10 h-10 text-white/10 group-hover:text-white/20 transition-colors" />
 
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -176,7 +176,7 @@ export function TestimonialsSection() {
                 ))}
               </div>
 
-              <p className="text-white/80 leading-relaxed mb-6 italic text-lg font-medium line-clamp-4">
+              <p className="text-white/95 leading-relaxed mb-6 italic text-lg font-medium line-clamp-4">
                 "{testimonial.content}"
               </p>
 
@@ -187,10 +187,10 @@ export function TestimonialsSection() {
                       src={testimonial.avatar}
                       alt={testimonial.name}
                       fill
-                      className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                      className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white/40 font-black text-lg">
+                    <div className="w-full h-full flex items-center justify-center text-white/60 font-black text-lg">
                       {testimonial.name.charAt(0)}
                     </div>
                   )}
@@ -203,8 +203,8 @@ export function TestimonialsSection() {
                     <span className="text-[12px] text-[#f58420] font-bold">
                       {testimonial.location}
                     </span>
-                    <span className="w-1 h-1 bg-white/20 rounded-full" />
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">
+                    <span className="w-1 h-1 bg-white/30 rounded-full" />
+                    <span className="text-[10px] text-white/50 font-bold uppercase tracking-wider">
                       {testimonial.serviceType}
                     </span>
                   </div>
@@ -238,7 +238,7 @@ export function TestimonialsSection() {
         />
       </div>
 
-      <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 z-10 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative w-full max-w-[95%] xl:max-w-[1600px] mx-auto px-4 md:px-8 z-10 grid lg:grid-cols-[1fr_1.5fr] gap-8 items-center">
         {/* Left Content */}
         <div className="relative max-w-xl">
           <motion.div

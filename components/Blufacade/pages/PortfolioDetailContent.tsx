@@ -145,7 +145,7 @@ export function PortfolioDetailContent({
                 {portfolioData.projectName}
               </h1>
               {portfolioData.shortDescription && (
-                <p className="text-lg text-gray-500 font-medium leading-relaxed">
+                <p className="text-lg text-gray-500 font-medium leading-relaxed text-justify">
                   {portfolioData.shortDescription}
                 </p>
               )}
@@ -165,9 +165,9 @@ export function PortfolioDetailContent({
             <div>
               <h2 className="text-2xl font-bold text-[#014a74] mb-4">Project Overview</h2>
               <div
-                className="prose prose-lg max-w-none text-gray-600
+                className="prose prose-lg max-w-none text-gray-600 text-justify
                   prose-headings:text-[#014a74] prose-headings:font-bold
-                  prose-p:leading-relaxed
+                  prose-p:leading-relaxed prose-p:text-justify
                   prose-li:text-gray-600
                   prose-strong:text-[#014a74]"
                 dangerouslySetInnerHTML={{ __html: portfolioData.description }}
