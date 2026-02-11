@@ -18,6 +18,17 @@ export function HeroSection() {
     return () => clearTimeout(timer)
   }, [])
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -44,7 +55,10 @@ export function HeroSection() {
   return (
     <motion.section
       ref={containerRef}
-      style={{ opacity: heroOpacity, scale: heroScale }}
+      style={{ 
+        opacity: isMobile ? 1 : heroOpacity, 
+        scale: isMobile ? 1 : heroScale 
+      }}
       className="relative min-h-[75vh] md:min-h-[80vh] flex items-center overflow-hidden bg-[#fefaf6]"
     >
       {/* Particles Background */}
