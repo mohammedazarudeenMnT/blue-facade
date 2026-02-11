@@ -59,10 +59,10 @@ export function HeroTextSection() {
           }
         }
         .animate-marquee {
-          animation: hero-marquee 25s linear infinite;
+          animation: hero-marquee 60s linear infinite;
         }
         .animate-marquee2 {
-          animation: hero-marquee2 25s linear infinite;
+          animation: hero-marquee2 60s linear infinite;
         }
       `}</style>
     </div>
