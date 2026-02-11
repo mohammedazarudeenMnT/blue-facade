@@ -175,13 +175,13 @@ export function ServiceDetailContent({
                 {serviceData.serviceName}
               </h1>
               {serviceData.shortDescription && (
-                <p className="text-xl text-gray-500 font-medium leading-relaxed mb-6">
+                <p className="text-xl text-gray-500 font-medium leading-relaxed mb-6 text-justify">
                   {serviceData.shortDescription}
                 </p>
               )}
 
               <div
-                className="prose prose-lg max-w-none text-gray-600
+                className="prose prose-lg max-w-none text-gray-600 text-justify
                   prose-headings:text-[#014a74] prose-headings:font-bold
                   prose-p:leading-relaxed prose-p:text-justify
                   prose-li:text-gray-600

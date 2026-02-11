@@ -150,14 +150,14 @@ export default function BlogDetailClient({ slug }: { slug: string }) {
             <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
               {/* Excerpt */}
               <div className="mb-8 p-6 bg-[#014a74]/5 border-l-4 border-[#f58420] rounded-r-lg">
-                <p className="text-lg text-gray-700 italic leading-relaxed">
+                <p className="text-lg text-gray-700 italic leading-relaxed text-justify">
                   {blog.excerpt}
                 </p>
               </div>
 
               {/* Blog Content */}
               <div
-                className="prose prose-lg max-w-none
+                className="prose prose-lg max-w-none text-justify
                   prose-headings:text-[#014a74] 
                   prose-headings:font-bold
                   prose-h2:text-3xl
