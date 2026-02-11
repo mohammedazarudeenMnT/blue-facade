@@ -88,12 +88,12 @@ export function CareersContent() {
                 <div className="grid gap-6">
                   {activeJobs.map((job) => (
                     <Card key={job._id} className="overflow-hidden border-2 border-transparent hover:border-[#014a74]/10 hover:shadow-lg transition-all duration-300">
-                      <CardContent className="p-8">
+                      <CardContent className="p-4 md:p-8">
                         <div className="flex flex-col md:flex-row gap-6 justify-between items-start">
                           <div className="space-y-4 flex-1">
                             <div>
                                <h3 className="text-2xl font-bold text-[#014a74] mb-2">{job.title}</h3>
-                               <p className="text-gray-600 leading-relaxed">{job.description}</p>
+                               <p className="text-gray-600 leading-relaxed" style={{ textAlign: 'justify' }}>{job.description}</p>
                             </div>
                             
                             {job.requirements && (
@@ -102,7 +102,7 @@ export function CareersContent() {
                                   <CheckCircle2 className="w-4 h-4 text-[#f58420]" />
                                   Requirements & Qualifications
                                 </h4>
-                                <p className="text-sm text-gray-600 whitespace-pre-wrap">{job.requirements}</p>
+                                <p className="text-sm text-gray-600 whitespace-pre-wrap" style={{ textAlign: 'justify' }}>{job.requirements}</p>
                               </div>
                             )}
                           </div>

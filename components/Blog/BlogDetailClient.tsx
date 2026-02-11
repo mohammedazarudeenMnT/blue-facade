@@ -169,6 +169,7 @@ export default function BlogDetailClient({ slug }: { slug: string }) {
                   prose-p:text-gray-700
                   prose-p:leading-relaxed
                   prose-p:mb-6
+                  prose-p:text-justify
                   prose-a:text-[#f58420]
                   prose-a:no-underline
                   prose-a:font-semibold
